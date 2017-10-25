@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">Platform</string>
+    <string name="app_name">Dragonsbane</string>
+    <string name="welcome">Welcome!</string>
 </resources>
