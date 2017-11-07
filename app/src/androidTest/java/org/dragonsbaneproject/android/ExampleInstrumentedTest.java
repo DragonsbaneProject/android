@@ -1,4 +1,4 @@
-package org.dragonsbaneproject.platform;
+package org.dragonsbaneproject.android;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

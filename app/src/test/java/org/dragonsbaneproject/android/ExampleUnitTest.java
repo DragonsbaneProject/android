@@ -1,4 +1,4 @@
-package org.dragonsbaneproject.platform;
+package org.dragonsbaneproject.android;
 
 import org.junit.Test;
 

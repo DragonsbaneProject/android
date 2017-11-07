@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "org.dragonsbaneproject.platform"
-        minSdkVersion 21
+        minSdkVersion 15
         targetSdkVersion 26
         versionCode 1
         versionName "0.1.0"
@@ -26,5 +26,6 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:26.0.0-alpha1'
+    compile 'de.petendi:ethereum-android-lib:0.3.0@aar'
     testCompile 'junit:junit:4.12'
 }
