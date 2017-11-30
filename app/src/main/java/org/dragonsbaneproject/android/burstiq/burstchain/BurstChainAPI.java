@@ -42,6 +42,6 @@ public interface BurstChainAPI {
     @POST("burstchain/add/updateAsset")
     Call<UpdateAsset> addUpdateAsset(@Body UpdateAsset updateAsset);
 
-    @GET("")
+
 
 }
