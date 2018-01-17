@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-        super.onResume();
+        super.onStart();
         ((DBApplication)getApplication()).addActivity(MainActivity.class,this);
     }
 
