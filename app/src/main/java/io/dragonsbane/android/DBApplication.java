@@ -4,7 +4,7 @@ import android.app.Application;
 import android.content.Intent;
 import android.util.Log;
 
-import io.synapticcelerity.android.api.core.service.SCAndroidRouterService;
+import io.synapticcelerity.android.api.service.SCAndroidRouterService;
 
 /**
  * TODO: Add Definition
