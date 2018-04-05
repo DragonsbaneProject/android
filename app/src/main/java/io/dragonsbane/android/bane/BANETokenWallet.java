@@ -1,4 +1,4 @@
-package org.dragonsbaneproject.android.bane;
+package io.dragonsbane.android.bane;
 
 import java.io.Serializable;
 
