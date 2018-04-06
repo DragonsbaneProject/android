@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 
 import io.synapticcelerity.android.api.SecurityAPI;
+import io.synapticcelerity.android.api.healthcare.HealthRecordAPI;
 import io.synapticcelerity.data.DocumentMessage;
 import io.synapticcelerity.data.Envelope;
 import io.synapticcelerity.data.HealthRecord;
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         registerReceiver(createLIDReceiver, new IntentFilter(SecurityAPI.LIDCreated));
         registerReceiver(authenticateLIDReceiver, new IntentFilter(SecurityAPI.LIDAuthenticated));
-//        registerReceiver(loadHealthRecordReceiver, new IntentFilter(HealthRecordAPI.HealthRecordLoaded));
+        registerReceiver(loadHealthRecordReceiver, new IntentFilter(HealthRecordAPI.HealthRecordLoaded));
         setContentView(R.layout.activity_main);
     }
 
@@ -80,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         unregisterReceiver(createLIDReceiver);
         unregisterReceiver(authenticateLIDReceiver);
-//        unregisterReceiver(loadHealthRecordReceiver);
+        unregisterReceiver(loadHealthRecordReceiver);
     }
 
     public void createLID(View view) {
@@ -105,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         LID lid = new LID();
         lid.setAlias("Alice");
         lid.setPassphrase("1234");
-
+        HealthRecordAPI.loadHealthRecord(this, record);
     }
 
     private void showError(Envelope e) {
