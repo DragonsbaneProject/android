@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="io.dragonsbane.android">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:name=".DBApplication"
         android:allowBackup="true"
