@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/Base.Theme.DB">
 
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -19,6 +19,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- Neurocog -->
+        <activity android:name=".neurocog.ui.TestDisclaimerActivity" />
+        <activity android:name=".neurocog.ui.PreTestActivity" />
+        <activity android:name=".neurocog.ui.SimpleMemoryTestActivity" />
+        <activity android:name=".neurocog.ui.ComplexMemoryTestActivity" />
+        <activity android:name=".neurocog.ui.WorkingMemoryTestActivity" />
+        <activity android:name=".neurocog.ui.TestReportActivity" />
+        <activity android:name=".neurocog.ui.TestHistoryActivity" />
+        <activity android:name=".neurocog.ui.SettingsActivity" />
+        <activity android:name=".neurocog.ui.ViewUserProfileActivity"/>
 
     </application>
 

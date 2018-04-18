@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".neurocog.ui.PreTestActivity">
+
+    <TextView
+        android:id="@+id/mainTextWelcome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:paddingBottom="20dp"
+        android:text="@string/tapScreenTurnTile"
+        android:textSize="30sp" />
+
+    <ImageView
+        android:id="@+id/preTestCard"
+        android:contentDescription=""
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/card_back"
+        android:maxHeight="30dp"
+        android:onClick="clickCard" />
+
+    <TextView
+        android:id="@+id/preTestResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:visibility="invisible"
+        android:paddingBottom="20dp"
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/preTestButtonNextTest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:onClick="nextTest"
+        android:text="@string/nextTest"
+        android:visibility="invisible" />
+
+    <TableLayout
+        android:id="@+id/preTestLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dip">
+
+            <TextView
+                android:id="@+id/preTestMSBetween1stFlippedAndClicked"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/preTestMSBetween1stFlippedAndClickedScore"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/preTestMSBetween1stFlippedAndClickedScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp" />
+
+        </TableRow>
+
+        <View
+            android:layout_height="2dip"
+            android:background="#181641" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dip">
+
+            <TextView
+                android:id="@+id/preTestMSBetween2ndFlippedAndClicked"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/preTestMSBetween2ndFlippedAndClickedScore"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/preTestMSBetween2ndFlippedAndClickedScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dip">
+
+            <TextView
+                android:id="@+id/preTestMSBetween3rdFlippedAndClicked"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/preTestMSBetween3rdFlippedAndClickedScore"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/preTestMSBetween3rdFlippedAndClickedScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dip">
+
+            <TextView
+                android:id="@+id/preTestMSBetween4thFlippedAndClicked"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/preTestMSBetween4thFlippedAndClickedScore"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/preTestMSBetween4thFlippedAndClickedScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dip">
+
+            <TextView
+                android:id="@+id/preTestMSBetween5thFlippedAndClicked"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/preTestMSBetween5thFlippedAndClickedScore"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/preTestMSBetween5thFlippedAndClickedScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp" />
+
+        </TableRow>
+
+    </TableLayout>
+
+</LinearLayout>

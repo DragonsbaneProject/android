@@ -15,27 +15,50 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome!"/>
+        android:text="@string/welcome"/>
 
-    <Button
-        android:id="@+id/main_button_lid_create"
+    <EditText
+        android:id="@+id/mainEditUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Alice"
+        android:hint="@string/username"/>
+
+    <EditText
+        android:id="@+id/mainEditPassword"
+        android:inputType="textPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="1234"
+        android:hint="@string/password"/>
+
+    <CheckBox
+        android:id="@+id/mainBaseline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="createLID"
-        android:text="Create LID"/>
+        android:text="@string/baseline"
+        android:textSize="15sp"
+        android:checked="true"/>
 
     <Button
-        android:id="@+id/main_button_lid_authn"
+        android:id="@+id/mainButtonStartTest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="authenticateLID"
-        android:text="Authenticate LID"/>
+        android:text="@string/startTest"
+        android:onClick="verifyLID"/>
 
     <Button
-        android:id="@+id/main_button_healthrecord_load"
+        android:id="@+id/mainButtonClearProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="loadHealthRecord"
-        android:text="Load Health Record"/>
+        android:text="@string/clearProfile"
+        android:onClick="clearProfile"/>
+
+    <TextView
+        android:id="@+id/mainTextMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:visibility="invisible" />
 
 </LinearLayout>
