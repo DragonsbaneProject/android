@@ -22,8 +22,8 @@ import io.onemfive.android.api.healthcare.HealthRecordAPI;
 import io.onemfive.data.DocumentMessage;
 import io.onemfive.data.Envelope;
 import io.onemfive.data.LID;
-import io.onemfive.data.health.HealthRecord;
-import io.onemfive.data.health.TestReport;
+import io.onemfive.data.HealthRecord;
+import io.onemfive.data.TestReport;
 
 /**
  * TODO: Add Definition
@@ -154,14 +154,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showError(String error) {
-        TextView messageView = findViewById(R.id.mainTextMessage);
-        messageView.setTextColor(getResources().getColor(R.color.colorWarning));
-        messageView.setText(error);
-        messageView.setVisibility(View.VISIBLE);
+        showMessage(error, getResources().getColor(R.color.colorWarning));
     }
 
-    private void navToHome(Envelope e) {
-
+    private void showMessage(String message, int color) {
+        TextView messageView = findViewById(R.id.mainTextMessage);
+        messageView.setTextColor(color);
+        messageView.setText(message);
+        messageView.setVisibility(View.VISIBLE);
     }
 
     public void startTest(View view) {
@@ -179,22 +179,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void clearProfile(View view) {
-        TextView messageView = findViewById(R.id.mainTextMessage);
         String username = ((EditText)findViewById(R.id.mainEditUsername)).getText().toString();
         if("".equals(username)) {
-            messageView.setTextColor(getResources().getColor(R.color.colorWarning));
-            messageView.setText(getResources().getText(R.string.usernameRequired));
+            showError(getResources().getText(R.string.usernameRequired).toString());
         } else {
             try {
                 Storage.writeInternalObject(this, username, null);
-                messageView.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
-                messageView.setText(getResources().getText(R.string.profileCleared));
+                showMessage(getResources().getText(R.string.profileCleared).toString(), getResources().getColor(R.color.colorPrimaryDark));
             } catch (IOException e) {
                 e.printStackTrace();
-                messageView.setTextColor(getResources().getColor(R.color.colorWarning));
-                messageView.setText(e.getLocalizedMessage());
+                showError(e.getLocalizedMessage());
             }
         }
-        messageView.setVisibility(View.VISIBLE);
     }
 }

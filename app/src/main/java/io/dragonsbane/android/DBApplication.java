@@ -12,9 +12,9 @@ import java.util.Map;
 
 import io.dragonsbane.android.util.Numbers;
 import io.onemfive.android.api.service.OneMFiveAndroidRouterService;
-import io.onemfive.data.health.HealthRecord;
-import io.onemfive.data.health.Test;
-import io.onemfive.data.health.TestReport;
+import io.onemfive.data.HealthRecord;
+import io.onemfive.data.Test;
+import io.onemfive.data.TestReport;
 
 /**
  * TODO: Add Definition
