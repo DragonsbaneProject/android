@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
             if(record != null) {
                 System.out.println("Health Record loaded.");
                 ((DBApplication)getApplication()).setHealthRecord(record);
+
                 startTest(null);
             } else {
                 System.out.println("Health Record not found.");
@@ -135,17 +136,17 @@ public class MainActivity extends AppCompatActivity {
         SecurityAPI.verifyLID(this, lid);
     }
 
-    public void createLID(LID lid) {
+    private void createLID(LID lid) {
         Log.i(MainActivity.class.getName(),"Creating LID...");
         SecurityAPI.createLID(this, lid);
     }
 
-    public void authenticateLID(LID lid) {
+    private void authenticateLID(LID lid) {
         Log.i(MainActivity.class.getName(),"Authenticating LID...");
         SecurityAPI.authenticateLID(this, lid);
     }
 
-    public void loadHealthRecord(LID lid) {
+    private void loadHealthRecord(LID lid) {
         Log.i(MainActivity.class.getName(),"Loading Health Record...");
         HealthRecord record = new HealthRecord();
         record.setLid(lid);
