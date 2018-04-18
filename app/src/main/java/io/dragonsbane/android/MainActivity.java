@@ -9,12 +9,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import io.synapticcelerity.android.api.SecurityAPI;
-import io.synapticcelerity.android.api.healthcare.HealthRecordAPI;
-import io.synapticcelerity.data.DocumentMessage;
-import io.synapticcelerity.data.Envelope;
-import io.synapticcelerity.data.HealthRecord;
-import io.synapticcelerity.data.LID;
+import io.onemfive.android.api.SecurityAPI;
+import io.onemfive.android.api.healthcare.HealthRecordAPI;
+import io.onemfive.data.DocumentMessage;
+import io.onemfive.data.Envelope;
+import io.onemfive.data.HealthRecord;
+import io.onemfive.data.LID;
 
 /**
  * TODO: Add Definition
