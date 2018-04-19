@@ -2,7 +2,7 @@ package io.dragonsbane.android.neurocog.models;
 
 import java.io.Serializable;
 
-import io.onemfive.data.health.Test;
+import io.onemfive.data.Test;
 
 
 /**

@@ -19,8 +19,8 @@ import io.dragonsbane.android.R;
 import io.dragonsbane.android.neurocog.models.WorkingMemoryImpairmentModel;
 import io.dragonsbane.android.neurocog.tests.WorkingMemoryTest;
 import io.dragonsbane.android.util.Numbers;
-import io.onemfive.data.health.Test;
-import io.onemfive.data.health.TestResult;
+import io.onemfive.data.Test;
+import io.onemfive.data.TestResult;
 
 /**
  * Have you seen this tile during this session. There’s not so much attention here as working

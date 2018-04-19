@@ -5,8 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import io.dragonsbane.android.R;
-import io.onemfive.data.health.Test;
-import io.onemfive.data.health.TestResult;
+import io.onemfive.data.Test;
+import io.onemfive.data.TestResult;
 
 public class PreTestTest implements Test {
 

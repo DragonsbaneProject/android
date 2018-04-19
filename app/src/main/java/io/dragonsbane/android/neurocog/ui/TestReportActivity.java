@@ -17,8 +17,8 @@ import io.dragonsbane.android.neurocog.tests.ComplexMemoryTest;
 import io.dragonsbane.android.neurocog.tests.PreTestTest;
 import io.dragonsbane.android.neurocog.tests.SimpleMemoryTest;
 import io.dragonsbane.android.neurocog.tests.WorkingMemoryTest;
-import io.onemfive.data.health.Test;
-import io.onemfive.data.health.TestReport;
+import io.onemfive.data.Test;
+import io.onemfive.data.TestReport;
 
 public class TestReportActivity extends AppCompatActivity {
 

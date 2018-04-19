@@ -15,7 +15,7 @@ import io.dragonsbane.android.R;
 import io.dragonsbane.android.neurocog.models.SimpleMemoryImpairmentModel;
 import io.dragonsbane.android.neurocog.tests.SimpleMemoryTest;
 import io.dragonsbane.android.util.Numbers;
-import io.onemfive.data.health.TestResult;
+import io.onemfive.data.TestResult;
 
 /**
  * We can use a series of tiles flipped over one at a time.

@@ -2,8 +2,8 @@ package io.dragonsbane.android.neurocog.tests;
 
 import java.util.List;
 
-import io.onemfive.data.health.Test;
-import io.onemfive.data.health.TestResult;
+import io.onemfive.data.Test;
+import io.onemfive.data.TestResult;
 
 
 /**

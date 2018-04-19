@@ -15,7 +15,7 @@ import io.dragonsbane.android.R;
 import io.dragonsbane.android.neurocog.models.PreTestImpairmentModel;
 import io.dragonsbane.android.neurocog.tests.PreTestTest;
 import io.dragonsbane.android.util.Numbers;
-import io.onemfive.data.health.TestResult;
+import io.onemfive.data.TestResult;
 
 /**
  * First task is to prove hardware is working right and the person understands the instructions.
