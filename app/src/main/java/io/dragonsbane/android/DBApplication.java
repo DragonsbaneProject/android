@@ -12,7 +12,6 @@ import java.util.Map;
 
 import io.dragonsbane.android.util.Numbers;
 import io.onemfive.android.api.service.OneMFiveAndroidRouterService;
-import io.onemfive.data.HealthRecord;
 import io.onemfive.data.Test;
 import io.onemfive.data.TestReport;
 
@@ -22,7 +21,7 @@ import io.onemfive.data.TestReport;
  */
 public class DBApplication extends Application {
 
-    private HealthRecord healthRecord;
+    private Map<String,Object> healthRecord;
     private TestReport report;
     private List<Test> tests = new ArrayList<>();
     private Map<String,Activity> activities = new HashMap<>();
@@ -45,11 +44,11 @@ public class DBApplication extends Application {
             R.drawable.card_sa
     };
 
-    public HealthRecord getHealthRecord() {
+    public Map<String,Object> getHealthRecord() {
         return healthRecord;
     }
 
-    public void setHealthRecord(HealthRecord healthRecord) {
+    public void setHealthRecord(Map<String,Object> healthRecord) {
         this.healthRecord = healthRecord;
     }
 

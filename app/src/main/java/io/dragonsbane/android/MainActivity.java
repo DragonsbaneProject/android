@@ -14,15 +14,16 @@ import android.widget.TextView;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import io.dragonsbane.android.neurocog.persistence.Storage;
 import io.dragonsbane.android.neurocog.ui.PreTestActivity;
 import io.onemfive.android.api.SecurityAPI;
 import io.onemfive.android.api.healthcare.HealthRecordAPI;
+import io.onemfive.data.DID;
 import io.onemfive.data.DocumentMessage;
 import io.onemfive.data.Envelope;
-import io.onemfive.data.LID;
-import io.onemfive.data.HealthRecord;
 import io.onemfive.data.TestReport;
 
 /**
@@ -34,15 +35,15 @@ public class MainActivity extends AppCompatActivity {
     private BroadcastReceiver verifyLIDReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.i(MainActivity.class.getSimpleName(),"Received broadcast from LID verification.");
+            Log.i(MainActivity.class.getSimpleName(),"Received broadcast from DID verification.");
             Envelope e = (Envelope)intent.getExtras().get(Envelope.class.getName());
-            LID lid = (LID)((DocumentMessage)e.getMessage()).data.get(LID.class.getName());
-            if(lid.getStatus() == LID.Status.UNREGISTERED) {
-                System.out.println("LID not registered.");
-                createLID(lid);
+            DID did = (DID)e.getHeader(Envelope.DID);
+            if(did.getStatus() == DID.Status.UNREGISTERED) {
+                System.out.println("DID not registered.");
+                createLID(did);
             } else {
-                System.out.println("LID registered.");
-                authenticateLID(lid);
+                System.out.println("DID registered.");
+                authenticateLID(did);
             }
         }
     };
@@ -50,14 +51,14 @@ public class MainActivity extends AppCompatActivity {
     private BroadcastReceiver createLIDReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.i(MainActivity.class.getSimpleName(),"Received broadcast from LID creation.");
+            Log.i(MainActivity.class.getSimpleName(),"Received broadcast from DID creation.");
             Envelope e = (Envelope)intent.getExtras().get(Envelope.class.getName());
-            LID lid = (LID)((DocumentMessage)e.getMessage()).data.get(LID.class.getName());
-            if(lid.getStatus() == LID.Status.ACTIVE) {
-                System.out.println("LID created.");
-                loadHealthRecord(lid);
+            DID did = (DID)e.getHeader(Envelope.DID);
+            if(did.getStatus() == DID.Status.ACTIVE) {
+                System.out.println("DID created.");
+                loadHealthRecord(did);
             } else {
-                showError("Error creating LID.");
+                showError("Error creating DID.");
             }
         }
     };
@@ -65,14 +66,14 @@ public class MainActivity extends AppCompatActivity {
     private BroadcastReceiver authenticateLIDReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.i(MainActivity.class.getSimpleName(),"Received broadcast from LID authN.");
+            Log.i(MainActivity.class.getSimpleName(),"Received broadcast from DID authN.");
             Envelope e = (Envelope)intent.getExtras().get(Envelope.class.getName());
-            LID lid = (LID)((DocumentMessage)e.getMessage()).data.get(LID.class.getName());
-            if(lid.getAuthenticated()) {
-                System.out.println("LID authenticated.");
-                loadHealthRecord(lid);
+            DID did = (DID)e.getHeader(Envelope.DID);
+            if(did.getAuthenticated()) {
+                System.out.println("DID authenticated.");
+                loadHealthRecord(did);
             } else {
-                System.out.println("LID not authenticated.");
+                System.out.println("DID not authenticated.");
                 showError(getResources().getText(R.string.passwordFailed).toString());
             }
         }
@@ -83,11 +84,11 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             Log.i(MainActivity.class.getSimpleName(),"Received broadcast from Health Record loading.");
             Envelope e = (Envelope)intent.getExtras().get(Envelope.class.getName());
-            HealthRecord record = (HealthRecord) ((DocumentMessage)e.getMessage()).data.get(HealthRecord.class.getName());
-            if(record != null) {
-                System.out.println("Health Record loaded.");
-                ((DBApplication)getApplication()).setHealthRecord(record);
-
+            DocumentMessage m = (DocumentMessage)e.getMessage();
+            String healthStatus = (String) m.data.get("healthStatus");
+            if(healthStatus != null) {
+                System.out.println("Health Record loaded; healthStatus="+healthStatus);
+                ((DBApplication)getApplication()).setHealthRecord(m.data);
                 startTest(null);
             } else {
                 System.out.println("Health Record not found.");
@@ -100,9 +101,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((DBApplication)getApplication()).addActivity(MainActivity.class, this);
-        registerReceiver(verifyLIDReceiver, new IntentFilter(SecurityAPI.LIDVerified));
-        registerReceiver(createLIDReceiver, new IntentFilter(SecurityAPI.LIDCreated));
-        registerReceiver(authenticateLIDReceiver, new IntentFilter(SecurityAPI.LIDAuthenticated));
+        registerReceiver(verifyLIDReceiver, new IntentFilter(SecurityAPI.DIDVerified));
+        registerReceiver(createLIDReceiver, new IntentFilter(SecurityAPI.DIDCreated));
+        registerReceiver(authenticateLIDReceiver, new IntentFilter(SecurityAPI.DIDAuthenticated));
         registerReceiver(loadHealthRecordReceiver, new IntentFilter(HealthRecordAPI.HealthRecordLoaded));
         setContentView(R.layout.activity_main);
     }
@@ -130,26 +131,26 @@ public class MainActivity extends AppCompatActivity {
             showError(getResources().getText(R.string.passwordRequired).toString());
             return;
         }
-        LID lid = new LID();
-        lid.setAlias(username);
-        lid.setPassphrase(password);
-        SecurityAPI.verifyLID(this, lid);
+        DID did = new DID();
+        did.setAlias(username);
+        did.setPassphrase(password);
+        SecurityAPI.verifyLID(this, did);
     }
 
-    private void createLID(LID lid) {
-        Log.i(MainActivity.class.getName(),"Creating LID...");
-        SecurityAPI.createLID(this, lid);
+    private void createLID(DID did) {
+        Log.i(MainActivity.class.getName(),"Creating DID...");
+        SecurityAPI.createLID(this, did);
     }
 
-    private void authenticateLID(LID lid) {
-        Log.i(MainActivity.class.getName(),"Authenticating LID...");
+    private void authenticateLID(DID lid) {
+        Log.i(MainActivity.class.getName(),"Authenticating DID...");
         SecurityAPI.authenticateLID(this, lid);
     }
 
-    private void loadHealthRecord(LID lid) {
+    private void loadHealthRecord(DID lid) {
         Log.i(MainActivity.class.getName(),"Loading Health Record...");
-        HealthRecord record = new HealthRecord();
-        record.setLid(lid);
+        Map<String,Object> record = new HashMap<>();
+        record.put("type","HealthRecord");
         HealthRecordAPI.loadHealthRecord(this, record);
     }
 
@@ -164,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
         messageView.setVisibility(View.VISIBLE);
     }
 
-    public void startTest(View view) {
+    private void startTest(View view) {
         TestReport report = new TestReport();
         ((DBApplication)getApplicationContext()).setTestReport(report);
         boolean baseline = ((CheckBox)findViewById(R.id.mainBaseline)).isChecked();
