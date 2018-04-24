@@ -79,7 +79,7 @@ public class TestReportActivity extends AppCompatActivity {
         DBApplication app = (DBApplication) getApplicationContext();
         if(report.getBaseline()) {
             try {
-                Storage.writeInternalObject(this, app.getHealthRecord().getLid().getAlias()+".baseline", report);
+                Storage.writeInternalObject(this, app.getDid().getAlias()+".baseline", report);
             } catch (IOException e) {
                 e.printStackTrace();
             }

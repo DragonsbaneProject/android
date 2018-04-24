@@ -12,6 +12,7 @@ import java.util.Map;
 
 import io.dragonsbane.android.util.Numbers;
 import io.onemfive.android.api.service.OneMFiveAndroidRouterService;
+import io.onemfive.data.DID;
 import io.onemfive.data.Test;
 import io.onemfive.data.TestReport;
 
@@ -21,6 +22,7 @@ import io.onemfive.data.TestReport;
  */
 public class DBApplication extends Application {
 
+    private DID did;
     private Map<String,Object> healthRecord;
     private TestReport report;
     private List<Test> tests = new ArrayList<>();
@@ -43,6 +45,14 @@ public class DBApplication extends Application {
             R.drawable.card_s10, R.drawable.card_sj, R.drawable.card_sq, R.drawable.card_sk,
             R.drawable.card_sa
     };
+
+    public DID getDid() {
+        return did;
+    }
+
+    public void setDid(DID did) {
+        this.did = did;
+    }
 
     public Map<String,Object> getHealthRecord() {
         return healthRecord;

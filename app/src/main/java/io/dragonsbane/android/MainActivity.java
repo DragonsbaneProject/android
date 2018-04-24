@@ -32,7 +32,7 @@ import io.onemfive.data.TestReport;
  */
 public class MainActivity extends AppCompatActivity {
 
-    private BroadcastReceiver verifyLIDReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver verifyDIDReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.i(MainActivity.class.getSimpleName(),"Received broadcast from DID verification.");
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private BroadcastReceiver createLIDReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver createDIDReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.i(MainActivity.class.getSimpleName(),"Received broadcast from DID creation.");
@@ -56,6 +56,11 @@ public class MainActivity extends AppCompatActivity {
             DID did = (DID)e.getHeader(Envelope.DID);
             if(did.getStatus() == DID.Status.ACTIVE) {
                 System.out.println("DID created.");
+                try {
+                    Storage.writeInternalObject(context, did.getAlias(), did);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
                 loadHealthRecord(did);
             } else {
                 showError("Error creating DID.");
@@ -63,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private BroadcastReceiver authenticateLIDReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver authenticateDIDReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.i(MainActivity.class.getSimpleName(),"Received broadcast from DID authN.");
@@ -71,6 +76,11 @@ public class MainActivity extends AppCompatActivity {
             DID did = (DID)e.getHeader(Envelope.DID);
             if(did.getAuthenticated()) {
                 System.out.println("DID authenticated.");
+                try {
+                    Storage.writeInternalObject(context, did.getAlias(), did);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
                 loadHealthRecord(did);
             } else {
                 System.out.println("DID not authenticated.");
@@ -101,9 +111,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((DBApplication)getApplication()).addActivity(MainActivity.class, this);
-        registerReceiver(verifyLIDReceiver, new IntentFilter(SecurityAPI.DIDVerified));
-        registerReceiver(createLIDReceiver, new IntentFilter(SecurityAPI.DIDCreated));
-        registerReceiver(authenticateLIDReceiver, new IntentFilter(SecurityAPI.DIDAuthenticated));
+        registerReceiver(verifyDIDReceiver, new IntentFilter(SecurityAPI.DIDVerified));
+        registerReceiver(createDIDReceiver, new IntentFilter(SecurityAPI.DIDCreated));
+        registerReceiver(authenticateDIDReceiver, new IntentFilter(SecurityAPI.DIDAuthenticated));
         registerReceiver(loadHealthRecordReceiver, new IntentFilter(HealthRecordAPI.HealthRecordLoaded));
         setContentView(R.layout.activity_main);
     }
@@ -111,15 +121,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(verifyLIDReceiver);
-        unregisterReceiver(createLIDReceiver);
-        unregisterReceiver(authenticateLIDReceiver);
+        unregisterReceiver(verifyDIDReceiver);
+        unregisterReceiver(createDIDReceiver);
+        unregisterReceiver(authenticateDIDReceiver);
         unregisterReceiver(loadHealthRecordReceiver);
         ((DBApplication)getApplication()).removeActivity(MainActivity.class);
     }
 
     public void verifyLID(View view) {
-        Log.i(MainActivity.class.getName(),"Verifying LID...");
+        Log.i(MainActivity.class.getName(),"Verifying DID...");
 
         String username = ((EditText)findViewById(R.id.mainEditUsername)).getText().toString();
         if("".equals(username)) {
@@ -142,16 +152,14 @@ public class MainActivity extends AppCompatActivity {
         SecurityAPI.createLID(this, did);
     }
 
-    private void authenticateLID(DID lid) {
+    private void authenticateLID(DID did) {
         Log.i(MainActivity.class.getName(),"Authenticating DID...");
-        SecurityAPI.authenticateLID(this, lid);
+        SecurityAPI.authenticateLID(this, did);
     }
 
-    private void loadHealthRecord(DID lid) {
+    private void loadHealthRecord(DID did) {
         Log.i(MainActivity.class.getName(),"Loading Health Record...");
-        Map<String,Object> record = new HashMap<>();
-        record.put("type","HealthRecord");
-        HealthRecordAPI.loadHealthRecord(this, record);
+        HealthRecordAPI.loadHealthRecord(this, did);
     }
 
     private void showError(String error) {
