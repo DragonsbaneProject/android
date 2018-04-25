@@ -14,8 +14,6 @@ import android.widget.TextView;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import io.dragonsbane.android.neurocog.persistence.Storage;
 import io.dragonsbane.android.neurocog.ui.PreTestActivity;
@@ -40,10 +38,10 @@ public class MainActivity extends AppCompatActivity {
             DID did = (DID)e.getHeader(Envelope.DID);
             if(did.getStatus() == DID.Status.UNREGISTERED) {
                 System.out.println("DID not registered.");
-                createLID(did);
+                createDID(did);
             } else {
                 System.out.println("DID registered.");
-                authenticateLID(did);
+                authenticateDID(did);
             }
         }
     };
@@ -128,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         ((DBApplication)getApplication()).removeActivity(MainActivity.class);
     }
 
-    public void verifyLID(View view) {
+    public void verifyDID(View view) {
         Log.i(MainActivity.class.getName(),"Verifying DID...");
 
         String username = ((EditText)findViewById(R.id.mainEditUsername)).getText().toString();
@@ -147,12 +145,12 @@ public class MainActivity extends AppCompatActivity {
         SecurityAPI.verifyLID(this, did);
     }
 
-    private void createLID(DID did) {
+    private void createDID(DID did) {
         Log.i(MainActivity.class.getName(),"Creating DID...");
         SecurityAPI.createLID(this, did);
     }
 
-    private void authenticateLID(DID did) {
+    private void authenticateDID(DID did) {
         Log.i(MainActivity.class.getName(),"Authenticating DID...");
         SecurityAPI.authenticateLID(this, did);
     }
