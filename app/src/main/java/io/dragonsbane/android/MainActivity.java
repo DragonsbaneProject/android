@@ -15,6 +15,7 @@ import android.widget.TextView;
 import java.io.IOException;
 import java.util.Date;
 
+import io.dragonsbane.android.neurocog.TestReport;
 import io.dragonsbane.android.neurocog.persistence.Storage;
 import io.dragonsbane.android.neurocog.ui.PreTestActivity;
 import io.onemfive.android.api.SecurityAPI;
@@ -22,7 +23,6 @@ import io.onemfive.android.api.healthcare.HealthRecordAPI;
 import io.onemfive.data.DID;
 import io.onemfive.data.DocumentMessage;
 import io.onemfive.data.Envelope;
-import io.onemfive.data.TestReport;
 
 /**
  * TODO: Add Definition
@@ -142,17 +142,17 @@ public class MainActivity extends AppCompatActivity {
         DID did = new DID();
         did.setAlias(username);
         did.setPassphrase(password);
-        SecurityAPI.verifyLID(this, did);
+        SecurityAPI.verifyDID(this, did);
     }
 
     private void createDID(DID did) {
         Log.i(MainActivity.class.getName(),"Creating DID...");
-        SecurityAPI.createLID(this, did);
+        SecurityAPI.createDID(this, did);
     }
 
     private void authenticateDID(DID did) {
         Log.i(MainActivity.class.getName(),"Authenticating DID...");
-        SecurityAPI.authenticateLID(this, did);
+        SecurityAPI.authenticateDID(this, did);
     }
 
     private void loadHealthRecord(DID did) {

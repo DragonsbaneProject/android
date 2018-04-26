@@ -5,8 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import io.dragonsbane.android.R;
-import io.onemfive.data.Test;
-import io.onemfive.data.TestResult;
+import io.dragonsbane.android.neurocog.Test;
+import io.dragonsbane.android.neurocog.TestResult;
 
 public class PreTestTest implements Test {
 

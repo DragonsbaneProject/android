@@ -3,8 +3,9 @@ package io.dragonsbane.android.neurocog.tests;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.onemfive.data.Test;
-import io.onemfive.data.TestResult;
+import io.dragonsbane.android.neurocog.Test;
+import io.dragonsbane.android.neurocog.TestResult;
+
 
 public class SimpleMemoryTest implements Test {
 

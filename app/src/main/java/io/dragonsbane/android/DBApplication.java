@@ -10,11 +10,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.dragonsbane.android.neurocog.Test;
+import io.dragonsbane.android.neurocog.TestReport;
 import io.dragonsbane.android.util.Numbers;
 import io.onemfive.android.api.service.OneMFiveAndroidRouterService;
 import io.onemfive.data.DID;
-import io.onemfive.data.Test;
-import io.onemfive.data.TestReport;
 
 /**
  * TODO: Add Definition

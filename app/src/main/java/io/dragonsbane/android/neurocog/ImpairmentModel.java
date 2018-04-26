@@ -1,4 +1,4 @@
-package io.dragonsbane.android.neurocog.models;
+package io.dragonsbane.android.neurocog;
 
 import java.io.Serializable;
 
