@@ -12,13 +12,13 @@ import java.util.List;
 
 import io.dragonsbane.android.DBApplication;
 import io.dragonsbane.android.R;
+import io.dragonsbane.android.neurocog.Test;
+import io.dragonsbane.android.neurocog.TestReport;
 import io.dragonsbane.android.neurocog.persistence.Storage;
 import io.dragonsbane.android.neurocog.tests.ComplexMemoryTest;
 import io.dragonsbane.android.neurocog.tests.PreTestTest;
 import io.dragonsbane.android.neurocog.tests.SimpleMemoryTest;
 import io.dragonsbane.android.neurocog.tests.WorkingMemoryTest;
-import io.onemfive.data.Test;
-import io.onemfive.data.TestReport;
 
 public class TestReportActivity extends AppCompatActivity {
 

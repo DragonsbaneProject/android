@@ -12,10 +12,10 @@ import android.widget.TextView;
 
 import io.dragonsbane.android.DBApplication;
 import io.dragonsbane.android.R;
+import io.dragonsbane.android.neurocog.TestResult;
 import io.dragonsbane.android.neurocog.models.PreTestImpairmentModel;
 import io.dragonsbane.android.neurocog.tests.PreTestTest;
 import io.dragonsbane.android.util.Numbers;
-import io.onemfive.data.TestResult;
 
 /**
  * First task is to prove hardware is working right and the person understands the instructions.

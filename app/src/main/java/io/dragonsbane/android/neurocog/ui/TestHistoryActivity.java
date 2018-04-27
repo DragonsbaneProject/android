@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import java.util.List;
 
 import io.dragonsbane.android.R;
-import io.onemfive.data.TestReport;
+import io.dragonsbane.android.neurocog.TestReport;
 
 public class TestHistoryActivity extends AppCompatActivity {
 

@@ -12,10 +12,10 @@ import android.widget.TextView;
 
 import io.dragonsbane.android.DBApplication;
 import io.dragonsbane.android.R;
+import io.dragonsbane.android.neurocog.TestResult;
 import io.dragonsbane.android.neurocog.models.ComplexMemoryImpairmentModel;
 import io.dragonsbane.android.neurocog.tests.ComplexMemoryTest;
 import io.dragonsbane.android.util.Numbers;
-import io.onemfive.data.TestResult;
 
 /**
  * We can also do a more complex memory like 2 back which requires more attention.

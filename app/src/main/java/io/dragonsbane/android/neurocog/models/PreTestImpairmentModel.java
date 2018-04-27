@@ -1,8 +1,8 @@
 package io.dragonsbane.android.neurocog.models;
 
+import io.dragonsbane.android.neurocog.Test;
+import io.dragonsbane.android.neurocog.TestResult;
 import io.dragonsbane.android.neurocog.tests.PreTestTest;
-import io.onemfive.data.Test;
-import io.onemfive.data.TestResult;
 
 /**
  * Impairment Model for Pre-Test

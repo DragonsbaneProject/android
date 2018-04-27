@@ -1,8 +1,8 @@
 package io.dragonsbane.android.neurocog.models;
 
+import io.dragonsbane.android.neurocog.Test;
+import io.dragonsbane.android.neurocog.TestResult;
 import io.dragonsbane.android.neurocog.tests.SimpleMemoryTest;
-import io.onemfive.data.Test;
-import io.onemfive.data.TestResult;
 
 /**
  * Created by Brian on 3/10/18.
