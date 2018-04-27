@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".neurocog.ui.ComplexMemoryTestActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:paddingBottom="20dp"
+        android:text="@string/tapScreenTwoBefore"
+        android:textSize="30sp" />
+
+    <ImageView
+        android:id="@+id/complexMemoryTestCard"
+        android:contentDescription=""
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/card_back"
+        android:maxHeight="30dp"
+        android:onClick="clickCard" />
+
+    <TextView
+        android:id="@+id/complexMemoryTestResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:visibility="invisible"
+        android:paddingBottom="20dp"
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/complexMemoryButtonNextTest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:onClick="nextTest"
+        android:text="@string/nextTest"
+        android:visibility="invisible" />
+
+</LinearLayout>
