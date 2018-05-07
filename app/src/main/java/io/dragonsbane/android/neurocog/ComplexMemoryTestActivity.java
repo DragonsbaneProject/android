@@ -1,4 +1,4 @@
-package io.dragonsbane.android.neurocog.ui;
+package io.dragonsbane.android.neurocog;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,33 +10,34 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import io.dragonsbane.android.DBApplication;
 import io.dragonsbane.android.R;
-import io.dragonsbane.android.neurocog.TestResult;
-import io.dragonsbane.android.neurocog.models.ComplexMemoryImpairmentModel;
-import io.dragonsbane.android.neurocog.tests.ComplexMemoryTest;
-import io.dragonsbane.android.util.Numbers;
+import io.onemfive.core.util.Numbers;
+import io.onemfive.data.DID;
+import io.onemfive.data.health.mental.memory.MemoryTest;
 
 /**
  * We can also do a more complex memory like 2 back which requires more attention.
  * If I show you 6 bamboo, and then 3 wind, and then 3 wind you should not tap the screen,
  * but if the last one is 6 bamboo, you should. We could even try 3 back.
  */
-public class ComplexMemoryTestActivity extends AppCompatActivity implements Animation.AnimationListener {
-
-    private ComplexMemoryTest test;
-    private ComplexMemoryImpairmentModel model;
+public class ComplexMemoryTestActivity extends ImpairmentTestActivity {
 
     private int numberFlips = 12;
     private int maxNumberDifferentCards = 3;
     private int lastCardFlipped = 0;
     private int secondToLastCardFlipped = 0;
     private int currentCard = 0;
+    private int currentNumberFlips = 0;
+    private Long begin;
+    private Long end;
+    private List<Long> responseTimes = new ArrayList<>();
 
     private int randomStartCardIndex;
-
-    private Animation animation1;
-    private Animation animation2;
 
     private boolean isBackOfCardShowing = true;
     private boolean shouldNotClick = false;
@@ -44,23 +45,14 @@ public class ComplexMemoryTestActivity extends AppCompatActivity implements Anim
     private FlipCard flipCard;
     private EndTest endTest;
 
-    public ComplexMemoryTestActivity() {
-        randomStartCardIndex = Numbers.randomNumber(0, 51-maxNumberDifferentCards);
-        test = new ComplexMemoryTest();
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        test = new ComplexMemoryTest();
-        model = new ComplexMemoryImpairmentModel();
+        DID did = ((DBApplication)getApplication()).getDid();
+        randomStartCardIndex = Numbers.randomNumber(0, (DBApplication.cards.length-1)-maxNumberDifferentCards);
+        memoryTest = MemoryTest.newInstance(BORDERLINE_IMPAIRMENT,did.getId());
         ((DBApplication)getApplication()).addActivity(ComplexMemoryTestActivity.class, this);
         setContentView(R.layout.activity_complex_memory_test);
-        animation1 = AnimationUtils.loadAnimation(this, R.anim.to_middle);
-        animation1.setAnimationListener(this);
-        animation2 = AnimationUtils.loadAnimation(this, R.anim.from_middle);
-        animation2.setAnimationListener(this);
-
         flipCard = new FlipCard();
         new Handler().postDelayed(flipCard, 3 * 1000); // flip card after 3 seconds
     }
@@ -72,9 +64,22 @@ public class ComplexMemoryTestActivity extends AppCompatActivity implements Anim
     }
 
     public void clickCard(View v) {
-        if(isBackOfCardShowing) {test.inappropriate++;return;}
-        if(shouldNotClick) {test.negative++;return;}
-        test.successes++;
+        if(isBackOfCardShowing) {memoryTest.addInappropriate();return;}
+        if(shouldNotClick) {memoryTest.addMiss();return;}
+        memoryTest.addSuccess();
+        end = new Date().getTime();
+        long diff = end - begin;
+        responseTimes.add(diff);
+        Long totalResponseTime = 0L;
+        for(Long responseTime : responseTimes) {
+            totalResponseTime += responseTime;
+        }
+        memoryTest.setAvgResponseTimeMs(totalResponseTime/currentNumberFlips);
+        if(diff < memoryTest.getMinReponseTimeMs())
+            memoryTest.setMinReponseTimeMs(diff);
+        else if(diff > memoryTest.getMaxResponseTimeMs())
+            memoryTest.setMaxResponseTimeMs(diff);
+        memoryTest.addSuccess();
         flipCard.deactivate(); // Deactivate prior FlipCard
         v.setEnabled(false);
         v.clearAnimation();
@@ -86,7 +91,12 @@ public class ComplexMemoryTestActivity extends AppCompatActivity implements Anim
     public void onAnimationStart(Animation animation) {
         if(animation == animation1 && !isBackOfCardShowing && !shouldNotClick) {
             // Should have clicked and did not
-            test.misses++;
+            memoryTest.addMiss();
+        }
+        if (animation == animation2) {
+            if(isBackOfCardShowing) {
+                begin = new Date().getTime();
+            }
         }
     }
 
@@ -100,7 +110,7 @@ public class ComplexMemoryTestActivity extends AppCompatActivity implements Anim
                 lastCardFlipped = currentCard;
                 currentCard = ((DBApplication)getApplicationContext()).getRandomCard(randomStartCardIndex, randomStartCardIndex + maxNumberDifferentCards);
                 shouldNotClick = currentCard != secondToLastCardFlipped;
-                if(!test.cardsUsed.contains(currentCard)) test.cardsUsed.add(currentCard);
+                if(!memoryTest.cardsUsed().contains(currentCard)) memoryTest.cardsUsed().add(currentCard);
                 (findViewById(R.id.complexMemoryTestCard)).setBackground(getResources().getDrawable(currentCard));
             } else {
                 (findViewById(R.id.complexMemoryTestCard)).setBackground(getResources().getDrawable(R.drawable.card_back));
@@ -152,6 +162,7 @@ public class ComplexMemoryTestActivity extends AppCompatActivity implements Anim
                 v.clearAnimation();
                 v.setAnimation(animation1);
                 v.startAnimation(animation1);
+                currentNumberFlips++;
             }
         }
     }
@@ -168,19 +179,12 @@ public class ComplexMemoryTestActivity extends AppCompatActivity implements Anim
         public void run() {
             if(active) {
                 findViewById(R.id.complexMemoryTestCard).setVisibility(View.INVISIBLE);
-                model.evaluate(test);
-                TestResult result = test.getTestResult();
-                if (result.getScore() < 80) {
-                    ((TextView) findViewById(R.id.complexMemoryTestResult)).setText(getResources().getText(R.string.testPassed));
-                    ((TextView) findViewById(R.id.complexMemoryTestResult)).setTextColor(getResources().getColor(R.color.colorGrassGreen));
-                    findViewById(R.id.complexMemoryButtonNextTest).setVisibility(View.VISIBLE);
-                } else {
-                    ((TextView) findViewById(R.id.complexMemoryTestResult)).setText(getResources().getText(R.string.testFailed));
-                    ((TextView) findViewById(R.id.complexMemoryTestResult)).setTextColor(getResources().getColor(R.color.colorWarning));
-                }
-                findViewById(R.id.complexMemoryTestResult).setVisibility(View.VISIBLE);
                 DBApplication app = (DBApplication) getApplication();
-                app.addTest(test);
+                app.addTest(memoryTest);
+                ((TextView) findViewById(R.id.complexMemoryTestResult)).setText(memoryTest.getImpairment().name());
+                ((TextView) findViewById(R.id.complexMemoryTestResult)).setTextColor(getResultColor(memoryTest.getImpairment()));
+                findViewById(R.id.complexMemoryButtonNextTest).setVisibility(View.VISIBLE);
+                findViewById(R.id.complexMemoryTestResult).setVisibility(View.VISIBLE);
             }
         }
     }
@@ -190,8 +194,4 @@ public class ComplexMemoryTestActivity extends AppCompatActivity implements Anim
         startActivity(intent);
     }
 
-    @Override
-    public void onAnimationRepeat(Animation animation) {
-
-    }
 }

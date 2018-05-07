@@ -32,6 +32,14 @@
         android:text="1234"
         android:hint="@string/password"/>
 
+    <EditText
+        android:id="@+id/mainEditBAC"
+        android:inputType="text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:hint="@string/bac"/>
+
     <CheckBox
         android:id="@+id/mainBaseline"
         android:layout_width="wrap_content"

@@ -4,6 +4,7 @@
     <!-- Neurocog -->
     <string name="username">Username</string>
     <string name="password">Password</string>
+    <string name="bac">BAC</string>
     <string name="usernameRequired">Username is required.</string>
     <string name="passwordRequired">Password is required.</string>
     <string name="passwordFailed">Wrong password.</string>
@@ -16,19 +17,24 @@
     <string name="tapScreenOneBefore">Tap the card if it displays the card previously shown.</string>
     <string name="tapScreenTwoBefore">Tap the card if it displays two cards previously shown.</string>
     <string name="tapScreenIfSeen">Tap the card if it was displayed in preceding tests.</string>
-    <string name="testPassed">Passed! Continue&#8230;</string>
-    <string name="testFailed">Failed. Please try again.</string>
+    <string name="notImpaired">Passed! Continue&#8230;</string>
+    <string name="borderlineImpairment">Borderline. Personal judgement recommended.</string>
+    <string name="impaired">Impaired. Take the day off?</string>
+    <string name="grossImpairment">Grossly Impaired. Call for help.</string>
     <string name="testResults">Test Results</string>
+    <string name="testHistory">Test History</string>
     <string name="nextTest">Next</string>
+    <string name="sendResults">Send Results</string>
+    <string name="sendHistory">Send History</string>
     <string name="endTest">End Test</string>
     <string name="preTestMSBetween1stFlippedAndClickedScore">Response Time 1st Click</string>
     <string name="preTestMSBetween2ndFlippedAndClickedScore">Response Time 2nd Click</string>
     <string name="preTestMSBetween3rdFlippedAndClickedScore">Response Time 3rd Click</string>
     <string name="preTestMSBetween4thFlippedAndClickedScore">Response Time 4th Click</string>
     <string name="preTestMSBetween5thFlippedAndClickedScore">Response Time 5th Click</string>
-    <string name="totalScore">Total Score</string>
-    <string name="reportPreTestScoreText">Pre-Test Test Score</string>
-    <string name="reportSimpleMemoryTestText">Simple Memory Test Score</string>
-    <string name="reportComplexMemoryTestText">Complex Memory Test Score</string>
-    <string name="reportWorkingMemoryTestText">Working Memory Test Score</string>
+    <string name="totalScore">Overall Result</string>
+    <string name="reportPreTestScoreText">Pre-Test Test Result</string>
+    <string name="reportSimpleMemoryTestText">Simple Memory Test Result</string>
+    <string name="reportComplexMemoryTestText">Complex Memory Test Result</string>
+    <string name="reportWorkingMemoryTestText">Working Memory Test Result</string>
 </resources>

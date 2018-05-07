@@ -1,21 +1,23 @@
-package io.dragonsbane.android.neurocog.ui;
+package io.dragonsbane.android.neurocog;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import io.dragonsbane.android.DBApplication;
 import io.dragonsbane.android.R;
-import io.dragonsbane.android.neurocog.TestResult;
-import io.dragonsbane.android.neurocog.models.PreTestImpairmentModel;
-import io.dragonsbane.android.neurocog.tests.PreTestTest;
-import io.dragonsbane.android.util.Numbers;
+import io.onemfive.core.util.Numbers;
+import io.onemfive.data.DID;
+import io.onemfive.data.health.mental.memory.MemoryTest;
 
 /**
  * First task is to prove hardware is working right and the person understands the instructions.
@@ -35,28 +37,25 @@ import io.dragonsbane.android.util.Numbers;
  * something is wrong that the test can’t be done
  * (screen broken, person very drunk, person has debilitating dementia, etc).
  */
-public class PreTestActivity extends AppCompatActivity implements Animation.AnimationListener {
+public class PreTestActivity extends ImpairmentTestActivity {
 
-    private PreTestTest test;
-    private PreTestImpairmentModel model;
     private int numberFlips = 5;
-
-    private Animation animation1;
-    private Animation animation2;
+    private int currentNumberFlips = 0;
+    private Long begin;
+    private Long end;
+    private List<Long> responseTimes = new ArrayList<>();
 
     private boolean isBackOfCardShowing = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        test = new PreTestTest();
-        model = new PreTestImpairmentModel();
+        DID did = ((DBApplication)getApplication()).getDid();
+        memoryTest = MemoryTest.newInstance(GROSS_IMPAIRMENT, did.getId());
         ((DBApplication)getApplication()).addActivity(PreTestActivity.class, this);
+        // Ensure empty test list
+        ((DBApplication)getApplication()).getTests().clear();
         setContentView(R.layout.activity_pre_test);
-        animation1 = AnimationUtils.loadAnimation(this, R.anim.to_middle);
-        animation1.setAnimationListener(this);
-        animation2 = AnimationUtils.loadAnimation(this, R.anim.from_middle);
-        animation2.setAnimationListener(this);
 
         new Handler().postDelayed(new FlipCard(), 3 * 1000); // flip card after 3 seconds
     }
@@ -69,10 +68,22 @@ public class PreTestActivity extends AppCompatActivity implements Animation.Anim
 
     public void clickCard(View v) {
         if(isBackOfCardShowing) {
-            test.inappropriate++;
+            memoryTest.addInappropriate();
             return;
         }
-        test.clickedCard();
+        end = new Date().getTime();
+        long diff = end - begin;
+        responseTimes.add(diff);
+        Long totalResponseTime = 0L;
+        for(Long responseTime : responseTimes) {
+            totalResponseTime += responseTime;
+        }
+        memoryTest.setAvgResponseTimeMs(totalResponseTime/currentNumberFlips);
+        if(diff < memoryTest.getMinReponseTimeMs())
+            memoryTest.setMinReponseTimeMs(diff);
+        else if(diff > memoryTest.getMaxResponseTimeMs())
+            memoryTest.setMaxResponseTimeMs(diff);
+
         v.setEnabled(false);
         v.clearAnimation();
         v.setAnimation(animation1);
@@ -81,6 +92,16 @@ public class PreTestActivity extends AppCompatActivity implements Animation.Anim
             new Handler().postDelayed(new FlipCard(), Numbers.randomNumber(1, 3) * 1000); // flip card after random wait between 1 and 3 seconds
         else {
             new Handler().postDelayed(new EndTest(), 1000); // end test after 1 second
+        }
+    }
+
+    @Override
+    public void onAnimationStart(Animation animation) {
+        if (animation == animation2) {
+            if(isBackOfCardShowing) {
+                findViewById(R.id.preTestCard).setEnabled(true);
+                begin = new Date().getTime();
+            }
         }
     }
 
@@ -98,10 +119,6 @@ public class PreTestActivity extends AppCompatActivity implements Animation.Anim
         } else {
             // animation2
             isBackOfCardShowing=!isBackOfCardShowing;
-            findViewById(R.id.preTestCard).setEnabled(true);
-            if(!isBackOfCardShowing) {
-                test.flippedCard();
-            }
         }
     }
 
@@ -115,6 +132,7 @@ public class PreTestActivity extends AppCompatActivity implements Animation.Anim
             v.setAnimation(animation1);
             v.startAnimation(animation1);
             numberFlips--;
+            currentNumberFlips++;
         }
     }
 
@@ -123,23 +141,18 @@ public class PreTestActivity extends AppCompatActivity implements Animation.Anim
         @Override
         public void run() {
             findViewById(R.id.preTestCard).setVisibility(View.INVISIBLE);
-            model.evaluate(test);
             DBApplication app = (DBApplication) getApplication();
-            app.addTest(test);
-            TestResult result = test.getTestResult();
-            if(result.getScore() < 80) {
-                ((TextView)findViewById(R.id.preTestResult)).setText(getResources().getText(R.string.testPassed));
-                ((TextView)findViewById(R.id.preTestResult)).setTextColor(getResources().getColor(R.color.colorGrassGreen));
+            app.addTest(memoryTest);
+            ((TextView)findViewById(R.id.preTestResult)).setText(memoryTest.getImpairment().name());
+            ((TextView)findViewById(R.id.preTestResult)).setTextColor(getResultColor(memoryTest.getImpairment()));
+            if(memoryTest.getImpairment() != MemoryTest.Impairment.Gross) {
                 findViewById(R.id.preTestButtonNextTest).setVisibility(View.VISIBLE);
-            } else {
-                ((TextView)findViewById(R.id.preTestResult)).setText(getResources().getText(R.string.testFailed));
-                ((TextView)findViewById(R.id.preTestResult)).setTextColor(getResources().getColor(R.color.colorWarning));
             }
-            ((TextView)findViewById(R.id.preTestMSBetween1stFlippedAndClickedScore)).setText(String.valueOf(test.msBetween1stFlippedAndClicked));
-            ((TextView)findViewById(R.id.preTestMSBetween2ndFlippedAndClickedScore)).setText(String.valueOf(test.msBetween2ndFlippedAndClicked));
-            ((TextView)findViewById(R.id.preTestMSBetween3rdFlippedAndClickedScore)).setText(String.valueOf(test.msBetween3rdFlippedAndClicked));
-            ((TextView)findViewById(R.id.preTestMSBetween4thFlippedAndClickedScore)).setText(String.valueOf(test.msBetween4thFlippedAndClicked));
-            ((TextView)findViewById(R.id.preTestMSBetween5thFlippedAndClickedScore)).setText(String.valueOf(test.msBetween5thFlippedAndClicked));
+            ((TextView)findViewById(R.id.preTestMSBetween1stFlippedAndClickedScore)).setText(String.valueOf(responseTimes.get(0)));
+            ((TextView)findViewById(R.id.preTestMSBetween2ndFlippedAndClickedScore)).setText(String.valueOf(responseTimes.get(1)));
+            ((TextView)findViewById(R.id.preTestMSBetween3rdFlippedAndClickedScore)).setText(String.valueOf(responseTimes.get(2)));
+            ((TextView)findViewById(R.id.preTestMSBetween4thFlippedAndClickedScore)).setText(String.valueOf(responseTimes.get(3)));
+            ((TextView)findViewById(R.id.preTestMSBetween5thFlippedAndClickedScore)).setText(String.valueOf(responseTimes.get(4)));
             findViewById(R.id.preTestLayout).setVisibility(View.VISIBLE);
         }
     }
@@ -147,16 +160,6 @@ public class PreTestActivity extends AppCompatActivity implements Animation.Anim
     public void nextTest(View view) {
         Intent intent = new Intent(this, SimpleMemoryTestActivity.class);
         startActivity(intent);
-    }
-
-    @Override
-    public void onAnimationStart(Animation animation) {
-
-    }
-
-    @Override
-    public void onAnimationRepeat(Animation animation) {
-
     }
 
 }

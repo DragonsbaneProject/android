@@ -1,21 +1,22 @@
-package io.dragonsbane.android.neurocog.ui;
+package io.dragonsbane.android.neurocog;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import io.dragonsbane.android.DBApplication;
 import io.dragonsbane.android.R;
-import io.dragonsbane.android.neurocog.TestResult;
-import io.dragonsbane.android.neurocog.models.SimpleMemoryImpairmentModel;
-import io.dragonsbane.android.neurocog.tests.SimpleMemoryTest;
-import io.dragonsbane.android.util.Numbers;
+import io.onemfive.core.util.Numbers;
+import io.onemfive.data.DID;
+import io.onemfive.data.health.mental.memory.MemoryTest;
 
 /**
  * We can use a series of tiles flipped over one at a time.
@@ -31,20 +32,18 @@ import io.dragonsbane.android.util.Numbers;
  *
  * We can do one every 5 seconds for 1 min.
  */
-public class SimpleMemoryTestActivity extends AppCompatActivity implements Animation.AnimationListener {
-
-    private SimpleMemoryTest test;
-    private SimpleMemoryImpairmentModel model;
+public class SimpleMemoryTestActivity extends ImpairmentTestActivity {
 
     private int numberFlips = 12;
     private int maxNumberDifferentCards = 3;
     private int lastCardFlipped = 0;
     private int currentCard = 0;
+    private int currentNumberFlips = 0;
+    private Long begin;
+    private Long end;
+    private List<Long> responseTimes = new ArrayList<>();
 
     private int randomStartCardIndex;
-
-    private Animation animation1;
-    private Animation animation2;
 
     private boolean isBackOfCardShowing = true;
     private boolean shouldNotClick = false;
@@ -52,23 +51,14 @@ public class SimpleMemoryTestActivity extends AppCompatActivity implements Anima
     private FlipCard flipCard;
     private EndTest endTest;
 
-    public SimpleMemoryTestActivity() {
-        randomStartCardIndex = Numbers.randomNumber(0, 51-maxNumberDifferentCards);
-        test = new SimpleMemoryTest();
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        test = new SimpleMemoryTest();
-        model = new SimpleMemoryImpairmentModel();
+        DID did = ((DBApplication)getApplication()).getDid();
+        randomStartCardIndex = Numbers.randomNumber(0, (DBApplication.cards.length-1)-maxNumberDifferentCards);
+        memoryTest = MemoryTest.newInstance(IMPAIRMENT,did.getId());
         ((DBApplication)getApplication()).addActivity(SimpleMemoryTestActivity.class, this);
         setContentView(R.layout.activity_simple_memory_test);
-        animation1 = AnimationUtils.loadAnimation(this, R.anim.to_middle);
-        animation1.setAnimationListener(this);
-        animation2 = AnimationUtils.loadAnimation(this, R.anim.from_middle);
-        animation2.setAnimationListener(this);
-
         flipCard = new FlipCard();
         new Handler().postDelayed(flipCard, 3 * 1000); // flip card after 3 seconds
     }
@@ -80,9 +70,21 @@ public class SimpleMemoryTestActivity extends AppCompatActivity implements Anima
     }
 
     public void clickCard(View v) {
-        if(isBackOfCardShowing) {test.inappropriate++;return;}
-        if(shouldNotClick) {test.negative++;return;}
-        test.successes++;
+        if(isBackOfCardShowing) {memoryTest.addInappropriate();return;}
+        if(shouldNotClick) {memoryTest.addNegative();return;}
+        end = new Date().getTime();
+        long diff = end - begin;
+        responseTimes.add(diff);
+        Long totalResponseTime = 0L;
+        for(Long responseTime : responseTimes) {
+            totalResponseTime += responseTime;
+        }
+        memoryTest.setAvgResponseTimeMs(totalResponseTime/currentNumberFlips);
+        if(diff < memoryTest.getMinReponseTimeMs())
+            memoryTest.setMinReponseTimeMs(diff);
+        else if(diff > memoryTest.getMaxResponseTimeMs())
+            memoryTest.setMaxResponseTimeMs(diff);
+        memoryTest.addSuccess();
         flipCard.deactivate(); // Deactivate prior FlipCard
         v.setEnabled(false);
         v.clearAnimation();
@@ -94,7 +96,12 @@ public class SimpleMemoryTestActivity extends AppCompatActivity implements Anima
     public void onAnimationStart(Animation animation) {
         if(animation == animation1 && !isBackOfCardShowing && !shouldNotClick) {
             // Should have clicked and did not
-            test.misses++;
+            memoryTest.addMiss();
+        }
+        if (animation == animation2) {
+            if(isBackOfCardShowing) {
+                begin = new Date().getTime();
+            }
         }
     }
 
@@ -107,7 +114,7 @@ public class SimpleMemoryTestActivity extends AppCompatActivity implements Anima
                 lastCardFlipped = currentCard;
                 currentCard = ((DBApplication)getApplicationContext()).getRandomCard(randomStartCardIndex, randomStartCardIndex + maxNumberDifferentCards);
                 shouldNotClick = currentCard != lastCardFlipped;
-                if(!test.cardsUsed.contains(currentCard)) test.cardsUsed.add(currentCard);
+                if(!memoryTest.cardsUsed().contains(currentCard)) memoryTest.cardsUsed().add(currentCard);
                 (findViewById(R.id.simpleMemoryTestCard)).setBackground(getResources().getDrawable(currentCard));
             } else {
                 (findViewById(R.id.simpleMemoryTestCard)).setBackground(getResources().getDrawable(R.drawable.card_back));
@@ -159,6 +166,7 @@ public class SimpleMemoryTestActivity extends AppCompatActivity implements Anima
                 v.clearAnimation();
                 v.setAnimation(animation1);
                 v.startAnimation(animation1);
+                currentNumberFlips++;
             }
         }
     }
@@ -175,19 +183,12 @@ public class SimpleMemoryTestActivity extends AppCompatActivity implements Anima
         public void run() {
             if(active) {
                 findViewById(R.id.simpleMemoryTestCard).setVisibility(View.INVISIBLE);
-                model.evaluate(test);
-                TestResult result = test.getTestResult();
-                if (result.getScore() < 80) {
-                    ((TextView) findViewById(R.id.simpleMemoryTestResult)).setText(getResources().getText(R.string.testPassed));
-                    ((TextView) findViewById(R.id.simpleMemoryTestResult)).setTextColor(getResources().getColor(R.color.colorGrassGreen));
-                    findViewById(R.id.simpleMemoryButtonNextTest).setVisibility(View.VISIBLE);
-                } else {
-                    ((TextView) findViewById(R.id.simpleMemoryTestResult)).setText(getResources().getText(R.string.testFailed));
-                    ((TextView) findViewById(R.id.simpleMemoryTestResult)).setTextColor(getResources().getColor(R.color.colorWarning));
-                }
-                findViewById(R.id.simpleMemoryTestResult).setVisibility(View.VISIBLE);
                 DBApplication app = (DBApplication) getApplication();
-                app.addTest(test);
+                app.addTest(memoryTest);
+                ((TextView) findViewById(R.id.simpleMemoryTestResult)).setText(memoryTest.getImpairment().name());
+                ((TextView) findViewById(R.id.simpleMemoryTestResult)).setTextColor(getResultColor(memoryTest.getImpairment()));
+                findViewById(R.id.simpleMemoryButtonNextTest).setVisibility(View.VISIBLE);
+                findViewById(R.id.simpleMemoryTestResult).setVisibility(View.VISIBLE);
             }
         }
     }
@@ -197,8 +198,4 @@ public class SimpleMemoryTestActivity extends AppCompatActivity implements Anima
         startActivity(intent);
     }
 
-    @Override
-    public void onAnimationRepeat(Animation animation) {
-
-    }
 }

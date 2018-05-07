@@ -10,7 +10,8 @@
     <color name="colorPurple">#450264</color>
     <color name="colorDarkPink">#810256</color>
     <color name="colorGrassGreen">#036b01</color>
-    <color name="colorOrange">#ce8d1f</color>
+    <color name="colorOrange">#dc8f0d</color>
+    <color name="colorYellow">#ceba1f</color>
 
     <color name="black_semi_transparent">#B2000000</color>
     <color name="card_back_background">#FFFFFF</color>

@@ -8,7 +8,7 @@
     android:paddingRight="16dp"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context=".neurocog.ui.ComplexMemoryTestActivity">
+    tools:context=".neurocog.ComplexMemoryTestActivity">
 
     <TextView
         android:layout_width="match_parent"

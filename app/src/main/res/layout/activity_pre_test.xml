@@ -7,7 +7,7 @@
     android:paddingRight="16dp"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context=".neurocog.ui.PreTestActivity">
+    tools:context=".neurocog.PreTestActivity">
 
     <TextView
         android:id="@+id/mainTextWelcome"

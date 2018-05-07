@@ -10,11 +10,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.dragonsbane.android.neurocog.Test;
-import io.dragonsbane.android.neurocog.TestReport;
-import io.dragonsbane.android.util.Numbers;
 import io.onemfive.android.api.service.OneMFiveAndroidRouterService;
+import io.onemfive.core.util.Numbers;
 import io.onemfive.data.DID;
+import io.onemfive.data.health.HealthRecord;
+import io.onemfive.data.health.mental.memory.MemoryTest;
 
 /**
  * TODO: Add Definition
@@ -23,9 +23,8 @@ import io.onemfive.data.DID;
 public class DBApplication extends Application {
 
     private DID did;
-    private Map<String,Object> healthRecord;
-    private TestReport report;
-    private List<Test> tests = new ArrayList<>();
+    private HealthRecord healthRecord;
+    private List<MemoryTest> tests = new ArrayList<>();
     private Map<String,Activity> activities = new HashMap<>();
     public static int[] cards = {
             R.drawable.card_c2, R.drawable.card_c3, R.drawable.card_c4, R.drawable.card_c5,
@@ -54,27 +53,19 @@ public class DBApplication extends Application {
         this.did = did;
     }
 
-    public Map<String,Object> getHealthRecord() {
+    public HealthRecord getHealthRecord() {
         return healthRecord;
     }
 
-    public void setHealthRecord(Map<String,Object> healthRecord) {
+    public void setHealthRecord(HealthRecord healthRecord) {
         this.healthRecord = healthRecord;
     }
 
-    public void setTestReport(TestReport report) {
-        this.report = report;
-    }
-
-    public TestReport getTestReport() {
-        return report;
-    }
-
-    public void addTest(Test test) {
+    public void addTest(MemoryTest test) {
         tests.add(test);
     }
 
-    public List<Test> getTests() {
+    public List<MemoryTest> getTests() {
         return tests;
     }
 
@@ -95,7 +86,7 @@ public class DBApplication extends Application {
     }
 
     public int getRandomCard() {
-        return cards[Numbers.randomNumber(1, 52)];
+        return cards[Numbers.randomNumber(1, cards.length)];
     }
 
     public int getRandomCard(int min, int max) {
