@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,10 +12,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import io.dragonsbane.android.DBApplication;
 import io.dragonsbane.android.R;
+import io.onemfive.android.api.healthcare.HealthRecordAPI;
 import io.onemfive.core.util.Numbers;
-import io.onemfive.data.DID;
 import io.onemfive.data.health.mental.memory.MemoryTest;
 
 /**
@@ -50,20 +48,19 @@ public class PreTestActivity extends ImpairmentTestActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DID did = ((DBApplication)getApplication()).getDid();
         memoryTest = MemoryTest.newInstance(GROSS_IMPAIRMENT, did.getId());
-        ((DBApplication)getApplication()).addActivity(PreTestActivity.class, this);
+        memoryTest.setBloodAlcoholContent(bac);
+        app.addActivity(PreTestActivity.class, this);
         // Ensure empty test list
-        ((DBApplication)getApplication()).getTests().clear();
+        app.getTests().clear();
         setContentView(R.layout.activity_pre_test);
-
         new Handler().postDelayed(new FlipCard(), 3 * 1000); // flip card after 3 seconds
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ((DBApplication)getApplication()).removeActivity(PreTestActivity.class);
+        app.removeActivity(PreTestActivity.class);
     }
 
     public void clickCard(View v) {
@@ -141,7 +138,7 @@ public class PreTestActivity extends ImpairmentTestActivity {
         @Override
         public void run() {
             findViewById(R.id.preTestCard).setVisibility(View.INVISIBLE);
-            DBApplication app = (DBApplication) getApplication();
+            HealthRecordAPI.saveMemoryTest(getApplicationContext(), did, memoryTest);
             app.addTest(memoryTest);
             ((TextView)findViewById(R.id.preTestResult)).setText(memoryTest.getImpairment().name());
             ((TextView)findViewById(R.id.preTestResult)).setTextColor(getResultColor(memoryTest.getImpairment()));

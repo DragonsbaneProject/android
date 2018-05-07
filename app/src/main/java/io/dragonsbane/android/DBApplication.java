@@ -24,8 +24,10 @@ public class DBApplication extends Application {
 
     private DID did;
     private HealthRecord healthRecord;
+    private Double bac = 0.0D;
     private List<MemoryTest> tests = new ArrayList<>();
     private Map<String,Activity> activities = new HashMap<>();
+
     public static int[] cards = {
             R.drawable.card_c2, R.drawable.card_c3, R.drawable.card_c4, R.drawable.card_c5,
             R.drawable.card_c6, R.drawable.card_c7, R.drawable.card_c8, R.drawable.card_c9,
@@ -59,6 +61,14 @@ public class DBApplication extends Application {
 
     public void setHealthRecord(HealthRecord healthRecord) {
         this.healthRecord = healthRecord;
+    }
+
+    public Double getBac() {
+        return bac;
+    }
+
+    public void setBac(Double bac) {
+        this.bac = bac;
     }
 
     public void addTest(MemoryTest test) {

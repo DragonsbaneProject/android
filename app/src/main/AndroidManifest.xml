@@ -19,6 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".SettingsActivity" />
         <!-- Neurocog -->
         <activity android:name=".neurocog.TestDisclaimerActivity" />
         <activity android:name=".neurocog.PreTestActivity" />
@@ -27,7 +28,6 @@
         <activity android:name=".neurocog.WorkingMemoryTestActivity" />
         <activity android:name=".neurocog.TestReportActivity" />
         <activity android:name=".neurocog.TestHistoryActivity" />
-        <activity android:name=".neurocog.SettingsActivity" />
         <activity android:name=".neurocog.ViewUserProfileActivity"/>
 
     </application>

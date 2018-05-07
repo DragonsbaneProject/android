@@ -6,7 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import io.dragonsbane.android.DBApplication;
 import io.dragonsbane.android.R;
+import io.onemfive.data.DID;
 import io.onemfive.data.health.mental.memory.MemoryTest;
 
 /**
@@ -26,9 +28,16 @@ public abstract class ImpairmentTestActivity extends AppCompatActivity implement
     protected Animation animation1;
     protected Animation animation2;
 
+    protected DBApplication app;
+    protected DID did;
+    protected Double bac = 0.0D;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        app = (DBApplication)getApplication();
+        did = app.getDid();
+        bac = app.getBac();
         animation1 = AnimationUtils.loadAnimation(this, R.anim.to_middle);
         animation1.setAnimationListener(this);
         animation2 = AnimationUtils.loadAnimation(this, R.anim.from_middle);

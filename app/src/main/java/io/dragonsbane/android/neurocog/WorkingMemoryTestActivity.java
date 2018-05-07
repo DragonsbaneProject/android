@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,8 +15,8 @@ import java.util.Random;
 
 import io.dragonsbane.android.DBApplication;
 import io.dragonsbane.android.R;
+import io.onemfive.android.api.healthcare.HealthRecordAPI;
 import io.onemfive.core.util.Numbers;
-import io.onemfive.data.DID;
 import io.onemfive.data.health.mental.memory.MemoryTest;
 
 /**
@@ -48,9 +47,8 @@ public class WorkingMemoryTestActivity extends ImpairmentTestActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DID did = ((DBApplication)getApplication()).getDid();
         memoryTest = MemoryTest.newInstance(NO_IMPAIRMENT,did.getId());
-        DBApplication app = (DBApplication) getApplicationContext();
+        memoryTest.setBloodAlcoholContent(bac);
         app.addActivity(WorkingMemoryTestActivity.class, this);
         setContentView(R.layout.activity_working_memory_test);
         List<MemoryTest> tests = ((DBApplication)getApplication()).getTests();
@@ -79,7 +77,7 @@ public class WorkingMemoryTestActivity extends ImpairmentTestActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ((DBApplication)getApplication()).removeActivity(WorkingMemoryTestActivity.class);
+        app.removeActivity(WorkingMemoryTestActivity.class);
     }
 
     public void clickCard(View v) {
@@ -201,7 +199,7 @@ public class WorkingMemoryTestActivity extends ImpairmentTestActivity {
         public void run() {
             if(active) {
                 findViewById(R.id.workingMemoryTestCard).setVisibility(View.INVISIBLE);
-                DBApplication app = (DBApplication) getApplication();
+                HealthRecordAPI.saveMemoryTest(getApplicationContext(), did, memoryTest);
                 app.addTest(memoryTest);
                 ((TextView) findViewById(R.id.workingMemoryTestResult)).setText(memoryTest.getImpairment().name());
                 ((TextView) findViewById(R.id.workingMemoryTestResult)).setTextColor(getResultColor(memoryTest.getImpairment()));

@@ -3,10 +3,8 @@ package io.dragonsbane.android.neurocog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,8 +14,8 @@ import java.util.List;
 
 import io.dragonsbane.android.DBApplication;
 import io.dragonsbane.android.R;
+import io.onemfive.android.api.healthcare.HealthRecordAPI;
 import io.onemfive.core.util.Numbers;
-import io.onemfive.data.DID;
 import io.onemfive.data.health.mental.memory.MemoryTest;
 
 /**
@@ -48,9 +46,9 @@ public class ComplexMemoryTestActivity extends ImpairmentTestActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DID did = ((DBApplication)getApplication()).getDid();
         randomStartCardIndex = Numbers.randomNumber(0, (DBApplication.cards.length-1)-maxNumberDifferentCards);
         memoryTest = MemoryTest.newInstance(BORDERLINE_IMPAIRMENT,did.getId());
+        memoryTest.setBloodAlcoholContent(bac);
         ((DBApplication)getApplication()).addActivity(ComplexMemoryTestActivity.class, this);
         setContentView(R.layout.activity_complex_memory_test);
         flipCard = new FlipCard();
@@ -179,7 +177,7 @@ public class ComplexMemoryTestActivity extends ImpairmentTestActivity {
         public void run() {
             if(active) {
                 findViewById(R.id.complexMemoryTestCard).setVisibility(View.INVISIBLE);
-                DBApplication app = (DBApplication) getApplication();
+                HealthRecordAPI.saveMemoryTest(getApplicationContext(), did, memoryTest);
                 app.addTest(memoryTest);
                 ((TextView) findViewById(R.id.complexMemoryTestResult)).setText(memoryTest.getImpairment().name());
                 ((TextView) findViewById(R.id.complexMemoryTestResult)).setTextColor(getResultColor(memoryTest.getImpairment()));

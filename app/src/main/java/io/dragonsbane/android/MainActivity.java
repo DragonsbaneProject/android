@@ -8,11 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import java.io.IOException;
 
 import io.dragonsbane.android.neurocog.PreTestActivity;
 import io.onemfive.android.api.SecurityAPI;
@@ -97,17 +94,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startTest() {
-        boolean baseline = ((CheckBox)findViewById(R.id.mainBaseline)).isChecked();
         String bacStr = ((EditText)findViewById(R.id.mainEditBAC)).getText().toString();
-        double bac = 0.0D;
-        if(bacStr != null) {
-            bac = Double.parseDouble(bacStr);
-        }
+        ((DBApplication)getApplication()).setBac(Double.parseDouble(bacStr));
         TextView messageView = findViewById(R.id.mainTextMessage);
         messageView.setVisibility(View.INVISIBLE);
 
-        Intent intent = new Intent(this, PreTestActivity.class);
-        startActivity(intent);
+        Intent i = new Intent(this, PreTestActivity.class);
+        startActivity(i);
     }
 
     public void clearProfile(View view) {

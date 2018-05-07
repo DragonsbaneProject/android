@@ -37,16 +37,8 @@
         android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text=""
+        android:text="0.0"
         android:hint="@string/bac"/>
-
-    <CheckBox
-        android:id="@+id/mainBaseline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/baseline"
-        android:textSize="15sp"
-        android:checked="true"/>
 
     <Button
         android:id="@+id/mainButtonStartTest"
