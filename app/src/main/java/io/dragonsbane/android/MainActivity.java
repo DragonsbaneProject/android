@@ -16,6 +16,7 @@ import io.onemfive.android.api.SecurityAPI;
 import io.onemfive.android.api.healthcare.HealthRecordAPI;
 import io.onemfive.core.infovault.InfoVaultService;
 import io.onemfive.data.DID;
+import io.onemfive.data.DLC;
 import io.onemfive.data.DocumentMessage;
 import io.onemfive.data.Envelope;
 import io.onemfive.data.health.HealthRecord;
@@ -119,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             Log.i(MainActivity.class.getSimpleName(),"Received broadcast from DID verification.");
             Envelope e = (Envelope)intent.getExtras().get(Envelope.class.getName());
-            DID did = (DID)e.getHeader(Envelope.DID);
+            DID did = e.getDID();
             if(!did.getVerified()) {
                 System.out.println("DID not registered.");
                 createDID(did);
@@ -135,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             Log.i(MainActivity.class.getSimpleName(),"Received broadcast from DID creation.");
             Envelope e = (Envelope)intent.getExtras().get(Envelope.class.getName());
-            DID did = (DID)e.getHeader(Envelope.DID);
+            DID did = e.getDID();
             if(did.getStatus() == DID.Status.ACTIVE) {
                 System.out.println("DID created. Load Health Record...");
                 loadHealthRecord(did);
@@ -150,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             Log.i(MainActivity.class.getSimpleName(),"Received broadcast from DID authN.");
             Envelope e = (Envelope)intent.getExtras().get(Envelope.class.getName());
-            DID did = (DID)e.getHeader(Envelope.DID);
+            DID did = e.getDID();
             if(did.getAuthenticated()) {
                 System.out.println("DID authenticated. Load Health Record...");
                 loadHealthRecord(did);
@@ -167,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
             Log.i(MainActivity.class.getSimpleName(),"Received broadcast from Health Record loading.");
             Envelope e = (Envelope)intent.getExtras().get(Envelope.class.getName());
             DocumentMessage m = (DocumentMessage)e.getMessage();
-            HealthRecord healthRecord = (HealthRecord)m.data.get(0).get(InfoVaultService.ENTITY);
+            HealthRecord healthRecord = (HealthRecord)m.data.get(0).get(DLC.ENTITY);
             if(healthRecord != null) {
                 System.out.println("Health Record loaded; healthStatus="+healthRecord.getHealthStatus().name());
                 ((DBApplication)getApplication()).setHealthRecord(healthRecord);
