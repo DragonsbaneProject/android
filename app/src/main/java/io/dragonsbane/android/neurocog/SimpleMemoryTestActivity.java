@@ -186,7 +186,7 @@ public class SimpleMemoryTestActivity extends ImpairmentTestActivity {
                 HealthRecordAPI.saveMemoryTest(getApplicationContext(), did, memoryTest);
                 app.addTest(memoryTest);
                 ((TextView) findViewById(R.id.simpleMemoryTestResult)).setText(memoryTest.getImpairment().name());
-                ((TextView) findViewById(R.id.simpleMemoryTestResult)).setTextColor(getResultColor(memoryTest.getImpairment()));
+                ((TextView) findViewById(R.id.simpleMemoryTestResult)).setTextColor(getResources().getColor(ImpairmentTestActivity.getResultColor(memoryTest.getImpairment())));
                 findViewById(R.id.simpleMemoryButtonNextTest).setVisibility(View.VISIBLE);
                 findViewById(R.id.simpleMemoryTestResult).setVisibility(View.VISIBLE);
             }

@@ -141,7 +141,7 @@ public class PreTestActivity extends ImpairmentTestActivity {
             HealthRecordAPI.saveMemoryTest(getApplicationContext(), did, memoryTest);
             app.addTest(memoryTest);
             ((TextView)findViewById(R.id.preTestResult)).setText(memoryTest.getImpairment().name());
-            ((TextView)findViewById(R.id.preTestResult)).setTextColor(getResultColor(memoryTest.getImpairment()));
+            ((TextView)findViewById(R.id.preTestResult)).setTextColor(getResources().getColor(ImpairmentTestActivity.getResultColor(memoryTest.getImpairment())));
             if(memoryTest.getImpairment() != MemoryTest.Impairment.Gross) {
                 findViewById(R.id.preTestButtonNextTest).setVisibility(View.VISIBLE);
             }

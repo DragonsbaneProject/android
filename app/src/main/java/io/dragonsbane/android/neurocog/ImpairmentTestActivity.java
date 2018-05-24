@@ -49,7 +49,7 @@ public abstract class ImpairmentTestActivity extends AppCompatActivity implement
             case Gross: return R.color.colorWarning;
             case Impaired: return R.color.colorOrange;
             case Borderline: return R.color.colorYellow;
-            case None: return R.color.colorGrassGreen;
+            case Unimpaired: return R.color.colorGrassGreen;
             default: return R.color.colorGrassGreen;
         }
     }

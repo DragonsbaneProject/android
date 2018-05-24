@@ -11,6 +11,7 @@ import java.util.List;
 import io.dragonsbane.android.DBApplication;
 import io.dragonsbane.android.MainActivity;
 import io.dragonsbane.android.R;
+import io.onemfive.android.api.healthcare.HealthRecordAPI;
 import io.onemfive.data.DID;
 import io.onemfive.data.Email;
 import io.onemfive.data.health.mental.memory.MemoryTest;
@@ -23,6 +24,7 @@ public class TestHistoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_history);
+        
     }
 
 //    public void sendHistory(View view) {

@@ -18,7 +18,7 @@ import io.onemfive.data.health.mental.memory.MemoryTest;
 
 public class TestReportActivity extends AppCompatActivity {
 
-    private MemoryTest.Impairment overallImpairment = MemoryTest.Impairment.None;
+    private MemoryTest.Impairment overallImpairment = MemoryTest.Impairment.Unimpaired;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +79,7 @@ public class TestReportActivity extends AppCompatActivity {
                 break;
             }
             case Borderline: {
-                if(overallImpairment == MemoryTest.Impairment.None)
+                if(overallImpairment == MemoryTest.Impairment.Unimpaired)
                     overallImpairment = MemoryTest.Impairment.Borderline;
                 break;
             }

@@ -14,9 +14,8 @@ import android.widget.TextView;
 import io.dragonsbane.android.neurocog.PreTestActivity;
 import io.onemfive.android.api.SecurityAPI;
 import io.onemfive.android.api.healthcare.HealthRecordAPI;
-import io.onemfive.core.infovault.InfoVaultService;
 import io.onemfive.data.DID;
-import io.onemfive.data.DLC;
+import io.onemfive.data.util.DLC;
 import io.onemfive.data.DocumentMessage;
 import io.onemfive.data.Envelope;
 import io.onemfive.data.health.HealthRecord;
@@ -138,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
             Envelope e = (Envelope)intent.getExtras().get(Envelope.class.getName());
             DID did = e.getDID();
             if(did.getStatus() == DID.Status.ACTIVE) {
+                ((DBApplication)getApplication()).setDid(did);
                 System.out.println("DID created. Load Health Record...");
                 loadHealthRecord(did);
             } else {
@@ -153,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
             Envelope e = (Envelope)intent.getExtras().get(Envelope.class.getName());
             DID did = e.getDID();
             if(did.getAuthenticated()) {
+                ((DBApplication)getApplication()).setDid(did);
                 System.out.println("DID authenticated. Load Health Record...");
                 loadHealthRecord(did);
             } else {
@@ -167,8 +168,7 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             Log.i(MainActivity.class.getSimpleName(),"Received broadcast from Health Record loading.");
             Envelope e = (Envelope)intent.getExtras().get(Envelope.class.getName());
-            DocumentMessage m = (DocumentMessage)e.getMessage();
-            HealthRecord healthRecord = (HealthRecord)m.data.get(0).get(DLC.ENTITY);
+            HealthRecord healthRecord = (HealthRecord)DLC.getEntity(e);
             if(healthRecord != null) {
                 System.out.println("Health Record loaded; healthStatus="+healthRecord.getHealthStatus().name());
                 ((DBApplication)getApplication()).setHealthRecord(healthRecord);

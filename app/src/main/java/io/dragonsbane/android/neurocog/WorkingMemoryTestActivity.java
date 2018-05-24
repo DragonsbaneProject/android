@@ -124,6 +124,7 @@ public class WorkingMemoryTestActivity extends ImpairmentTestActivity {
             // End of 1st half of flip
             if (isBackOfCardShowing) {
                 numberFlips--;
+                currentNumberFlips++;
                 if(shouldNotClick) {
                     int random = Numbers.randomNumber(0,cardsNotUsedPrior.size()-1);
                     currentCard = cardsNotUsedPrior.get(random);
@@ -202,7 +203,7 @@ public class WorkingMemoryTestActivity extends ImpairmentTestActivity {
                 HealthRecordAPI.saveMemoryTest(getApplicationContext(), did, memoryTest);
                 app.addTest(memoryTest);
                 ((TextView) findViewById(R.id.workingMemoryTestResult)).setText(memoryTest.getImpairment().name());
-                ((TextView) findViewById(R.id.workingMemoryTestResult)).setTextColor(getResultColor(memoryTest.getImpairment()));
+                ((TextView) findViewById(R.id.workingMemoryTestResult)).setTextColor(getResources().getColor(ImpairmentTestActivity.getResultColor(memoryTest.getImpairment())));
                 findViewById(R.id.workingMemoryButtonNextTest).setVisibility(View.VISIBLE);
                 findViewById(R.id.workingMemoryTestResult).setVisibility(View.VISIBLE);
             }
