@@ -3,6 +3,7 @@ package io.dragonsbane.android.neurocog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.animation.Animation;
 import android.widget.ImageView;
@@ -59,6 +60,12 @@ public class SimpleMemoryTestActivity extends ImpairmentTestActivity {
         memoryTest.setBloodAlcoholContent(bac);
         app.addActivity(SimpleMemoryTestActivity.class, this);
         setContentView(R.layout.activity_simple_memory_test);
+
+        Toolbar toolbar = findViewById(R.id.action_bar);
+        TextView titleTextView = (TextView) toolbar.getChildAt(0);
+        titleTextView.setTextColor(getResources().getColor(R.color.dragonsbaneBlack));
+        titleTextView.setTypeface(((DBApplication)getApplication()).getNexaBold());
+
         flipCard = new FlipCard();
         new Handler().postDelayed(flipCard, 3 * 1000); // flip card after 3 seconds
     }

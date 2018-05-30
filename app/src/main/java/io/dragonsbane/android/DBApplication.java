@@ -3,6 +3,7 @@ package io.dragonsbane.android;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -25,8 +26,11 @@ public class DBApplication extends Application {
     private DID did;
     private HealthRecord healthRecord;
     private Double bac = 0.0D;
+    private Boolean baseline = false;
     private List<MemoryTest> tests = new ArrayList<>();
     private Map<String,Activity> activities = new HashMap<>();
+    private Typeface nexa_bold;
+    private Typeface nexa_light;
 
     public static int[] cards = {
             R.drawable.card_c2, R.drawable.card_c3, R.drawable.card_c4, R.drawable.card_c5,
@@ -71,6 +75,22 @@ public class DBApplication extends Application {
         this.bac = bac;
     }
 
+    public Boolean getBaseline() {
+        return baseline;
+    }
+
+    public void setBaseline(Boolean baseline) {
+        this.baseline = baseline;
+    }
+
+    public Typeface getNexaBold() {
+        return nexa_bold;
+    }
+
+    public Typeface getNexaLight() {
+        return nexa_light;
+    }
+
     public void addTest(MemoryTest test) {
         tests.add(test);
     }
@@ -106,6 +126,8 @@ public class DBApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        nexa_bold = Typeface.createFromAsset(getAssets(),"fonts/nexa_bold.otf");
+        nexa_light = Typeface.createFromAsset(getAssets(),"fonts/nexa_light.otf");
         Intent i = new Intent(this, OneMFiveAndroidRouterService.class);
         Log.i(DBApplication.class.getName(),"Starting OneMFiveAndroidRouterService to bootstrap 1M5 Core...");
         startService(i);

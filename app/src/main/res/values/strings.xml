@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">Dragonsbane</string>
-    <string name="welcome">Welcome!</string>
-    <!-- Neurocog -->
+    <string name="app_name">Dragonsbane NeuroCog</string>
+    <string name="welcome">Welcome to NeuroCog!</string>
+    <!-- Main Activity -->
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="bac">BAC</string>
@@ -11,12 +11,16 @@
     <string name="baseline">Baseline</string>
     <string name="startTest">Start Test</string>
     <string name="clearProfile">Clear Profile</string>
+    <string name="mainInstructions">Enter Alias and Password. If alias not known, a new profile will be created. Add BAC if this is for training the application. Select baseline if this is your first time using it. Baselines and training can not be of the same test.</string>
     <string name="baselineRequired">No baseline test found in profile. An unimpaired baseline is required prior to impairment testing.</string>
     <string name="profileCleared">Profile was cleared successfully.</string>
-    <string name="tapScreenTurnTile">Tap the card when it turns over ASAP.</string>
-    <string name="tapScreenOneBefore">Tap the card if it displays the card previously shown.</string>
-    <string name="tapScreenTwoBefore">Tap the card if it displays two cards previously shown.</string>
-    <string name="tapScreenIfSeen">Tap the card if it was displayed in preceding tests.</string>
+    <!-- Pre-Test Activity -->
+    <string name="tapScreenTurnTile">Tap the card when it turns over ASAP. Response times are measured.</string>
+    <string name="preTestResultsDescription">Pre-Test Results in Milliseconds</string>
+
+    <string name="tapScreenOneBefore">Tap the card if it is one back.</string>
+    <string name="tapScreenTwoBefore">Tap the card if it is two back.</string>
+    <string name="tapScreenIfSeen">Tap the card if it occurred in this testing session.</string>
     <string name="notImpaired">Passed! Continue&#8230;</string>
     <string name="borderlineImpairment">Borderline. Personal judgement recommended.</string>
     <string name="impaired">Impaired. Take the day off?</string>
@@ -27,11 +31,15 @@
     <string name="sendResults">Send Results</string>
     <string name="sendHistory">Send History</string>
     <string name="endTest">End Test</string>
-    <string name="preTestMSBetween1stFlippedAndClickedScore">1st Response</string>
-    <string name="preTestMSBetween2ndFlippedAndClickedScore">2nd Response</string>
-    <string name="preTestMSBetween3rdFlippedAndClickedScore">3rd Response</string>
-    <string name="preTestMSBetween4thFlippedAndClickedScore">4th Response</string>
-    <string name="preTestMSBetween5thFlippedAndClickedScore">5th Response</string>
+    <string name="accurateResponseRate">Accurate Response Rate</string>
+    <string name="accurateResponseTime">Accurate Response Time</string>
+    <string name="foilResponseTime">Foil Response Time</string>
+    <string name="preTestMSBetween1stFlippedAndClickedScore">1st</string>
+    <string name="preTestMSBetween2ndFlippedAndClickedScore">2nd</string>
+    <string name="preTestMSBetween3rdFlippedAndClickedScore">3rd</string>
+    <string name="preTestMSBetween4thFlippedAndClickedScore">4th</string>
+    <string name="preTestMSBetween5thFlippedAndClickedScore">5th</string>
+    <string name="preTestMSAverageScore">Avg</string>
     <string name="totalScore">Overall Result</string>
     <string name="reportPreTestScoreText">Pre-Test</string>
     <string name="reportSimpleMemoryTestText">Simple</string>

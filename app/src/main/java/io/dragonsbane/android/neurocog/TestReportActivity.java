@@ -3,6 +3,7 @@ package io.dragonsbane.android.neurocog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -25,6 +26,12 @@ public class TestReportActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         List<MemoryTest> tests = ((DBApplication) getApplicationContext()).getTests();
         setContentView(R.layout.activity_test_report);
+
+        Toolbar toolbar = findViewById(R.id.action_bar);
+        TextView titleTextView = (TextView) toolbar.getChildAt(0);
+        titleTextView.setTextColor(getResources().getColor(R.color.dragonsbaneBlack));
+        titleTextView.setTypeface(((DBApplication)getApplication()).getNexaBold());
+
         for(MemoryTest t : tests) {
             determineOverallImpairment(t.getImpairment());
             switch(t.getName()) {

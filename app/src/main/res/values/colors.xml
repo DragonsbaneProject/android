@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#808297</color>
+    <color name="dragonsbaneRed">#FB0006</color>
+    <color name="dragonsbaneBlack">#000000</color>
+
+    <!--<color name="colorPrimary">#808297</color>-->
+    <color name="colorPrimary">#FB0006</color>
     <color name="colorPrimaryDark">#242733</color>
-    <color name="colorAccent">#0e2183</color>
+    <!--<color name="colorAccent">#0e2183</color>-->
+    <color name="colorAccent">#FB0006</color>
     <color name="colorWarning">#640202</color>
 
     <color name="colorBlue">#262de4</color>

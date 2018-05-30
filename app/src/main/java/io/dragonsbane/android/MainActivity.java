@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -16,12 +18,12 @@ import io.onemfive.android.api.SecurityAPI;
 import io.onemfive.android.api.healthcare.HealthRecordAPI;
 import io.onemfive.data.DID;
 import io.onemfive.data.util.DLC;
-import io.onemfive.data.DocumentMessage;
 import io.onemfive.data.Envelope;
 import io.onemfive.data.health.HealthRecord;
 
 /**
- * TODO: Add Definition
+ * Ensure auto screen dim / lock is turned off
+ *
  * @author objectorange
  */
 public class MainActivity extends AppCompatActivity {
@@ -35,6 +37,11 @@ public class MainActivity extends AppCompatActivity {
         registerReceiver(authenticateDIDReceiver, new IntentFilter(SecurityAPI.DIDAuthenticated));
         registerReceiver(loadHealthRecordReceiver, new IntentFilter(HealthRecordAPI.HealthRecordLoaded));
         setContentView(R.layout.activity_main);
+
+        Toolbar toolbar = findViewById(R.id.action_bar);
+        TextView titleTextView = (TextView) toolbar.getChildAt(0);
+        titleTextView.setTextColor(getResources().getColor(R.color.dragonsbaneBlack));
+        titleTextView.setTypeface(((DBApplication)getApplication()).getNexaBold());
     }
 
     @Override
@@ -45,6 +52,15 @@ public class MainActivity extends AppCompatActivity {
         unregisterReceiver(authenticateDIDReceiver);
         unregisterReceiver(loadHealthRecordReceiver);
         ((DBApplication)getApplication()).removeActivity(MainActivity.class);
+    }
+
+    public void toggleBACVisibility(View view) {
+        boolean isBaseline = ((CheckBox)findViewById(R.id.mainCheckBoxBaseline)).isChecked();
+        if(isBaseline) {
+            findViewById(R.id.mainEditBAC).setVisibility(View.INVISIBLE);
+        } else {
+            findViewById(R.id.mainEditBAC).setVisibility(View.VISIBLE);
+        }
     }
 
     public void verifyDID(View view) {
@@ -94,8 +110,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startTest() {
-        String bacStr = ((EditText)findViewById(R.id.mainEditBAC)).getText().toString();
-        ((DBApplication)getApplication()).setBac(Double.parseDouble(bacStr));
+        boolean baseline = ((CheckBox)findViewById(R.id.mainCheckBoxBaseline)).isChecked();
+        ((DBApplication)getApplication()).setBaseline(baseline);
+        if(!baseline) {
+            String bacStr = ((EditText) findViewById(R.id.mainEditBAC)).getText().toString();
+            ((DBApplication)getApplication()).setBac(Double.parseDouble(bacStr));
+        }
+
         TextView messageView = findViewById(R.id.mainTextMessage);
         messageView.setVisibility(View.INVISIBLE);
 

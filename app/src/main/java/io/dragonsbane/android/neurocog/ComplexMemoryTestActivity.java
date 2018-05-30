@@ -3,6 +3,7 @@ package io.dragonsbane.android.neurocog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.animation.Animation;
 import android.widget.ImageView;
@@ -31,6 +32,8 @@ public class ComplexMemoryTestActivity extends ImpairmentTestActivity {
     private int secondToLastCardFlipped = 0;
     private int currentCard = 0;
     private int currentNumberFlips = 0;
+    // turn off screen from dimming so that we can check for all clicks even those that miss the card - gross motor
+    // impulsivity = reaction times when should not have clicked but did
     private Long begin;
     private Long end;
     private List<Long> responseTimes = new ArrayList<>();
@@ -51,6 +54,12 @@ public class ComplexMemoryTestActivity extends ImpairmentTestActivity {
         memoryTest.setBloodAlcoholContent(bac);
         ((DBApplication)getApplication()).addActivity(ComplexMemoryTestActivity.class, this);
         setContentView(R.layout.activity_complex_memory_test);
+
+        Toolbar toolbar = findViewById(R.id.action_bar);
+        TextView titleTextView = (TextView) toolbar.getChildAt(0);
+        titleTextView.setTextColor(getResources().getColor(R.color.dragonsbaneBlack));
+        titleTextView.setTypeface(((DBApplication)getApplication()).getNexaBold());
+
         flipCard = new FlipCard();
         new Handler().postDelayed(flipCard, 3 * 1000); // flip card after 3 seconds
     }

@@ -3,6 +3,7 @@ package io.dragonsbane.android.neurocog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.animation.Animation;
 import android.widget.ImageView;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import io.dragonsbane.android.DBApplication;
 import io.dragonsbane.android.R;
 import io.onemfive.android.api.healthcare.HealthRecordAPI;
 import io.onemfive.core.util.Numbers;
@@ -34,6 +36,9 @@ import io.onemfive.data.health.mental.memory.MemoryTest;
  * This one is so simple that if they don’t have a perfect score,
  * something is wrong that the test can’t be done
  * (screen broken, person very drunk, person has debilitating dementia, etc).
+ *
+ * If they hit off the card, they should get a warning saying to only click the card.
+ *
  */
 public class PreTestActivity extends ImpairmentTestActivity {
 
@@ -54,6 +59,12 @@ public class PreTestActivity extends ImpairmentTestActivity {
         // Ensure empty test list
         app.getTests().clear();
         setContentView(R.layout.activity_pre_test);
+
+        Toolbar toolbar = findViewById(R.id.action_bar);
+        TextView titleTextView = (TextView) toolbar.getChildAt(0);
+        titleTextView.setTextColor(getResources().getColor(R.color.dragonsbaneBlack));
+        titleTextView.setTypeface(((DBApplication)getApplication()).getNexaBold());
+
         new Handler().postDelayed(new FlipCard(), 3 * 1000); // flip card after 3 seconds
     }
 
@@ -140,16 +151,14 @@ public class PreTestActivity extends ImpairmentTestActivity {
             findViewById(R.id.preTestCard).setVisibility(View.INVISIBLE);
             HealthRecordAPI.saveMemoryTest(getApplicationContext(), did, memoryTest);
             app.addTest(memoryTest);
-            ((TextView)findViewById(R.id.preTestResult)).setText(memoryTest.getImpairment().name());
-            ((TextView)findViewById(R.id.preTestResult)).setTextColor(getResources().getColor(ImpairmentTestActivity.getResultColor(memoryTest.getImpairment())));
-            if(memoryTest.getImpairment() != MemoryTest.Impairment.Gross) {
-                findViewById(R.id.preTestButtonNextTest).setVisibility(View.VISIBLE);
-            }
+            findViewById(R.id.preTestResultDescription).setVisibility(View.VISIBLE);
+            findViewById(R.id.preTestButtonNextTest).setVisibility(View.VISIBLE);
             ((TextView)findViewById(R.id.preTestMSBetween1stFlippedAndClickedScore)).setText(String.valueOf(responseTimes.get(0)));
             ((TextView)findViewById(R.id.preTestMSBetween2ndFlippedAndClickedScore)).setText(String.valueOf(responseTimes.get(1)));
             ((TextView)findViewById(R.id.preTestMSBetween3rdFlippedAndClickedScore)).setText(String.valueOf(responseTimes.get(2)));
             ((TextView)findViewById(R.id.preTestMSBetween4thFlippedAndClickedScore)).setText(String.valueOf(responseTimes.get(3)));
             ((TextView)findViewById(R.id.preTestMSBetween5thFlippedAndClickedScore)).setText(String.valueOf(responseTimes.get(4)));
+            ((TextView)findViewById(R.id.preTestMSAverageScore)).setText(String.valueOf(memoryTest.getAvgResponseTimeMs()));
             findViewById(R.id.preTestLayout).setVisibility(View.VISIBLE);
         }
     }

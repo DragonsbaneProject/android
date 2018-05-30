@@ -40,6 +40,14 @@
         android:text="0.0"
         android:hint="@string/bac"/>
 
+    <CheckBox
+        android:id="@+id/mainCheckBoxBaseline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/baseline"
+        android:onClick="toggleBACVisibility"
+        android:checked="false" />
+
     <Button
         android:id="@+id/mainButtonStartTest"
         android:layout_width="wrap_content"
@@ -58,7 +66,8 @@
         android:id="@+id/mainTextMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="@string/mainInstructions"
         android:textSize="20sp"
-        android:visibility="invisible" />
+        android:visibility="visible" />
 
 </LinearLayout>
