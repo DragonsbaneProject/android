@@ -40,9 +40,6 @@ public class SimpleMemoryTestActivity extends ImpairmentTestActivity {
     private int lastCardFlipped = 0;
     private int currentCard = 0;
     private int currentNumberFlips = 0;
-    private Long begin;
-    private Long end;
-    private List<Long> responseTimes = new ArrayList<>();
 
     private int randomStartCardIndex;
 
@@ -77,21 +74,21 @@ public class SimpleMemoryTestActivity extends ImpairmentTestActivity {
     }
 
     public void clickCard(View v) {
-        if(isBackOfCardShowing) {memoryTest.addInappropriate();return;}
-        if(shouldNotClick) {memoryTest.addNegative();return;}
         end = new Date().getTime();
         long diff = end - begin;
-        responseTimes.add(diff);
-        Long totalResponseTime = 0L;
-        for(Long responseTime : responseTimes) {
-            totalResponseTime += responseTime;
+        if(isBackOfCardShowing) {
+            memoryTest.addInappropriate();
+            inappropriateResponseTimes.add(diff);
+            return;
         }
-        memoryTest.setAvgResponseTimeMs(totalResponseTime/currentNumberFlips);
-        if(diff < memoryTest.getMinReponseTimeMs())
-            memoryTest.setMinReponseTimeMs(diff);
-        else if(diff > memoryTest.getMaxResponseTimeMs())
-            memoryTest.setMaxResponseTimeMs(diff);
+        if(shouldNotClick) {
+            memoryTest.addNegative();
+            negativeResponseTimes.add(diff);
+            return;
+        }
         memoryTest.addSuccess();
+        successResponseTimes.add(diff);
+
         flipCard.deactivate(); // Deactivate prior FlipCard
         v.setEnabled(false);
         v.clearAnimation();
@@ -104,6 +101,7 @@ public class SimpleMemoryTestActivity extends ImpairmentTestActivity {
         if(animation == animation1 && !isBackOfCardShowing && !shouldNotClick) {
             // Should have clicked and did not
             memoryTest.addMiss();
+            memoryTest.setMissTimeMs(3 * 1000);
         }
         if (animation == animation2) {
             if(isBackOfCardShowing) {
@@ -160,7 +158,7 @@ public class SimpleMemoryTestActivity extends ImpairmentTestActivity {
 
         private boolean active = true;
 
-        public void deactivate() {
+        void deactivate() {
             active = false;
         }
 
@@ -182,7 +180,7 @@ public class SimpleMemoryTestActivity extends ImpairmentTestActivity {
 
         private boolean active = true;
 
-        public void deactivate() {
+        void deactivate() {
             active = false;
         }
 
@@ -190,12 +188,8 @@ public class SimpleMemoryTestActivity extends ImpairmentTestActivity {
         public void run() {
             if(active) {
                 findViewById(R.id.simpleMemoryTestCard).setVisibility(View.INVISIBLE);
-                HealthRecordAPI.saveMemoryTest(getApplicationContext(), did, memoryTest);
-                app.addTest(memoryTest);
-                ((TextView) findViewById(R.id.simpleMemoryTestResult)).setText(memoryTest.getImpairment().name());
-                ((TextView) findViewById(R.id.simpleMemoryTestResult)).setTextColor(getResources().getColor(ImpairmentTestActivity.getResultColor(memoryTest.getImpairment())));
+                testFinished();
                 findViewById(R.id.simpleMemoryButtonNextTest).setVisibility(View.VISIBLE);
-                findViewById(R.id.simpleMemoryTestResult).setVisibility(View.VISIBLE);
             }
         }
     }

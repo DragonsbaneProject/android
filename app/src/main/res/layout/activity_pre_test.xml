@@ -8,6 +8,7 @@
     android:paddingRight="16dp"
     android:orientation="vertical"
     android:gravity="center"
+    android:scrollbarTrackVertical="@color/colorPrimary"
     tools:context=".neurocog.PreTestActivity">
 
     <TextView
@@ -17,7 +18,7 @@
         android:gravity="top"
         android:paddingBottom="20dp"
         android:text="@string/tapScreenTurnTile"
-        android:textSize="30sp" />
+        android:textSize="20sp" />
 
     <ImageView
         android:id="@+id/preTestCard"
@@ -25,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:background="@drawable/card_back"
-        android:maxHeight="30dp"
+        android:maxHeight="40dp"
         android:onClick="clickCard" />
 
     <Button
@@ -190,6 +191,27 @@
         <View
             android:layout_height="2dip"
             android:background="@color/colorPrimaryDark" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dip">
+
+            <TextView
+                android:id="@+id/preTestMSAverage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/preTestMSAverageScore"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/preTestMSAverageScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:textSize="20sp" />
+
+        </TableRow>
 
     </TableLayout>
 

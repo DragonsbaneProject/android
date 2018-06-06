@@ -188,10 +188,7 @@ public class ComplexMemoryTestActivity extends ImpairmentTestActivity {
                 findViewById(R.id.complexMemoryTestCard).setVisibility(View.INVISIBLE);
                 HealthRecordAPI.saveMemoryTest(getApplicationContext(), did, memoryTest);
                 app.addTest(memoryTest);
-                ((TextView) findViewById(R.id.complexMemoryTestResult)).setText(memoryTest.getImpairment().name());
-                ((TextView) findViewById(R.id.complexMemoryTestResult)).setTextColor(getResources().getColor(ImpairmentTestActivity.getResultColor(memoryTest.getImpairment())));
                 findViewById(R.id.complexMemoryButtonNextTest).setVisibility(View.VISIBLE);
-                findViewById(R.id.complexMemoryTestResult).setVisibility(View.VISIBLE);
             }
         }
     }

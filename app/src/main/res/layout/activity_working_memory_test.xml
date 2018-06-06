@@ -16,7 +16,7 @@
         android:gravity="top"
         android:paddingBottom="20dp"
         android:text="@string/tapScreenIfSeen"
-        android:textSize="30sp" />
+        android:textSize="20sp" />
 
     <ImageView
         android:id="@+id/workingMemoryTestCard"
@@ -25,17 +25,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:background="@drawable/card_back"
-        android:maxHeight="30dp"
+        android:maxHeight="40dp"
         android:onClick="clickCard" />
-
-    <TextView
-        android:id="@+id/workingMemoryTestResult"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="top"
-        android:visibility="invisible"
-        android:paddingBottom="20dp"
-        android:textSize="30sp" />
 
     <Button
         android:id="@+id/workingMemoryButtonNextTest"

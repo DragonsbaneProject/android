@@ -6,8 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.dragonsbane.android.DBApplication;
 import io.dragonsbane.android.R;
+import io.onemfive.android.api.healthcare.HealthRecordAPI;
 import io.onemfive.data.DID;
 import io.onemfive.data.health.mental.memory.MemoryTest;
 
@@ -27,6 +31,12 @@ public abstract class ImpairmentTestActivity extends AppCompatActivity implement
     protected MemoryTest memoryTest;
     protected Animation animation1;
     protected Animation animation2;
+
+    protected Long begin;
+    protected Long end;
+    protected List<Long> inappropriateResponseTimes = new ArrayList<>();
+    protected List<Long> negativeResponseTimes = new ArrayList<>();
+    protected List<Long> successResponseTimes = new ArrayList<>();
 
     protected DBApplication app;
     protected DID did;
@@ -57,6 +67,68 @@ public abstract class ImpairmentTestActivity extends AppCompatActivity implement
     @Override
     public void onAnimationRepeat(Animation animation) {
 
+    }
+
+    protected void testFinished() {
+        // Determine inappropriate measurements
+        Long minInappropriateResponseTime = 0L;
+        Long maxInappropriateResponseTime = 0L;
+        Long totalInappropriateResponseTimes = 0L;
+        for(Long t : inappropriateResponseTimes) {
+            if (minInappropriateResponseTime == 0L) {
+                minInappropriateResponseTime = t;
+                maxInappropriateResponseTime = t;
+            } else if(t < minInappropriateResponseTime) {
+                minInappropriateResponseTime = t;
+            } else if(t > maxInappropriateResponseTime) {
+                maxInappropriateResponseTime = t;
+            }
+            totalInappropriateResponseTimes += t;
+        }
+        memoryTest.setMinResponseTimeInappropriateMs(minInappropriateResponseTime);
+        memoryTest.setMaxResponseTimeInappropriateMs(maxInappropriateResponseTime);
+        memoryTest.setAvgResponseTimeInappropriateMs(totalInappropriateResponseTimes / inappropriateResponseTimes.size());
+
+        // Determine negative measurements
+        Long minNegativeResponseTime = 0L;
+        Long maxNegativeResponseTime = 0L;
+        Long totalNegativeResponseTimes = 0L;
+        for(Long t : negativeResponseTimes) {
+            if (minNegativeResponseTime == 0L) {
+                minNegativeResponseTime = t;
+                maxNegativeResponseTime = t;
+            } else if(t < minNegativeResponseTime) {
+                minNegativeResponseTime = t;
+            } else if(t > maxNegativeResponseTime) {
+                maxNegativeResponseTime = t;
+            }
+            totalNegativeResponseTimes += t;
+        }
+        memoryTest.setMinResponseTimeNegativeMs(minNegativeResponseTime);
+        memoryTest.setMaxResponseTimeNegativeMs(maxNegativeResponseTime);
+        memoryTest.setAvgResponseTimeNegativeMs(totalNegativeResponseTimes / negativeResponseTimes.size());
+
+        // Determine success measurements
+        Long minSuccessResponseTime = 0L;
+        Long maxSuccessResponseTime = 0L;
+        Long totalSuccessResponseTimes = 0L;
+        for(Long t : successResponseTimes) {
+            if (minSuccessResponseTime == 0L) {
+                minSuccessResponseTime = t;
+                maxSuccessResponseTime = t;
+            } else if(t < minSuccessResponseTime) {
+                minSuccessResponseTime = t;
+            } else if(t > maxSuccessResponseTime) {
+                maxSuccessResponseTime = t;
+            }
+            totalSuccessResponseTimes += t;
+        }
+        memoryTest.setMinResponseTimeSuccessMs(minSuccessResponseTime);
+        memoryTest.setMaxResponseTimeSuccessMs(maxSuccessResponseTime);
+        memoryTest.setAvgResponseTimeSuccessMs(totalSuccessResponseTimes / successResponseTimes.size());
+
+        HealthRecordAPI.saveMemoryTest(getApplicationContext(), did, memoryTest);
+        app.addTest(memoryTest);
     }
 
 }

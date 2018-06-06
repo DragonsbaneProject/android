@@ -44,9 +44,6 @@ public class PreTestActivity extends ImpairmentTestActivity {
 
     private int numberFlips = 5;
     private int currentNumberFlips = 0;
-    private Long begin;
-    private Long end;
-    private List<Long> responseTimes = new ArrayList<>();
 
     private boolean isBackOfCardShowing = true;
 
@@ -75,22 +72,15 @@ public class PreTestActivity extends ImpairmentTestActivity {
     }
 
     public void clickCard(View v) {
-        if(isBackOfCardShowing) {
-            memoryTest.addInappropriate();
-            return;
-        }
         end = new Date().getTime();
         long diff = end - begin;
-        responseTimes.add(diff);
-        Long totalResponseTime = 0L;
-        for(Long responseTime : responseTimes) {
-            totalResponseTime += responseTime;
+        if(isBackOfCardShowing) {
+            memoryTest.addInappropriate();
+            inappropriateResponseTimes.add(diff);
+            return;
         }
-        memoryTest.setAvgResponseTimeMs(totalResponseTime/currentNumberFlips);
-        if(diff < memoryTest.getMinReponseTimeMs())
-            memoryTest.setMinReponseTimeMs(diff);
-        else if(diff > memoryTest.getMaxResponseTimeMs())
-            memoryTest.setMaxResponseTimeMs(diff);
+        memoryTest.addSuccess();
+        successResponseTimes.add(diff);
 
         v.setEnabled(false);
         v.clearAnimation();
@@ -149,16 +139,16 @@ public class PreTestActivity extends ImpairmentTestActivity {
         @Override
         public void run() {
             findViewById(R.id.preTestCard).setVisibility(View.INVISIBLE);
-            HealthRecordAPI.saveMemoryTest(getApplicationContext(), did, memoryTest);
-            app.addTest(memoryTest);
+            testFinished();
             findViewById(R.id.preTestResultDescription).setVisibility(View.VISIBLE);
             findViewById(R.id.preTestButtonNextTest).setVisibility(View.VISIBLE);
-            ((TextView)findViewById(R.id.preTestMSBetween1stFlippedAndClickedScore)).setText(String.valueOf(responseTimes.get(0)));
+
+            ((TextView)findViewById(R.id.preTestMSBetween1stFlippedAndClickedScore)).setText(String.valueOf(successResponseTimes.get(0)));
             ((TextView)findViewById(R.id.preTestMSBetween2ndFlippedAndClickedScore)).setText(String.valueOf(responseTimes.get(1)));
             ((TextView)findViewById(R.id.preTestMSBetween3rdFlippedAndClickedScore)).setText(String.valueOf(responseTimes.get(2)));
             ((TextView)findViewById(R.id.preTestMSBetween4thFlippedAndClickedScore)).setText(String.valueOf(responseTimes.get(3)));
             ((TextView)findViewById(R.id.preTestMSBetween5thFlippedAndClickedScore)).setText(String.valueOf(responseTimes.get(4)));
-            ((TextView)findViewById(R.id.preTestMSAverageScore)).setText(String.valueOf(memoryTest.getAvgResponseTimeMs()));
+
             findViewById(R.id.preTestLayout).setVisibility(View.VISIBLE);
         }
     }

@@ -17,10 +17,28 @@
     <!-- Pre-Test Activity -->
     <string name="tapScreenTurnTile">Tap the card when it turns over ASAP. Response times are measured.</string>
     <string name="preTestResultsDescription">Pre-Test Results in Milliseconds</string>
-
+    <string name="preTestMSBetween1stFlippedAndClickedScore">1st</string>
+    <string name="preTestMSBetween2ndFlippedAndClickedScore">2nd</string>
+    <string name="preTestMSBetween3rdFlippedAndClickedScore">3rd</string>
+    <string name="preTestMSBetween4thFlippedAndClickedScore">4th</string>
+    <string name="preTestMSBetween5thFlippedAndClickedScore">5th</string>
+    <string name="preTestMSAverageScore">Avg</string>
+    <!-- Simple Memory Test Activity -->
     <string name="tapScreenOneBefore">Tap the card if it is one back.</string>
+    <!-- Complex Memory Test Activity -->
     <string name="tapScreenTwoBefore">Tap the card if it is two back.</string>
+    <!-- Working Memory Test Activity -->
     <string name="tapScreenIfSeen">Tap the card if it occurred in this testing session.</string>
+    <!-- Test Report Activity -->
+    <string name="reportPreTestScoreText">Pre-Test</string>
+    <string name="reportSimpleMemoryTestText">Simple</string>
+    <string name="reportComplexMemoryTestText">Complex</string>
+    <string name="reportWorkingMemoryTestText">Working</string>
+    <!-- Test History Activity -->
+
+    <!-- Test Population Activity -->
+
+    <!-- General -->
     <string name="notImpaired">Passed! Continue&#8230;</string>
     <string name="borderlineImpairment">Borderline. Personal judgement recommended.</string>
     <string name="impaired">Impaired. Take the day off?</string>
@@ -34,15 +52,5 @@
     <string name="accurateResponseRate">Accurate Response Rate</string>
     <string name="accurateResponseTime">Accurate Response Time</string>
     <string name="foilResponseTime">Foil Response Time</string>
-    <string name="preTestMSBetween1stFlippedAndClickedScore">1st</string>
-    <string name="preTestMSBetween2ndFlippedAndClickedScore">2nd</string>
-    <string name="preTestMSBetween3rdFlippedAndClickedScore">3rd</string>
-    <string name="preTestMSBetween4thFlippedAndClickedScore">4th</string>
-    <string name="preTestMSBetween5thFlippedAndClickedScore">5th</string>
-    <string name="preTestMSAverageScore">Avg</string>
     <string name="totalScore">Overall Result</string>
-    <string name="reportPreTestScoreText">Pre-Test</string>
-    <string name="reportSimpleMemoryTestText">Simple</string>
-    <string name="reportComplexMemoryTestText">Complex</string>
-    <string name="reportWorkingMemoryTestText">Working</string>
 </resources>

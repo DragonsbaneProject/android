@@ -209,10 +209,7 @@ public class WorkingMemoryTestActivity extends ImpairmentTestActivity {
                 findViewById(R.id.workingMemoryTestCard).setVisibility(View.INVISIBLE);
                 HealthRecordAPI.saveMemoryTest(getApplicationContext(), did, memoryTest);
                 app.addTest(memoryTest);
-                ((TextView) findViewById(R.id.workingMemoryTestResult)).setText(memoryTest.getImpairment().name());
-                ((TextView) findViewById(R.id.workingMemoryTestResult)).setTextColor(getResources().getColor(ImpairmentTestActivity.getResultColor(memoryTest.getImpairment())));
                 findViewById(R.id.workingMemoryButtonNextTest).setVisibility(View.VISIBLE);
-                findViewById(R.id.workingMemoryTestResult).setVisibility(View.VISIBLE);
             }
         }
     }
