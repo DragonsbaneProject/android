@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#808297</color>
+    <color name="dragonsbaneRed">#FB0006</color>
+    <color name="dragonsbaneBlack">#000000</color>
+
+    <!--<color name="colorPrimary">#808297</color>-->
+    <color name="colorPrimary">#FB0006</color>
     <color name="colorPrimaryDark">#242733</color>
-    <color name="colorAccent">#0e2183</color>
+    <!--<color name="colorAccent">#0e2183</color>-->
+    <color name="colorAccent">#FB0006</color>
     <color name="colorWarning">#640202</color>
 
     <color name="colorBlue">#262de4</color>
@@ -10,7 +15,8 @@
     <color name="colorPurple">#450264</color>
     <color name="colorDarkPink">#810256</color>
     <color name="colorGrassGreen">#036b01</color>
-    <color name="colorOrange">#ce8d1f</color>
+    <color name="colorOrange">#dc8f0d</color>
+    <color name="colorYellow">#ceba1f</color>
 
     <color name="black_semi_transparent">#B2000000</color>
     <color name="card_back_background">#FFFFFF</color>

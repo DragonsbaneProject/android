@@ -3,6 +3,7 @@ package io.dragonsbane.android;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -10,11 +11,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.dragonsbane.android.neurocog.Test;
-import io.dragonsbane.android.neurocog.TestReport;
-import io.dragonsbane.android.util.Numbers;
 import io.onemfive.android.api.service.OneMFiveAndroidRouterService;
+import io.onemfive.core.util.Numbers;
 import io.onemfive.data.DID;
+import io.onemfive.data.health.HealthRecord;
+import io.onemfive.data.health.mental.memory.MemoryTest;
 
 /**
  * TODO: Add Definition
@@ -23,10 +24,14 @@ import io.onemfive.data.DID;
 public class DBApplication extends Application {
 
     private DID did;
-    private Map<String,Object> healthRecord;
-    private TestReport report;
-    private List<Test> tests = new ArrayList<>();
+    private HealthRecord healthRecord;
+    private Double bac = 0.0D;
+    private Boolean baseline = false;
+    private List<MemoryTest> tests = new ArrayList<>();
     private Map<String,Activity> activities = new HashMap<>();
+    private Typeface nexa_bold;
+    private Typeface nexa_light;
+
     public static int[] cards = {
             R.drawable.card_c2, R.drawable.card_c3, R.drawable.card_c4, R.drawable.card_c5,
             R.drawable.card_c6, R.drawable.card_c7, R.drawable.card_c8, R.drawable.card_c9,
@@ -54,27 +59,43 @@ public class DBApplication extends Application {
         this.did = did;
     }
 
-    public Map<String,Object> getHealthRecord() {
+    public HealthRecord getHealthRecord() {
         return healthRecord;
     }
 
-    public void setHealthRecord(Map<String,Object> healthRecord) {
+    public void setHealthRecord(HealthRecord healthRecord) {
         this.healthRecord = healthRecord;
     }
 
-    public void setTestReport(TestReport report) {
-        this.report = report;
+    public Double getBac() {
+        return bac;
     }
 
-    public TestReport getTestReport() {
-        return report;
+    public void setBac(Double bac) {
+        this.bac = bac;
     }
 
-    public void addTest(Test test) {
+    public Boolean getBaseline() {
+        return baseline;
+    }
+
+    public void setBaseline(Boolean baseline) {
+        this.baseline = baseline;
+    }
+
+    public Typeface getNexaBold() {
+        return nexa_bold;
+    }
+
+    public Typeface getNexaLight() {
+        return nexa_light;
+    }
+
+    public void addTest(MemoryTest test) {
         tests.add(test);
     }
 
-    public List<Test> getTests() {
+    public List<MemoryTest> getTests() {
         return tests;
     }
 
@@ -95,7 +116,7 @@ public class DBApplication extends Application {
     }
 
     public int getRandomCard() {
-        return cards[Numbers.randomNumber(1, 52)];
+        return cards[Numbers.randomNumber(0, cards.length-1)];
     }
 
     public int getRandomCard(int min, int max) {
@@ -105,6 +126,8 @@ public class DBApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        nexa_bold = Typeface.createFromAsset(getAssets(),"fonts/nexa_bold.otf");
+        nexa_light = Typeface.createFromAsset(getAssets(),"fonts/nexa_light.otf");
         Intent i = new Intent(this, OneMFiveAndroidRouterService.class);
         Log.i(DBApplication.class.getName(),"Starting OneMFiveAndroidRouterService to bootstrap 1M5 Core...");
         startService(i);

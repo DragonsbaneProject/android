@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_pre_test"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context=".neurocog.ui.PreTestActivity">
+    android:scrollbarTrackVertical="@color/colorPrimary"
+    tools:context=".neurocog.PreTestActivity">
 
     <TextView
         android:id="@+id/mainTextWelcome"
@@ -16,26 +18,16 @@
         android:gravity="top"
         android:paddingBottom="20dp"
         android:text="@string/tapScreenTurnTile"
-        android:textSize="30sp" />
+        android:textSize="20sp" />
 
     <ImageView
         android:id="@+id/preTestCard"
-        android:contentDescription=""
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:background="@drawable/card_back"
-        android:maxHeight="30dp"
+        android:maxHeight="40dp"
         android:onClick="clickCard" />
-
-    <TextView
-        android:id="@+id/preTestResult"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="top"
-        android:visibility="invisible"
-        android:paddingBottom="20dp"
-        android:textSize="30sp" />
 
     <Button
         android:id="@+id/preTestButtonNextTest"
@@ -46,11 +38,25 @@
         android:text="@string/nextTest"
         android:visibility="invisible" />
 
+    <TextView
+        android:id="@+id/preTestResultDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:paddingBottom="2dp"
+        android:visibility="invisible"
+        android:text="@string/preTestResultsDescription"
+        android:textSize="20sp" />
+
     <TableLayout
-        android:id="@+id/preTestLayout"
+        android:id="@+id/resultsLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="invisible">
+
+        <View
+            android:layout_height="2dip"
+            android:background="@color/colorPrimaryDark" />
 
         <TableRow
             android:layout_width="match_parent"
@@ -58,23 +64,54 @@
             android:padding="5dip">
 
             <TextView
-                android:id="@+id/preTestMSBetween1stFlippedAndClicked"
+                android:id="@+id/resultsTypeHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/preTestMSBetween1stFlippedAndClickedScore"
+                android:text="@string/resultsType"
+                android:textStyle="bold"
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/preTestMSBetween1stFlippedAndClickedScore"
+                android:id="@+id/resultsTotalHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:text="@string/resultsTotal"
+                android:textStyle="bold"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/resultsMinHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:text="@string/resultsMin"
+                android:textStyle="bold"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/resultsMaxHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:text="@string/resultsMax"
+                android:textStyle="bold"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/resultsAvgHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:text="@string/resultsAvg"
+                android:textStyle="bold"
                 android:textSize="20sp" />
 
         </TableRow>
 
         <View
             android:layout_height="2dip"
-            android:background="#181641" />
+            android:background="@color/colorPrimaryDark" />
 
         <TableRow
             android:layout_width="match_parent"
@@ -82,16 +119,38 @@
             android:padding="5dip">
 
             <TextView
-                android:id="@+id/preTestMSBetween2ndFlippedAndClicked"
+                android:id="@+id/resultsTypeSuccess"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/preTestMSBetween2ndFlippedAndClickedScore"
+                android:text="@string/success"
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/preTestMSBetween2ndFlippedAndClickedScore"
+                android:id="@+id/resultsTotalSuccess"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/resultsMinSuccess"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/resultsMaxSuccess"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/resultsAvgSuccess"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
                 android:textSize="20sp" />
 
         </TableRow>
@@ -102,16 +161,38 @@
             android:padding="5dip">
 
             <TextView
-                android:id="@+id/preTestMSBetween3rdFlippedAndClicked"
+                android:id="@+id/resultsTypeMisses"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/preTestMSBetween3rdFlippedAndClickedScore"
+                android:text="@string/misses"
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/preTestMSBetween3rdFlippedAndClickedScore"
+                android:id="@+id/resultsTotalMisses"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/resultsMinMisses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/resultsMaxMisses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/resultsAvgMisses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
                 android:textSize="20sp" />
 
         </TableRow>
@@ -122,16 +203,38 @@
             android:padding="5dip">
 
             <TextView
-                android:id="@+id/preTestMSBetween4thFlippedAndClicked"
+                android:id="@+id/resultsTypeNegative"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/preTestMSBetween4thFlippedAndClickedScore"
+                android:text="@string/negative"
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/preTestMSBetween4thFlippedAndClickedScore"
+                android:id="@+id/resultsTotalNegative"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/resultsMinNegative"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/resultsMaxNegative"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/resultsAvgNegative"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
                 android:textSize="20sp" />
 
         </TableRow>
@@ -142,19 +245,45 @@
             android:padding="5dip">
 
             <TextView
-                android:id="@+id/preTestMSBetween5thFlippedAndClicked"
+                android:id="@+id/resultsTypeInappropriate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/preTestMSBetween5thFlippedAndClickedScore"
+                android:text="@string/inappropriate"
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/preTestMSBetween5thFlippedAndClickedScore"
+                android:id="@+id/resultsTotalInappropriate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/resultsMinInappropriate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/resultsMaxInappropriate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/resultsAvgInappropriate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
                 android:textSize="20sp" />
 
         </TableRow>
+
+        <View
+            android:layout_height="2dip"
+            android:background="@color/colorPrimaryDark" />
 
     </TableLayout>
 

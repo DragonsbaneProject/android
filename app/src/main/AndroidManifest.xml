@@ -19,16 +19,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".SettingsActivity" />
         <!-- Neurocog -->
-        <activity android:name=".neurocog.ui.TestDisclaimerActivity" />
-        <activity android:name=".neurocog.ui.PreTestActivity" />
-        <activity android:name=".neurocog.ui.SimpleMemoryTestActivity" />
-        <activity android:name=".neurocog.ui.ComplexMemoryTestActivity" />
-        <activity android:name=".neurocog.ui.WorkingMemoryTestActivity" />
-        <activity android:name=".neurocog.ui.TestReportActivity" />
-        <activity android:name=".neurocog.ui.TestHistoryActivity" />
-        <activity android:name=".neurocog.ui.SettingsActivity" />
-        <activity android:name=".neurocog.ui.ViewUserProfileActivity"/>
+        <activity android:name=".neurocog.TestDisclaimerActivity" />
+        <activity android:name=".neurocog.PreTestActivity" />
+        <activity android:name=".neurocog.SimpleMemoryTestActivity" />
+        <activity android:name=".neurocog.ComplexMemoryTestActivity" />
+        <activity android:name=".neurocog.WorkingMemoryTestActivity" />
+        <activity android:name=".neurocog.TestReportActivity" />
+        <activity android:name=".neurocog.TestHistoryActivity" />
+        <activity android:name=".neurocog.ViewUserProfileActivity"/>
 
     </application>
 

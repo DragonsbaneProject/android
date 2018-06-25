@@ -1,26 +1,25 @@
-package io.dragonsbane.android.neurocog.ui;
+package io.dragonsbane.android.neurocog;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
 import io.dragonsbane.android.DBApplication;
+import io.dragonsbane.android.MainActivity;
 import io.dragonsbane.android.R;
-import io.dragonsbane.android.neurocog.models.WorkingMemoryImpairmentModel;
-import io.dragonsbane.android.neurocog.tests.WorkingMemoryTest;
-import io.dragonsbane.android.util.Numbers;
-import io.onemfive.data.Test;
-import io.onemfive.data.TestResult;
+import io.onemfive.android.api.healthcare.HealthRecordAPI;
+import io.onemfive.core.util.Numbers;
+import io.onemfive.data.health.mental.memory.MemoryTest;
 
 /**
  * Have you seen this tile during this session. There’s not so much attention here as working
@@ -29,19 +28,14 @@ import io.onemfive.data.TestResult;
  * will be tests. We’d show tiles over a period of a minute that were shown and not shown and
  * measure the right and wrong taps from the person.
  */
-public class WorkingMemoryTestActivity extends AppCompatActivity implements Animation.AnimationListener {
+public class WorkingMemoryTestActivity extends ImpairmentTestActivity {
 
     public List<Integer> cardsUsedPrior = new ArrayList<>();
     public List<Integer> cardsNotUsedPrior = new ArrayList<>();
 
-    private WorkingMemoryTest test;
-    private WorkingMemoryImpairmentModel model;
-
     private int numberFlips = 12;
     private int currentCard = 0;
-
-    private Animation animation1;
-    private Animation animation2;
+    private int currentNumberFlips = 0;
 
     private boolean isBackOfCardShowing = true;
     private boolean shouldNotClick = false;
@@ -49,27 +43,24 @@ public class WorkingMemoryTestActivity extends AppCompatActivity implements Anim
     private FlipCard flipCard;
     private EndTest endTest;
 
-    public WorkingMemoryTestActivity() {
-        test = new WorkingMemoryTest();
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        test = new WorkingMemoryTest();
-        model = new WorkingMemoryImpairmentModel();
-        ((DBApplication)getApplication()).addActivity(WorkingMemoryTestActivity.class, this);
+        memoryTest = MemoryTest.newInstance(NO_IMPAIRMENT,did.getId());
+        memoryTest.setBloodAlcoholContent(bac);
+        app.addActivity(WorkingMemoryTestActivity.class, this);
         setContentView(R.layout.activity_working_memory_test);
-        animation1 = AnimationUtils.loadAnimation(this, R.anim.to_middle);
-        animation1.setAnimationListener(this);
-        animation2 = AnimationUtils.loadAnimation(this, R.anim.from_middle);
-        animation2.setAnimationListener(this);
-        List<Test> tests = ((DBApplication)getApplication()).getTests();
-        for(Test test : tests) {
+
+        Toolbar toolbar = findViewById(R.id.action_bar);
+        TextView titleTextView = (TextView) toolbar.getChildAt(0);
+        titleTextView.setTextColor(getResources().getColor(R.color.dragonsbaneBlack));
+        titleTextView.setTypeface(((DBApplication)getApplication()).getNexaBold());
+
+        List<MemoryTest> tests = ((DBApplication)getApplication()).getTests();
+        for(MemoryTest test : tests) {
             cardsUsedPrior.addAll(test.cardsUsed());
         }
         int numberCardsUsedPrior = cardsUsedPrior.size();
-        DBApplication app = (DBApplication) getApplicationContext();
         for(int i = 0; i<numberCardsUsedPrior;i++) {
             int card = 0;
             boolean skip = true;
@@ -85,19 +76,21 @@ public class WorkingMemoryTestActivity extends AppCompatActivity implements Anim
         }
 
         flipCard = new FlipCard();
-        new Handler().postDelayed(flipCard, 3 * 1000); // flip card after 3 seconds
+        new Handler().postDelayed(flipCard, normalFlipDurationMs); // flip card after 3 seconds
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ((DBApplication)getApplication()).removeActivity(WorkingMemoryTestActivity.class);
+        app.removeActivity(WorkingMemoryTestActivity.class);
     }
 
     public void clickCard(View v) {
-        if(isBackOfCardShowing) {test.inappropriate++;return;}
-        if(shouldNotClick) {test.negative++;return;}
-        test.successes++;
+        end = new Date().getTime();
+        long diff = end - begin;
+        if(isBackOfCardShowing) {memoryTest.addInappropriate(diff);return;}
+        if(shouldNotClick) {memoryTest.addMiss(diff);return;}
+        memoryTest.addSuccess(diff);
         flipCard.deactivate(); // Deactivate prior FlipCard
         v.setEnabled(false);
         v.clearAnimation();
@@ -109,7 +102,12 @@ public class WorkingMemoryTestActivity extends AppCompatActivity implements Anim
     public void onAnimationStart(Animation animation) {
         if(animation == animation1 && !isBackOfCardShowing && !shouldNotClick) {
             // Should have clicked and did not
-            test.misses++;
+            memoryTest.addMiss(normalFlipDurationMs);
+        }
+        if (animation == animation2) {
+            if(isBackOfCardShowing) {
+                begin = new Date().getTime();
+            }
         }
     }
 
@@ -120,6 +118,7 @@ public class WorkingMemoryTestActivity extends AppCompatActivity implements Anim
             // End of 1st half of flip
             if (isBackOfCardShowing) {
                 numberFlips--;
+                currentNumberFlips++;
                 if(shouldNotClick) {
                     int random = Numbers.randomNumber(0,cardsNotUsedPrior.size()-1);
                     currentCard = cardsNotUsedPrior.get(random);
@@ -127,7 +126,7 @@ public class WorkingMemoryTestActivity extends AppCompatActivity implements Anim
                     int random = Numbers.randomNumber(0,cardsUsedPrior.size()-1);
                     currentCard = cardsUsedPrior.get(random);
                 }
-                if(!test.cardsUsed.contains(currentCard)) test.cardsUsed.add(currentCard);
+                if(!memoryTest.cardsUsed().contains(currentCard)) memoryTest.cardsUsed().add(currentCard);
                 (findViewById(R.id.workingMemoryTestCard)).setBackground(getResources().getDrawable(currentCard));
             } else {
                 (findViewById(R.id.workingMemoryTestCard)).setBackground(getResources().getDrawable(R.drawable.card_back));
@@ -143,20 +142,20 @@ public class WorkingMemoryTestActivity extends AppCompatActivity implements Anim
                 // face card showing
                 if( numberFlips > 0) {
                     flipCard = new FlipCard();
-                    new Handler().postDelayed(flipCard, 3 * 1000); // flip card after 3 seconds
+                    new Handler().postDelayed(flipCard, normalFlipDurationMs); // flip card after 3 seconds
                 } else {
                     endTest = new EndTest();
-                    new Handler().postDelayed(endTest, 3 * 1000); // end test after 3 seconds if not clicked
+                    new Handler().postDelayed(endTest, normalFlipDurationMs); // end test after 3 seconds if not clicked
                 }
             } else {
                 // back showing
                 if( numberFlips > 0) {
                     flipCard = new FlipCard();
-                    new Handler().postDelayed(flipCard, 1000); // flip card after 1 second
+                    new Handler().postDelayed(flipCard, shortFlipDuractionMs); // flip card after 1 second
                 } else {
                     endTest.deactivate(); // Clicked; deactive previous endTest
                     endTest = new EndTest();
-                    new Handler().postDelayed(endTest, 1000); // end test after 1 second
+                    new Handler().postDelayed(endTest, shortFlipDuractionMs); // end test after 1 second
                 }
             }
         }
@@ -195,30 +194,38 @@ public class WorkingMemoryTestActivity extends AppCompatActivity implements Anim
         public void run() {
             if(active) {
                 findViewById(R.id.workingMemoryTestCard).setVisibility(View.INVISIBLE);
-                model.evaluate(test);
-                TestResult result = test.getTestResult();
-                if (result.getScore() < 80) {
-                    ((TextView) findViewById(R.id.workingMemoryTestResult)).setText(getResources().getText(R.string.testPassed));
-                    ((TextView) findViewById(R.id.workingMemoryTestResult)).setTextColor(getResources().getColor(R.color.colorGrassGreen));
-                    findViewById(R.id.workingMemoryButtonNextTest).setVisibility(View.VISIBLE);
-                } else {
-                    ((TextView) findViewById(R.id.workingMemoryTestResult)).setText(getResources().getText(R.string.testFailed));
-                    ((TextView) findViewById(R.id.workingMemoryTestResult)).setTextColor(getResources().getColor(R.color.colorWarning));
-                }
-                findViewById(R.id.workingMemoryTestResult).setVisibility(View.VISIBLE);
-                DBApplication app = (DBApplication) getApplication();
-                app.addTest(test);
+                HealthRecordAPI.saveMemoryTest(getApplicationContext(), did, memoryTest);
+                app.addTest(memoryTest);
+                findViewById(R.id.workingMemoryButtonNextTest).setVisibility(View.VISIBLE);
+                findViewById(R.id.resultsLayout).setVisibility(View.VISIBLE);
+
+                // Successes
+                ((TextView)findViewById(R.id.resultsTotalSuccess)).setText(String.valueOf(memoryTest.getSuccesses()));
+                ((TextView)findViewById(R.id.resultsMinSuccess)).setText(String.valueOf(memoryTest.getMinResponseTimeSuccessMs()));
+                ((TextView)findViewById(R.id.resultsMaxSuccess)).setText(String.valueOf(memoryTest.getMaxResponseTimeSuccessMs()));
+                ((TextView)findViewById(R.id.resultsAvgSuccess)).setText(String.valueOf(memoryTest.getAvgResponseTimeSuccessMs()));
+                // Misses
+                ((TextView)findViewById(R.id.resultsTotalMisses)).setText(String.valueOf(memoryTest.getMisses()));
+                ((TextView)findViewById(R.id.resultsMinMisses)).setText(String.valueOf(memoryTest.getMinResponseTimeMissMs()));
+                ((TextView)findViewById(R.id.resultsMaxMisses)).setText(String.valueOf(memoryTest.getMaxResponseTimeMissTimeMs()));
+                ((TextView)findViewById(R.id.resultsAvgMisses)).setText(String.valueOf(memoryTest.getAvgResponseTimeMissMs()));
+                // Negative
+                ((TextView)findViewById(R.id.resultsTotalNegative)).setText(String.valueOf(memoryTest.getNegative()));
+                ((TextView)findViewById(R.id.resultsMinNegative)).setText(String.valueOf(memoryTest.getMinResponseTimeNegativeMs()));
+                ((TextView)findViewById(R.id.resultsMaxNegative)).setText(String.valueOf(memoryTest.getMaxResponseTimeNegativeMs()));
+                ((TextView)findViewById(R.id.resultsAvgNegative)).setText(String.valueOf(memoryTest.getAvgResponseTimeNegativeMs()));
+                // Inappropriate
+                ((TextView)findViewById(R.id.resultsTotalInappropriate)).setText(String.valueOf(memoryTest.getInappropriate()));
+                ((TextView)findViewById(R.id.resultsMinInappropriate)).setText(String.valueOf(memoryTest.getMinResponseTimeInappropriateMs()));
+                ((TextView)findViewById(R.id.resultsMaxInappropriate)).setText(String.valueOf(memoryTest.getMaxResponseTimeInappropriateMs()));
+                ((TextView)findViewById(R.id.resultsAvgInappropriate)).setText(String.valueOf(memoryTest.getAvgResponseTimeInappropriateMs()));
             }
         }
     }
 
     public void nextTest(View view) {
-        Intent intent = new Intent(this, TestReportActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
-    @Override
-    public void onAnimationRepeat(Animation animation) {
-
-    }
 }
