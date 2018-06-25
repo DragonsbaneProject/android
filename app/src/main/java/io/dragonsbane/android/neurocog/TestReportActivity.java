@@ -19,8 +19,6 @@ import io.onemfive.data.health.mental.memory.MemoryTest;
 
 public class TestReportActivity extends AppCompatActivity {
 
-    private MemoryTest.Impairment overallImpairment = MemoryTest.Impairment.Unimpaired;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,37 +29,6 @@ public class TestReportActivity extends AppCompatActivity {
         TextView titleTextView = (TextView) toolbar.getChildAt(0);
         titleTextView.setTextColor(getResources().getColor(R.color.dragonsbaneBlack));
         titleTextView.setTypeface(((DBApplication)getApplication()).getNexaBold());
-
-        for(MemoryTest t : tests) {
-            determineOverallImpairment(t.getImpairment());
-            switch(t.getName()) {
-                case ImpairmentTestActivity.GROSS_IMPAIRMENT : {
-                    ((TextView)findViewById(R.id.reportPreTestScore)).setText(t.getImpairment().name());
-                    ((TextView)findViewById(R.id.reportPreTestScore)).setTextColor(getResources().getColor(ImpairmentTestActivity.getResultColor(t.getImpairment())));
-                    break;
-                }
-                case ImpairmentTestActivity.IMPAIRMENT : {
-                    ((TextView)findViewById(R.id.reportSimpleMemoryTestScore)).setText(t.getImpairment().name());
-                    ((TextView)findViewById(R.id.reportSimpleMemoryTestScore)).setTextColor(getResources().getColor(ImpairmentTestActivity.getResultColor(t.getImpairment())));
-                    break;
-                }
-                case ImpairmentTestActivity.BORDERLINE_IMPAIRMENT : {
-                    ((TextView)findViewById(R.id.reportComplexMemoryTestScore)).setText(t.getImpairment().name());
-                    ((TextView)findViewById(R.id.reportComplexMemoryTestScore)).setTextColor(getResources().getColor(ImpairmentTestActivity.getResultColor(t.getImpairment())));
-                    break;
-                }
-                case ImpairmentTestActivity.NO_IMPAIRMENT : {
-                    ((TextView)findViewById(R.id.reportWorkingMemoryTestScore)).setText(t.getImpairment().name());
-                    ((TextView)findViewById(R.id.reportWorkingMemoryTestScore)).setTextColor(getResources().getColor(ImpairmentTestActivity.getResultColor(t.getImpairment())));
-                    break;
-                }
-                default : {
-                    System.out.println(TestReportActivity.class.getSimpleName()+": Memory Test (name="+t.getName()+") not supported in Impairment.");
-                }
-            }
-        }
-        ((TextView)findViewById(R.id.reportTotalScore)).setText(overallImpairment.name());
-        ((TextView) findViewById(R.id.reportResults)).setTextColor(getResources().getColor(ImpairmentTestActivity.getResultColor(overallImpairment)));
     }
 
 //    public void sendResults(View view) {
@@ -73,25 +40,6 @@ public class TestReportActivity extends AppCompatActivity {
 //        Email email = new Email(to, from, subject, message);
 //        EmailAPI.sendEmail(this, email);
 //    }
-
-    private void determineOverallImpairment(MemoryTest.Impairment testImpairment) {
-        switch (testImpairment) {
-            case Gross: {
-                overallImpairment = MemoryTest.Impairment.Gross;
-                break;
-            }
-            case Impaired: {
-                if(overallImpairment != MemoryTest.Impairment.Gross)
-                    overallImpairment = MemoryTest.Impairment.Impaired;
-                break;
-            }
-            case Borderline: {
-                if(overallImpairment == MemoryTest.Impairment.Unimpaired)
-                    overallImpairment = MemoryTest.Impairment.Borderline;
-                break;
-            }
-        }
-    }
 
     public void endTest(View view) {
         Intent intent = new Intent(this, TestHistoryActivity.class);

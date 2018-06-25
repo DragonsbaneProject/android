@@ -14,6 +14,16 @@
     <string name="mainInstructions">Enter Alias and Password. If alias not known, a new profile will be created. Add BAC if this is for training the application. Select baseline if this is your first time using it. Baselines and training can not be of the same test.</string>
     <string name="baselineRequired">No baseline test found in profile. An unimpaired baseline is required prior to impairment testing.</string>
     <string name="profileCleared">Profile was cleared successfully.</string>
+    <!-- Memory Test Results Fragment -->
+    <string name="resultsType">Type</string>
+    <string name="resultsTotal">Total</string>
+    <string name="resultsMin">Min</string>
+    <string name="resultsMax">Max</string>
+    <string name="resultsAvg">Avg</string>
+    <string name="success">Success</string>
+    <string name="misses">Misses</string>
+    <string name="negative">Negative</string>
+    <string name="inappropriate">Inappropriate</string>
     <!-- Pre-Test Activity -->
     <string name="tapScreenTurnTile">Tap the card when it turns over ASAP. Response times are measured.</string>
     <string name="preTestResultsDescription">Pre-Test Results in Milliseconds</string>

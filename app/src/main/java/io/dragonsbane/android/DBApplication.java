@@ -116,7 +116,7 @@ public class DBApplication extends Application {
     }
 
     public int getRandomCard() {
-        return cards[Numbers.randomNumber(1, cards.length)];
+        return cards[Numbers.randomNumber(0, cards.length-1)];
     }
 
     public int getRandomCard(int min, int max) {

@@ -34,35 +34,38 @@ public abstract class ImpairmentTestActivity extends AppCompatActivity implement
 
     protected Long begin;
     protected Long end;
-    protected List<Long> inappropriateResponseTimes = new ArrayList<>();
-    protected List<Long> negativeResponseTimes = new ArrayList<>();
-    protected List<Long> successResponseTimes = new ArrayList<>();
 
     protected DBApplication app;
     protected DID did;
     protected Double bac = 0.0D;
+    protected Boolean baseline = false;
+    protected long normalFlipDurationMs = 3 * 1000;
+    protected long shortFlipDuractionMs = 1000;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         app = (DBApplication)getApplication();
         did = app.getDid();
-        bac = app.getBac();
+        if(app.getBac() != null)
+            bac = app.getBac();
+        if(app.getBaseline() != null)
+            baseline = app.getBaseline();
         animation1 = AnimationUtils.loadAnimation(this, R.anim.to_middle);
         animation1.setAnimationListener(this);
         animation2 = AnimationUtils.loadAnimation(this, R.anim.from_middle);
         animation2.setAnimationListener(this);
     }
 
-    public static int getResultColor(MemoryTest.Impairment impairment) {
-        switch(impairment) {
-            case Gross: return R.color.colorWarning;
-            case Impaired: return R.color.colorOrange;
-            case Borderline: return R.color.colorYellow;
-            case Unimpaired: return R.color.colorGrassGreen;
-            default: return R.color.colorGrassGreen;
-        }
-    }
+//    public static int getResultColor(MemoryTest.Impairment impairment) {
+//        switch(impairment) {
+//            case Gross: return R.color.colorWarning;
+//            case Impaired: return R.color.colorOrange;
+//            case Borderline: return R.color.colorYellow;
+//            case Unimpaired: return R.color.colorGrassGreen;
+//            default: return R.color.colorGrassGreen;
+//        }
+//    }
 
     @Override
     public void onAnimationRepeat(Animation animation) {
@@ -70,63 +73,6 @@ public abstract class ImpairmentTestActivity extends AppCompatActivity implement
     }
 
     protected void testFinished() {
-        // Determine inappropriate measurements
-        Long minInappropriateResponseTime = 0L;
-        Long maxInappropriateResponseTime = 0L;
-        Long totalInappropriateResponseTimes = 0L;
-        for(Long t : inappropriateResponseTimes) {
-            if (minInappropriateResponseTime == 0L) {
-                minInappropriateResponseTime = t;
-                maxInappropriateResponseTime = t;
-            } else if(t < minInappropriateResponseTime) {
-                minInappropriateResponseTime = t;
-            } else if(t > maxInappropriateResponseTime) {
-                maxInappropriateResponseTime = t;
-            }
-            totalInappropriateResponseTimes += t;
-        }
-        memoryTest.setMinResponseTimeInappropriateMs(minInappropriateResponseTime);
-        memoryTest.setMaxResponseTimeInappropriateMs(maxInappropriateResponseTime);
-        memoryTest.setAvgResponseTimeInappropriateMs(totalInappropriateResponseTimes / inappropriateResponseTimes.size());
-
-        // Determine negative measurements
-        Long minNegativeResponseTime = 0L;
-        Long maxNegativeResponseTime = 0L;
-        Long totalNegativeResponseTimes = 0L;
-        for(Long t : negativeResponseTimes) {
-            if (minNegativeResponseTime == 0L) {
-                minNegativeResponseTime = t;
-                maxNegativeResponseTime = t;
-            } else if(t < minNegativeResponseTime) {
-                minNegativeResponseTime = t;
-            } else if(t > maxNegativeResponseTime) {
-                maxNegativeResponseTime = t;
-            }
-            totalNegativeResponseTimes += t;
-        }
-        memoryTest.setMinResponseTimeNegativeMs(minNegativeResponseTime);
-        memoryTest.setMaxResponseTimeNegativeMs(maxNegativeResponseTime);
-        memoryTest.setAvgResponseTimeNegativeMs(totalNegativeResponseTimes / negativeResponseTimes.size());
-
-        // Determine success measurements
-        Long minSuccessResponseTime = 0L;
-        Long maxSuccessResponseTime = 0L;
-        Long totalSuccessResponseTimes = 0L;
-        for(Long t : successResponseTimes) {
-            if (minSuccessResponseTime == 0L) {
-                minSuccessResponseTime = t;
-                maxSuccessResponseTime = t;
-            } else if(t < minSuccessResponseTime) {
-                minSuccessResponseTime = t;
-            } else if(t > maxSuccessResponseTime) {
-                maxSuccessResponseTime = t;
-            }
-            totalSuccessResponseTimes += t;
-        }
-        memoryTest.setMinResponseTimeSuccessMs(minSuccessResponseTime);
-        memoryTest.setMaxResponseTimeSuccessMs(maxSuccessResponseTime);
-        memoryTest.setAvgResponseTimeSuccessMs(totalSuccessResponseTimes / successResponseTimes.size());
-
         HealthRecordAPI.saveMemoryTest(getApplicationContext(), did, memoryTest);
         app.addTest(memoryTest);
     }

@@ -9,13 +9,10 @@ import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import io.dragonsbane.android.DBApplication;
 import io.dragonsbane.android.R;
-import io.onemfive.android.api.healthcare.HealthRecordAPI;
 import io.onemfive.core.util.Numbers;
 import io.onemfive.data.health.mental.memory.MemoryTest;
 
@@ -64,7 +61,7 @@ public class SimpleMemoryTestActivity extends ImpairmentTestActivity {
         titleTextView.setTypeface(((DBApplication)getApplication()).getNexaBold());
 
         flipCard = new FlipCard();
-        new Handler().postDelayed(flipCard, 3 * 1000); // flip card after 3 seconds
+        new Handler().postDelayed(flipCard, normalFlipDurationMs); // flip card after 3 seconds
     }
 
     @Override
@@ -77,17 +74,14 @@ public class SimpleMemoryTestActivity extends ImpairmentTestActivity {
         end = new Date().getTime();
         long diff = end - begin;
         if(isBackOfCardShowing) {
-            memoryTest.addInappropriate();
-            inappropriateResponseTimes.add(diff);
+            memoryTest.addInappropriate(diff);
             return;
         }
         if(shouldNotClick) {
-            memoryTest.addNegative();
-            negativeResponseTimes.add(diff);
+            memoryTest.addNegative(diff);
             return;
         }
-        memoryTest.addSuccess();
-        successResponseTimes.add(diff);
+        memoryTest.addSuccess(diff);
 
         flipCard.deactivate(); // Deactivate prior FlipCard
         v.setEnabled(false);
@@ -100,8 +94,7 @@ public class SimpleMemoryTestActivity extends ImpairmentTestActivity {
     public void onAnimationStart(Animation animation) {
         if(animation == animation1 && !isBackOfCardShowing && !shouldNotClick) {
             // Should have clicked and did not
-            memoryTest.addMiss();
-            memoryTest.setMissTimeMs(3 * 1000);
+            memoryTest.addMiss(normalFlipDurationMs);
         }
         if (animation == animation2) {
             if(isBackOfCardShowing) {
@@ -135,20 +128,20 @@ public class SimpleMemoryTestActivity extends ImpairmentTestActivity {
                 // face card showing
                 if( numberFlips > 0) {
                     flipCard = new FlipCard();
-                    new Handler().postDelayed(flipCard, 3 * 1000); // flip card after 3 seconds
+                    new Handler().postDelayed(flipCard, normalFlipDurationMs); // flip card after 3 seconds
                 } else {
                     endTest = new EndTest();
-                    new Handler().postDelayed(endTest, 3 * 1000); // end test after 3 seconds if not clicked
+                    new Handler().postDelayed(endTest, normalFlipDurationMs); // end test after 3 seconds if not clicked
                 }
             } else {
                 // back showing
                 if( numberFlips > 0) {
                     flipCard = new FlipCard();
-                    new Handler().postDelayed(flipCard, 1000); // flip card after 1 second
+                    new Handler().postDelayed(flipCard, shortFlipDuractionMs); // flip card after 1 second
                 } else {
                     endTest.deactivate(); // Clicked; deactive previous endTest
                     endTest = new EndTest();
-                    new Handler().postDelayed(endTest, 1000); // end test after 1 second
+                    new Handler().postDelayed(endTest, shortFlipDuractionMs); // end test after 1 second
                 }
             }
         }
@@ -190,6 +183,28 @@ public class SimpleMemoryTestActivity extends ImpairmentTestActivity {
                 findViewById(R.id.simpleMemoryTestCard).setVisibility(View.INVISIBLE);
                 testFinished();
                 findViewById(R.id.simpleMemoryButtonNextTest).setVisibility(View.VISIBLE);
+                findViewById(R.id.resultsLayout).setVisibility(View.VISIBLE);
+
+                // Successes
+                ((TextView)findViewById(R.id.resultsTotalSuccess)).setText(String.valueOf(memoryTest.getSuccesses()));
+                ((TextView)findViewById(R.id.resultsMinSuccess)).setText(String.valueOf(memoryTest.getMinResponseTimeSuccessMs()));
+                ((TextView)findViewById(R.id.resultsMaxSuccess)).setText(String.valueOf(memoryTest.getMaxResponseTimeSuccessMs()));
+                ((TextView)findViewById(R.id.resultsAvgSuccess)).setText(String.valueOf(memoryTest.getAvgResponseTimeSuccessMs()));
+                // Misses
+                ((TextView)findViewById(R.id.resultsTotalMisses)).setText(String.valueOf(memoryTest.getMisses()));
+                ((TextView)findViewById(R.id.resultsMinMisses)).setText(String.valueOf(memoryTest.getMinResponseTimeMissMs()));
+                ((TextView)findViewById(R.id.resultsMaxMisses)).setText(String.valueOf(memoryTest.getMaxResponseTimeMissTimeMs()));
+                ((TextView)findViewById(R.id.resultsAvgMisses)).setText(String.valueOf(memoryTest.getAvgResponseTimeMissMs()));
+                // Negative
+                ((TextView)findViewById(R.id.resultsTotalNegative)).setText(String.valueOf(memoryTest.getNegative()));
+                ((TextView)findViewById(R.id.resultsMinNegative)).setText(String.valueOf(memoryTest.getMinResponseTimeNegativeMs()));
+                ((TextView)findViewById(R.id.resultsMaxNegative)).setText(String.valueOf(memoryTest.getMaxResponseTimeNegativeMs()));
+                ((TextView)findViewById(R.id.resultsAvgNegative)).setText(String.valueOf(memoryTest.getAvgResponseTimeNegativeMs()));
+                // Inappropriate
+                ((TextView)findViewById(R.id.resultsTotalInappropriate)).setText(String.valueOf(memoryTest.getInappropriate()));
+                ((TextView)findViewById(R.id.resultsMinInappropriate)).setText(String.valueOf(memoryTest.getMinResponseTimeInappropriateMs()));
+                ((TextView)findViewById(R.id.resultsMaxInappropriate)).setText(String.valueOf(memoryTest.getMaxResponseTimeInappropriateMs()));
+                ((TextView)findViewById(R.id.resultsAvgInappropriate)).setText(String.valueOf(memoryTest.getAvgResponseTimeInappropriateMs()));
             }
         }
     }

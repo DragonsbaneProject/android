@@ -37,4 +37,243 @@
         android:text="@string/nextTest"
         android:visibility="invisible" />
 
+    <TableLayout
+        android:id="@+id/resultsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible">
+
+        <View
+            android:layout_height="2dip"
+            android:background="@color/colorPrimaryDark" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dip">
+
+            <TextView
+                android:id="@+id/resultsTypeHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/resultsType"
+                android:textStyle="bold"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/resultsTotalHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:text="@string/resultsTotal"
+                android:textStyle="bold"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/resultsMinHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:text="@string/resultsMin"
+                android:textStyle="bold"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/resultsMaxHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:text="@string/resultsMax"
+                android:textStyle="bold"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/resultsAvgHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:text="@string/resultsAvg"
+                android:textStyle="bold"
+                android:textSize="20sp" />
+
+        </TableRow>
+
+        <View
+            android:layout_height="2dip"
+            android:background="@color/colorPrimaryDark" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dip">
+
+            <TextView
+                android:id="@+id/resultsTypeSuccess"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/success"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/resultsTotalSuccess"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/resultsMinSuccess"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/resultsMaxSuccess"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/resultsAvgSuccess"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:textSize="20sp" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dip">
+
+            <TextView
+                android:id="@+id/resultsTypeMisses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/misses"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/resultsTotalMisses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/resultsMinMisses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/resultsMaxMisses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/resultsAvgMisses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:textSize="20sp" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dip">
+
+            <TextView
+                android:id="@+id/resultsTypeNegative"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/negative"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/resultsTotalNegative"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/resultsMinNegative"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/resultsMaxNegative"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/resultsAvgNegative"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:textSize="20sp" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dip">
+
+            <TextView
+                android:id="@+id/resultsTypeInappropriate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/inappropriate"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/resultsTotalInappropriate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/resultsMinInappropriate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/resultsMaxInappropriate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/resultsAvgInappropriate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dip"
+                android:textSize="20sp" />
+
+        </TableRow>
+
+        <View
+            android:layout_height="2dip"
+            android:background="@color/colorPrimaryDark" />
+
+    </TableLayout>
+
 </LinearLayout>
