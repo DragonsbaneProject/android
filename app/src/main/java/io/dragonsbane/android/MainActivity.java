@@ -16,6 +16,7 @@ import android.widget.TextView;
 import io.dragonsbane.android.neurocog.PreTestActivity;
 import io.onemfive.android.api.SecurityAPI;
 import io.onemfive.android.api.healthcare.HealthRecordAPI;
+import io.onemfive.android.api.util.AndroidHelper;
 import io.onemfive.data.DID;
 import io.onemfive.data.util.DLC;
 import io.onemfive.data.Envelope;
@@ -139,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.i(MainActivity.class.getSimpleName(),"Received broadcast from DID verification.");
-            Envelope e = (Envelope)intent.getExtras().get(Envelope.class.getName());
+            Envelope e = AndroidHelper.getEnvelope(intent);
             DID did = e.getDID();
             if(!did.getVerified()) {
                 System.out.println("DID not registered.");
@@ -155,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.i(MainActivity.class.getSimpleName(),"Received broadcast from DID creation.");
-            Envelope e = (Envelope)intent.getExtras().get(Envelope.class.getName());
+            Envelope e = AndroidHelper.getEnvelope(intent);
             DID did = e.getDID();
             if(did.getStatus() == DID.Status.ACTIVE) {
                 ((DBApplication)getApplication()).setDid(did);
@@ -171,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.i(MainActivity.class.getSimpleName(),"Received broadcast from DID authN.");
-            Envelope e = (Envelope)intent.getExtras().get(Envelope.class.getName());
+            Envelope e = AndroidHelper.getEnvelope(intent);
             DID did = e.getDID();
             if(did.getAuthenticated()) {
                 ((DBApplication)getApplication()).setDid(did);
@@ -188,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.i(MainActivity.class.getSimpleName(),"Received broadcast from Health Record loading.");
-            Envelope e = (Envelope)intent.getExtras().get(Envelope.class.getName());
+            Envelope e = AndroidHelper.getEnvelope(intent);
             HealthRecord healthRecord = (HealthRecord)DLC.getEntity(e);
             if(healthRecord != null) {
                 System.out.println("Health Record loaded; healthStatus="+healthRecord.getHealthStatus().name());
