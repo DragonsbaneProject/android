@@ -42,6 +42,7 @@ public class ComplexMemoryTestActivity extends ImpairmentTestActivity {
 
     private boolean isBackOfCardShowing = true;
     private boolean shouldNotClick = false;
+    private boolean clicked = false;
 
     private FlipCard flipCard;
     private EndTest endTest;
@@ -72,9 +73,10 @@ public class ComplexMemoryTestActivity extends ImpairmentTestActivity {
 
     public void clickCard(View v) {
         end = new Date().getTime();
+        clicked = true;
         long diff = end - begin;
         if(isBackOfCardShowing) {memoryTest.addInappropriate(diff);return;}
-        if(shouldNotClick) {memoryTest.addMiss(diff);return;}
+        if(shouldNotClick) {memoryTest.addNegative(diff);return;}
         memoryTest.addSuccess(diff);
 
         flipCard.deactivate(); // Deactivate prior FlipCard
@@ -86,10 +88,11 @@ public class ComplexMemoryTestActivity extends ImpairmentTestActivity {
 
     @Override
     public void onAnimationStart(Animation animation) {
-        if(animation == animation1 && !isBackOfCardShowing && !shouldNotClick) {
+        if(animation == animation1 && !isBackOfCardShowing && !shouldNotClick&& !clicked) {
             // Should have clicked and did not
             memoryTest.addMiss(normalFlipDurationMs);
         }
+        clicked = false;
         if (animation == animation2) {
             if(isBackOfCardShowing) {
                 begin = new Date().getTime();
@@ -102,10 +105,16 @@ public class ComplexMemoryTestActivity extends ImpairmentTestActivity {
         if (animation == animation1) {
             // End of 1st half of flip
             if (isBackOfCardShowing) {
+                // Will end of being face card up
+                // New flip so decrement
                 numberFlips--;
+                // Advance the last card to the second to last card prior to reassignment of current card to new random card
                 secondToLastCardFlipped = lastCardFlipped;
+                // Advance the current card to last card prior to reassignment of current card to new random card
                 lastCardFlipped = currentCard;
+                // Assign new random card to current card
                 currentCard = ((DBApplication)getApplicationContext()).getRandomCard(randomStartCardIndex, randomStartCardIndex + maxNumberDifferentCards);
+                // Should not click if the current assigned card is not the same as the last card flipped
                 shouldNotClick = currentCard != secondToLastCardFlipped;
                 if(!memoryTest.cardsUsed().contains(currentCard)) memoryTest.cardsUsed().add(currentCard);
                 (findViewById(R.id.complexMemoryTestCard)).setBackground(getResources().getDrawable(currentCard));

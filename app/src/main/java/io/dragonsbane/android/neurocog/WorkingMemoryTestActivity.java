@@ -39,6 +39,7 @@ public class WorkingMemoryTestActivity extends ImpairmentTestActivity {
 
     private boolean isBackOfCardShowing = true;
     private boolean shouldNotClick = false;
+    private boolean clicked = false;
 
     private FlipCard flipCard;
     private EndTest endTest;
@@ -87,9 +88,10 @@ public class WorkingMemoryTestActivity extends ImpairmentTestActivity {
 
     public void clickCard(View v) {
         end = new Date().getTime();
+        clicked = true;
         long diff = end - begin;
         if(isBackOfCardShowing) {memoryTest.addInappropriate(diff);return;}
-        if(shouldNotClick) {memoryTest.addMiss(diff);return;}
+        if(shouldNotClick) {memoryTest.addNegative(diff);return;}
         memoryTest.addSuccess(diff);
         flipCard.deactivate(); // Deactivate prior FlipCard
         v.setEnabled(false);
@@ -100,10 +102,11 @@ public class WorkingMemoryTestActivity extends ImpairmentTestActivity {
 
     @Override
     public void onAnimationStart(Animation animation) {
-        if(animation == animation1 && !isBackOfCardShowing && !shouldNotClick) {
+        if(animation == animation1 && !isBackOfCardShowing && !shouldNotClick && !clicked) {
             // Should have clicked and did not
             memoryTest.addMiss(normalFlipDurationMs);
         }
+        clicked = false;
         if (animation == animation2) {
             if(isBackOfCardShowing) {
                 begin = new Date().getTime();
@@ -117,8 +120,11 @@ public class WorkingMemoryTestActivity extends ImpairmentTestActivity {
         if (animation == animation1) {
             // End of 1st half of flip
             if (isBackOfCardShowing) {
+                // Will end of being face card up
+                // New flip so decrement
                 numberFlips--;
                 currentNumberFlips++;
+
                 if(shouldNotClick) {
                     int random = Numbers.randomNumber(0,cardsNotUsedPrior.size()-1);
                     currentCard = cardsNotUsedPrior.get(random);
