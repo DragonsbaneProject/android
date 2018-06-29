@@ -11,8 +11,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import io.dragonsbane.android.DBApplication;
 import io.dragonsbane.android.MainActivity;
@@ -30,7 +32,9 @@ import io.onemfive.data.health.mental.memory.MemoryTest;
  */
 public class WorkingMemoryTestActivity extends ImpairmentTestActivity {
 
+    public Set<Integer> cardsUsedPriorSet = new HashSet<>();
     public List<Integer> cardsUsedPrior = new ArrayList<>();
+    public Set<Integer> cardsNotUsedPriorSet = new HashSet<>();
     public List<Integer> cardsNotUsedPrior = new ArrayList<>();
 
     private int numberFlips = 12;
@@ -59,23 +63,22 @@ public class WorkingMemoryTestActivity extends ImpairmentTestActivity {
 
         List<MemoryTest> tests = ((DBApplication)getApplication()).getTests();
         for(MemoryTest test : tests) {
-            cardsUsedPrior.addAll(test.cardsUsed());
+            cardsUsedPriorSet.addAll(test.cardsUsed());
         }
-        int numberCardsUsedPrior = cardsUsedPrior.size();
+        int numberCardsUsedPrior = cardsUsedPriorSet.size();
         for(int i = 0; i<numberCardsUsedPrior;i++) {
             int card = 0;
             boolean skip = true;
-            int runaway = 100;
-            while(skip && runaway-- > 0) {
+            while(skip) {
                 card = app.getRandomCard();
                 // don't use a card already used in past tests nor already added
-                skip = cardsUsedPrior.contains(card) ||
-                        cardsNotUsedPrior.contains(card);
+                skip = cardsUsedPriorSet.contains(card) ||
+                        cardsNotUsedPriorSet.contains(card);
             }
-            if(runaway > 0) // make sure break out not due to runaway
-                cardsNotUsedPrior.add(card);
+            cardsNotUsedPriorSet.add(card);
         }
-
+        cardsUsedPrior.addAll(cardsUsedPriorSet);
+        cardsNotUsedPrior.addAll(cardsNotUsedPriorSet);
         flipCard = new FlipCard();
         new Handler().postDelayed(flipCard, normalFlipDurationMs); // flip card after 3 seconds
     }
@@ -126,10 +129,10 @@ public class WorkingMemoryTestActivity extends ImpairmentTestActivity {
                 currentNumberFlips++;
 
                 if(shouldNotClick) {
-                    int random = Numbers.randomNumber(0,cardsNotUsedPrior.size()-1);
+                    int random = Numbers.randomNumber(0, cardsNotUsedPriorSet.size()-1);
                     currentCard = cardsNotUsedPrior.get(random);
                 } else {
-                    int random = Numbers.randomNumber(0,cardsUsedPrior.size()-1);
+                    int random = Numbers.randomNumber(0, cardsUsedPriorSet.size()-1);
                     currentCard = cardsUsedPrior.get(random);
                 }
                 if(!memoryTest.cardsUsed().contains(currentCard)) memoryTest.cardsUsed().add(currentCard);
