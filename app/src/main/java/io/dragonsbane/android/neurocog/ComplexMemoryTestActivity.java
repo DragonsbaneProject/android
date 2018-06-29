@@ -113,7 +113,7 @@ public class ComplexMemoryTestActivity extends ImpairmentTestActivity {
                 // Advance the current card to last card prior to reassignment of current card to new random card
                 lastCardFlipped = currentCard;
                 // Assign new random card to current card
-                currentCard = ((DBApplication)getApplicationContext()).getRandomCard(randomStartCardIndex, randomStartCardIndex + maxNumberDifferentCards);
+                currentCard = ((DBApplication)getApplicationContext()).getRandomCard(randomStartCardIndex, randomStartCardIndex + maxNumberDifferentCards-1);
                 // Should not click if the current assigned card is not the same as the last card flipped
                 shouldNotClick = currentCard != secondToLastCardFlipped;
                 if(!memoryTest.cardsUsed().contains(currentCard)) memoryTest.cardsUsed().add(currentCard);
