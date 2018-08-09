@@ -10,8 +10,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
+import io.dragonsbane.android.service.DragonsbaneAndroidService;
+import io.onemfive.android.api.admin.AdminAPI;
 import io.onemfive.android.api.service.OneMFiveAndroidRouterService;
+import io.onemfive.android.api.util.AndroidHelper;
 import io.onemfive.core.util.Numbers;
 import io.onemfive.data.DID;
 import io.onemfive.data.health.HealthRecord;
@@ -126,10 +130,25 @@ public class DBApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        // This is REQUIRED to communicate with 1M5 via Android
+        AndroidHelper.serviceClass = DragonsbaneAndroidService.class;
+
+        // Fonts
         nexa_bold = Typeface.createFromAsset(getAssets(),"fonts/nexa_bold.otf");
         nexa_light = Typeface.createFromAsset(getAssets(),"fonts/nexa_light.otf");
-        Intent i = new Intent(this, OneMFiveAndroidRouterService.class);
-        Log.i(DBApplication.class.getName(),"Starting OneMFiveAndroidRouterService to bootstrap 1M5 Core...");
+
+        // Ensure user DID available
+        did = new DID();
+
+        // Start Router Service
+        Intent i = new Intent(this, DragonsbaneAndroidService.class);
+        Log.i(DBApplication.class.getName(),"Starting DragonsbaneAndroidService to bootstrap 1M5 Core...");
         startService(i);
+
+        // Register Dragonsbane services with 1M5
+//        List<Class> servicesToRegister = new ArrayList<>();
+//        servicesToRegister.add(MLService.class);
+//        Properties p = new Properties();
+//        AdminAPI.registerServices(this, servicesToRegister, p);
     }
 }

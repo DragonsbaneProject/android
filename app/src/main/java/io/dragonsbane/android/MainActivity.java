@@ -13,6 +13,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.security.NoSuchAlgorithmException;
+
 import io.dragonsbane.android.neurocog.PreTestActivity;
 import io.onemfive.android.api.SecurityAPI;
 import io.onemfive.android.api.healthcare.HealthRecordAPI;
@@ -79,8 +81,12 @@ public class MainActivity extends AppCompatActivity {
 
         DID did = new DID();
         did.setAlias(username);
-        did.setPassphrase(password);
-        SecurityAPI.verifyDID(this, did);
+        try {
+            did.setPassphrase(password, DID.MESSAGE_DIGEST_SHA512);
+            SecurityAPI.verifyDID(this, did);
+        } catch (NoSuchAlgorithmException e) {
+            Log.w(MainActivity.class.getName(),e.getLocalizedMessage());
+        }
     }
 
     private void createDID(DID did) {
