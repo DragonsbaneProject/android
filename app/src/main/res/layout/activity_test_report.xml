@@ -16,7 +16,7 @@
         android:gravity="top"
         android:paddingBottom="20dp"
         android:text="@string/testResults"
-        android:textSize="30sp" />
+        android:textSize="25sp" />
 
     <TextView
         android:id="@+id/reportResults"

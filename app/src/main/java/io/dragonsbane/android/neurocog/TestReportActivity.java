@@ -19,10 +19,12 @@ import io.onemfive.data.health.mental.memory.MemoryTest;
 
 public class TestReportActivity extends AppCompatActivity {
 
+    private List<MemoryTest> tests;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        List<MemoryTest> tests = ((DBApplication) getApplicationContext()).getTests();
+        tests = ((DBApplication) getApplicationContext()).getTests();
         setContentView(R.layout.activity_test_report);
 
         Toolbar toolbar = findViewById(R.id.action_bar);

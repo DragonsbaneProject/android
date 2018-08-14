@@ -224,7 +224,7 @@ public class WorkingMemoryTestActivity extends ImpairmentTestActivity {
     }
 
     public void nextTest(View view) {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, ExportHistoryActivity.class);
         startActivity(intent);
     }
 

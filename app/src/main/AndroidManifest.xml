@@ -2,22 +2,22 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="io.dragonsbane.android">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".DBApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.DB">
-
-        <service android:name=".service.DragonsbaneAndroidService"/>
+        <service android:name=".service.DragonsbaneAndroidService" />
 
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -30,8 +30,8 @@
         <activity android:name=".neurocog.WorkingMemoryTestActivity" />
         <activity android:name=".neurocog.TestReportActivity" />
         <activity android:name=".neurocog.TestHistoryActivity" />
-        <activity android:name=".neurocog.ViewUserProfileActivity"/>
-
+        <activity android:name=".neurocog.ViewUserProfileActivity" />
+        <activity android:name=".neurocog.ExportHistoryActivity"></activity>
     </application>
 
 </manifest>

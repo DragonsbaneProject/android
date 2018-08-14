@@ -48,6 +48,9 @@
 
     <!-- Test Population Activity -->
 
+    <!-- Export History Activity -->
+    <string name="exportHistoryTitle">Export</string>
+
     <!-- General -->
     <string name="notImpaired">Passed! Continue&#8230;</string>
     <string name="borderlineImpairment">Borderline. Personal judgement recommended.</string>
