@@ -16,6 +16,7 @@ import android.widget.TextView;
 import java.security.NoSuchAlgorithmException;
 
 import io.dragonsbane.android.neurocog.PreTestActivity;
+import io.dragonsbane.android.service.ServiceAPI;
 import io.onemfive.android.api.SecurityAPI;
 import io.onemfive.android.api.healthcare.HealthRecordAPI;
 import io.onemfive.data.DID;
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         DID did = new DID();
         did.setAlias(username);
         try {
-            did.setPassphrase(password, DID.MESSAGE_DIGEST_SHA512);
+            did.setPassphrase(password);
             SecurityAPI.verifyDID(this, did);
         } catch (NoSuchAlgorithmException e) {
             Log.w(MainActivity.class.getName(),e.getLocalizedMessage());
@@ -165,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
             DID did = e.getDID();
             if(did.getStatus() == DID.Status.ACTIVE) {
                 ((DBApplication)getApplication()).setDid(did);
+                ServiceAPI.setUserDID(did);
                 System.out.println("DID created. Load Health Record...");
                 loadHealthRecord(did);
             } else {
@@ -181,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
             DID did = e.getDID();
             if(did.getAuthenticated()) {
                 ((DBApplication)getApplication()).setDid(did);
+                ServiceAPI.setUserDID(did);
                 System.out.println("DID authenticated. Load Health Record...");
                 loadHealthRecord(did);
             } else {

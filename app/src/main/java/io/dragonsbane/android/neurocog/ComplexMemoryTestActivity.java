@@ -15,6 +15,7 @@ import java.util.List;
 
 import io.dragonsbane.android.DBApplication;
 import io.dragonsbane.android.R;
+import io.dragonsbane.android.service.ServiceAPI;
 import io.onemfive.android.api.healthcare.HealthRecordAPI;
 import io.onemfive.core.util.Numbers;
 import io.onemfive.data.health.mental.memory.MemoryTest;
@@ -206,6 +207,7 @@ public class ComplexMemoryTestActivity extends ImpairmentTestActivity {
     }
 
     public void nextTest(View view) {
+        ServiceAPI.saveTest(this, memoryTest);
         Intent intent = new Intent(this, WorkingMemoryTestActivity.class);
         startActivity(intent);
     }

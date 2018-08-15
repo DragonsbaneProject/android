@@ -17,6 +17,7 @@ import java.util.Random;
 import io.dragonsbane.android.DBApplication;
 import io.dragonsbane.android.MainActivity;
 import io.dragonsbane.android.R;
+import io.dragonsbane.android.service.ServiceAPI;
 import io.onemfive.android.api.healthcare.HealthRecordAPI;
 import io.onemfive.core.util.Numbers;
 import io.onemfive.data.health.mental.memory.MemoryTest;
@@ -224,7 +225,8 @@ public class WorkingMemoryTestActivity extends ImpairmentTestActivity {
     }
 
     public void nextTest(View view) {
-        Intent intent = new Intent(this, ExportHistoryActivity.class);
+        ServiceAPI.saveTest(this, memoryTest);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 

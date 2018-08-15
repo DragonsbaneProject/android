@@ -13,6 +13,7 @@ import java.util.Date;
 
 import io.dragonsbane.android.DBApplication;
 import io.dragonsbane.android.R;
+import io.dragonsbane.android.service.ServiceAPI;
 import io.onemfive.core.util.Numbers;
 import io.onemfive.data.health.mental.memory.MemoryTest;
 
@@ -210,6 +211,7 @@ public class SimpleMemoryTestActivity extends ImpairmentTestActivity {
     }
 
     public void nextTest(View view) {
+        ServiceAPI.saveTest(this, memoryTest);
         Intent intent = new Intent(this, ComplexMemoryTestActivity.class);
         startActivity(intent);
     }
