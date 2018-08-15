@@ -164,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
             Log.i(MainActivity.class.getSimpleName(),"Received broadcast from DID creation.");
             Envelope e = (Envelope)intent.getExtras().get(Envelope.class.getName());
             DID did = e.getDID();
+            Log.i(MainActivity.class.getSimpleName(), "DID.status: "+did.getStatus().name());
             if(did.getStatus() == DID.Status.ACTIVE) {
                 ((DBApplication)getApplication()).setDid(did);
                 ServiceAPI.setUserDID(did);

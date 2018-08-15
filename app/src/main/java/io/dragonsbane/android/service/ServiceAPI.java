@@ -23,11 +23,13 @@ public class ServiceAPI {
     public static void setUserDID(DID did) { userDID = did; }
 
     public static void saveTest(Context ctx, MemoryTest test) {
+        Log.i(ServiceAPI.class.getSimpleName(),"Saving test...");
         Envelope e = Envelope.documentFactory();
         e.setDID(userDID);
         DLC.addEntity(test,e);
         DLC.addRoute(InfoVaultService.class, InfoVaultService.OPERATION_SAVE,e);
         send(ctx, e);
+        Log.i(ServiceAPI.class.getSimpleName(),"Test saved.");
     }
 
     public static void saveTests(Context ctx, List<MemoryTest> tests) {
