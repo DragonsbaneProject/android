@@ -1,4 +1,4 @@
-package io.dragonsbane.android.database;
+package io.dragonsbane.neurocog.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

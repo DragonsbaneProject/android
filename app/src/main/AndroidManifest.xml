@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.dragonsbane.android">
+    package="io.dragonsbane.neurocog">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.DB">
-        <service android:name=".service.DragonsbaneAndroidService" />
+        <service android:name=".ServiceAPI" />
 
         <activity android:name=".MainActivity">
             <intent-filter>

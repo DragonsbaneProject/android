@@ -1,4 +1,4 @@
-package io.dragonsbane.android.tests;
+package io.dragonsbane.neurocog.tests;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,8 +11,8 @@ import android.widget.TextView;
 
 import java.util.Date;
 
-import io.dragonsbane.android.DBApplication;
-import io.dragonsbane.android.R;
+import io.dragonsbane.neurocog.DBApplication;
+import io.dragonsbane.neurocog.R;
 import io.onemfive.core.util.Numbers;
 
 /**

@@ -1,10 +1,10 @@
-package io.dragonsbane.android;
+package io.dragonsbane.neurocog;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import io.dragonsbane.android.database.Storage;
+import io.dragonsbane.neurocog.database.Storage;
 
 public abstract class DBActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package io.dragonsbane.android.service;
+package io.dragonsbane.neurocog;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,19 +6,28 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
-import io.dragonsbane.android.tests.ImpairmentTest;
+import io.dragonsbane.neurocog.tests.ImpairmentTest;
+import io.onemfive.android.api.service.OneMFiveAndroidRouterService;
 import io.onemfive.android.api.util.AndroidHelper;
 import io.onemfive.core.infovault.InfoVaultService;
 import io.onemfive.data.DID;
 import io.onemfive.data.Envelope;
 import io.onemfive.data.util.DLC;
 
-public class ServiceAPI {
+public class ServiceAPI extends OneMFiveAndroidRouterService {
 
     public static final String MEMORY_TESTS_LOADED = "io.dragonsbane.android.service.MemoryTests.Loaded";
 
     private static DID userDID = null;
+
+    public ServiceAPI() {
+        super(ServiceAPI.class.getName());
+        Properties p = new Properties();
+        p.put(OneMFiveAndroidRouterService.PARAM_ROOT_DIR,"dgb");
+        super.properties = p;
+    }
 
     public static void setUserDID(DID did) { userDID = did; }
 
@@ -53,9 +62,9 @@ public class ServiceAPI {
     }
 
     private static void send(Context ctx, Envelope e) {
-        Intent i = new Intent(ctx, DragonsbaneAndroidService.class);
+        Intent i = new Intent(ctx, ServiceAPI.class);
         AndroidHelper.setEnvelope(i,e);
-        Log.i(ServiceAPI.class.getName(),"Sending request to DragonsbaneAndroidService");
+        Log.i(ServiceAPI.class.getName(),"Sending request to ServiceAPI");
         ctx.startService(i);
     }
 }

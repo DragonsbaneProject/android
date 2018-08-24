@@ -1,4 +1,4 @@
-package io.dragonsbane.android;
+package io.dragonsbane.neurocog;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -12,8 +12,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import io.dragonsbane.android.tests.PreTestActivity;
-import io.dragonsbane.android.service.ServiceAPI;
+import io.dragonsbane.neurocog.tests.PreTestActivity;
 import io.onemfive.android.api.SecurityAPI;
 import io.onemfive.android.api.healthcare.HealthRecordAPI;
 import io.onemfive.core.did.AuthenticateDIDRequest;

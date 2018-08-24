@@ -1,4 +1,4 @@
-package io.dragonsbane.android;
+package io.dragonsbane.neurocog;
 
 import android.app.Activity;
 import android.app.Application;
@@ -11,9 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.dragonsbane.android.database.Storage;
-import io.dragonsbane.android.tests.ImpairmentTest;
-import io.dragonsbane.android.service.DragonsbaneAndroidService;
+import io.dragonsbane.neurocog.database.Storage;
+import io.dragonsbane.neurocog.tests.ImpairmentTest;
 import io.onemfive.android.api.util.AndroidHelper;
 import io.onemfive.core.util.Numbers;
 import io.onemfive.data.DID;
@@ -132,7 +131,7 @@ public class DBApplication extends Application {
     public void onCreate() {
         super.onCreate();
         // This is REQUIRED to communicate with 1M5 via Android
-        AndroidHelper.serviceClass = DragonsbaneAndroidService.class;
+        AndroidHelper.serviceClass = ServiceAPI.class;
 
         // Fonts
         nexa_bold = Typeface.createFromAsset(getAssets(),"fonts/nexa_bold.otf");
@@ -144,8 +143,8 @@ public class DBApplication extends Application {
         storage = new Storage(this, 2);
 
         // Start Router Service
-        Intent i = new Intent(this, DragonsbaneAndroidService.class);
-        Log.i(DBApplication.class.getName(),"Starting DragonsbaneAndroidService to bootstrap 1M5 Core...");
+        Intent i = new Intent(this, ServiceAPI.class);
+        Log.i(DBApplication.class.getName(),"Starting ServiceAPI to bootstrap 1M5 Core...");
         startService(i);
 
         // Register Dragonsbane services with 1M5

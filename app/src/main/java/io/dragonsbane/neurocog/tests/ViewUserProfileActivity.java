@@ -1,12 +1,12 @@
-package io.dragonsbane.android.tests;
+package io.dragonsbane.neurocog.tests;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
-import io.dragonsbane.android.DBApplication;
-import io.dragonsbane.android.R;
+import io.dragonsbane.neurocog.DBApplication;
+import io.dragonsbane.neurocog.R;
 
 public class ViewUserProfileActivity extends AppCompatActivity {
 

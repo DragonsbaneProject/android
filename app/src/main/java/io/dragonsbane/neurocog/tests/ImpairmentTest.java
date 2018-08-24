@@ -1,4 +1,4 @@
-package io.dragonsbane.android.tests;
+package io.dragonsbane.neurocog.tests;
 
 import java.util.ArrayList;
 import java.util.Date;

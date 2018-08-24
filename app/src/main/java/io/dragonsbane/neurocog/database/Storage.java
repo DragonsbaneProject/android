@@ -1,11 +1,11 @@
-package io.dragonsbane.android.database;
+package io.dragonsbane.neurocog.database;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import io.dragonsbane.android.tests.ImpairmentTest;
+import io.dragonsbane.neurocog.tests.ImpairmentTest;
 
 public class Storage {
 

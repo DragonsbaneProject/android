@@ -1,13 +1,13 @@
-package io.dragonsbane.android.tests;
+package io.dragonsbane.neurocog.tests;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import io.dragonsbane.android.DBActivity;
-import io.dragonsbane.android.DBApplication;
-import io.dragonsbane.android.R;
+import io.dragonsbane.neurocog.DBActivity;
+import io.dragonsbane.neurocog.DBApplication;
+import io.dragonsbane.neurocog.R;
 import io.onemfive.data.DID;
 
 /**
