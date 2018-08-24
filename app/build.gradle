@@ -26,6 +26,13 @@ android {
     dexOptions {
         javaMaxHeapSize "4g"
     }
+    packagingOptions {
+        exclude 'project.clj'
+        exclude 'META-INF/INDEX.LIST'
+        exclude 'META-INF/README.txt'
+        exclude 'META-INF/README.md'
+        exclude 'META-INF/LICENSES.txt'
+    }
 }
 
 configurations {

@@ -10,16 +10,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
+import io.dragonsbane.android.database.Storage;
+import io.dragonsbane.android.database.StorageHelper;
+import io.dragonsbane.android.neurocog.ImpairmentTest;
 import io.dragonsbane.android.service.DragonsbaneAndroidService;
-import io.onemfive.android.api.admin.AdminAPI;
-import io.onemfive.android.api.service.OneMFiveAndroidRouterService;
 import io.onemfive.android.api.util.AndroidHelper;
 import io.onemfive.core.util.Numbers;
 import io.onemfive.data.DID;
 import io.onemfive.data.health.HealthRecord;
-import io.onemfive.data.health.mental.memory.MemoryTest;
 
 /**
  * TODO: Add Definition
@@ -31,10 +30,12 @@ public class DBApplication extends Application {
     private HealthRecord healthRecord;
     private Double bac = 0.0D;
     private Boolean baseline = false;
-    private List<MemoryTest> tests = new ArrayList<>();
+    private List<ImpairmentTest> tests = new ArrayList<>();
     private Map<String,Activity> activities = new HashMap<>();
     private Typeface nexa_bold;
     private Typeface nexa_light;
+
+    private Storage storage;
 
     public static int[] cards = {
             R.drawable.card_c2, R.drawable.card_c3, R.drawable.card_c4, R.drawable.card_c5,
@@ -95,11 +96,11 @@ public class DBApplication extends Application {
         return nexa_light;
     }
 
-    public void addTest(MemoryTest test) {
+    public void addTest(ImpairmentTest test) {
         tests.add(test);
     }
 
-    public List<MemoryTest> getTests() {
+    public List<ImpairmentTest> getTests() {
         return tests;
     }
 
@@ -111,7 +112,8 @@ public class DBApplication extends Application {
         return activities.get(clazz.getName());
     }
 
-    public void addActivity(Class clazz, Activity activity) {
+    public void addActivity(Class clazz, DBActivity activity) {
+        activity.setStorage(storage);
         activities.put(clazz.getName(), activity);
     }
 
@@ -139,6 +141,8 @@ public class DBApplication extends Application {
 
         // Ensure user DID available
         did = new DID();
+
+        storage = new Storage(this, 2);
 
         // Start Router Service
         Intent i = new Intent(this, DragonsbaneAndroidService.class);

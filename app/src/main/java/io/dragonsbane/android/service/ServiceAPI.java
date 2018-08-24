@@ -7,11 +7,11 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.dragonsbane.android.neurocog.ImpairmentTest;
 import io.onemfive.android.api.util.AndroidHelper;
 import io.onemfive.core.infovault.InfoVaultService;
 import io.onemfive.data.DID;
 import io.onemfive.data.Envelope;
-import io.onemfive.data.health.mental.memory.MemoryTest;
 import io.onemfive.data.util.DLC;
 
 public class ServiceAPI {
@@ -22,21 +22,21 @@ public class ServiceAPI {
 
     public static void setUserDID(DID did) { userDID = did; }
 
-    public static void saveTest(Context ctx, MemoryTest test) {
+    public static void saveTest(Context ctx, ImpairmentTest test) {
         Log.i(ServiceAPI.class.getSimpleName(),"Saving test...");
         Envelope e = Envelope.documentFactory();
         e.setDID(userDID);
         DLC.addEntity(test,e);
-        DLC.addRoute(InfoVaultService.class, InfoVaultService.OPERATION_SAVE,e);
+        DLC.addRoute(InfoVaultService.class, InfoVaultService.OPERATION_EXECUTE,e);
         send(ctx, e);
         Log.i(ServiceAPI.class.getSimpleName(),"Test saved.");
     }
 
-    public static void saveTests(Context ctx, List<MemoryTest> tests) {
+    public static void saveTests(Context ctx, List<ImpairmentTest> tests) {
         Envelope e = Envelope.documentFactory();
         e.setDID(userDID);
         DLC.addEntity(tests,e);
-        DLC.addRoute(InfoVaultService.class, InfoVaultService.OPERATION_SAVE,e);
+        DLC.addRoute(InfoVaultService.class, InfoVaultService.OPERATION_EXECUTE,e);
         send(ctx, e);
     }
 
@@ -44,11 +44,11 @@ public class ServiceAPI {
         Envelope e = Envelope.documentFactory();
         e.setClientReplyAction(MEMORY_TESTS_LOADED);
         e.setDID(userDID);
-        List<MemoryTest> tests = new ArrayList<>();
-        MemoryTest test = new MemoryTest();
+        List<ImpairmentTest> tests = new ArrayList<>();
+        ImpairmentTest test = new ImpairmentTest();
         tests.add(test);
         DLC.addEntity(tests,e);
-        DLC.addRoute(InfoVaultService.class, InfoVaultService.OPERATION_LOAD,e);
+        DLC.addRoute(InfoVaultService.class, InfoVaultService.OPERATION_EXECUTE,e);
         send(ctx, e);
     }
 

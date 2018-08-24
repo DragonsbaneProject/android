@@ -2,18 +2,13 @@ package io.dragonsbane.android.neurocog;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import io.dragonsbane.android.DBActivity;
 import io.dragonsbane.android.DBApplication;
 import io.dragonsbane.android.R;
-import io.onemfive.android.api.healthcare.HealthRecordAPI;
 import io.onemfive.data.DID;
-import io.onemfive.data.health.mental.memory.MemoryTest;
 
 /**
  * TODO: Add Definition
@@ -21,14 +16,14 @@ import io.onemfive.data.health.mental.memory.MemoryTest;
  * @author ObjectOrange
  */
 
-public abstract class ImpairmentTestActivity extends AppCompatActivity implements Animation.AnimationListener {
+public abstract class ImpairmentTestActivity extends DBActivity implements Animation.AnimationListener {
 
     public static final String GROSS_IMPAIRMENT = "GrossImpairment";
     public static final String IMPAIRMENT = "Impairment";
     public static final String BORDERLINE_IMPAIRMENT = "BorderlineImpairment";
     public static final String NO_IMPAIRMENT = "NoImpairment";
 
-    protected MemoryTest memoryTest;
+    protected ImpairmentTest test;
     protected Animation animation1;
     protected Animation animation2;
 
@@ -73,8 +68,9 @@ public abstract class ImpairmentTestActivity extends AppCompatActivity implement
     }
 
     protected void testFinished() {
-        HealthRecordAPI.saveMemoryTest(getApplicationContext(), did, memoryTest);
-        app.addTest(memoryTest);
+        test.setDid(app.getDid());
+        storage.saveImpairmentTest(test);
+        app.addTest(test);
     }
 
 }

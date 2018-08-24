@@ -19,6 +19,7 @@ import io.dragonsbane.android.neurocog.PreTestActivity;
 import io.dragonsbane.android.service.ServiceAPI;
 import io.onemfive.android.api.SecurityAPI;
 import io.onemfive.android.api.healthcare.HealthRecordAPI;
+import io.onemfive.core.did.AuthenticateDIDRequest;
 import io.onemfive.data.DID;
 import io.onemfive.data.util.DLC;
 import io.onemfive.data.Envelope;
@@ -29,12 +30,11 @@ import io.onemfive.data.health.HealthRecord;
  *
  * @author objectorange
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends DBActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((DBApplication)getApplication()).addActivity(MainActivity.class, this);
         registerReceiver(verifyDIDReceiver, new IntentFilter(SecurityAPI.DIDVerified));
         registerReceiver(createDIDReceiver, new IntentFilter(SecurityAPI.DIDCreated));
         registerReceiver(authenticateDIDReceiver, new IntentFilter(SecurityAPI.DIDAuthenticated));
@@ -82,12 +82,8 @@ public class MainActivity extends AppCompatActivity {
 
         DID did = new DID();
         did.setAlias(username);
-        try {
-            did.setPassphrase(password);
-            SecurityAPI.verifyDID(this, did);
-        } catch (NoSuchAlgorithmException e) {
-            Log.w(MainActivity.class.getName(),e.getLocalizedMessage());
-        }
+        did.setPassphrase(password);
+        SecurityAPI.verifyDID(this, did);
     }
 
     private void createDID(DID did) {
@@ -164,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
             Log.i(MainActivity.class.getSimpleName(),"Received broadcast from DID creation.");
             Envelope e = (Envelope)intent.getExtras().get(Envelope.class.getName());
             DID did = e.getDID();
-            Log.i(MainActivity.class.getSimpleName(), "DID.status: "+did.getStatus().name());
+            Log.i(MainActivity.class.getSimpleName(), "DID: alias="+did.getAlias()+", status="+did.getStatus().name());
             if(did.getStatus() == DID.Status.ACTIVE) {
                 ((DBApplication)getApplication()).setDid(did);
                 ServiceAPI.setUserDID(did);
@@ -181,7 +177,9 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             Log.i(MainActivity.class.getSimpleName(),"Received broadcast from DID authN.");
             Envelope e = (Envelope)intent.getExtras().get(Envelope.class.getName());
+            AuthenticateDIDRequest r = (AuthenticateDIDRequest)DLC.getData(AuthenticateDIDRequest.class, e);
             DID did = e.getDID();
+            did.setAuthenticated(r.did.getAuthenticated());
             if(did.getAuthenticated()) {
                 ((DBApplication)getApplication()).setDid(did);
                 ServiceAPI.setUserDID(did);

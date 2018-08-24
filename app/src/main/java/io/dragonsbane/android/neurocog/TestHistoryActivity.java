@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -13,14 +12,10 @@ import java.util.List;
 import io.dragonsbane.android.DBApplication;
 import io.dragonsbane.android.MainActivity;
 import io.dragonsbane.android.R;
-import io.onemfive.android.api.healthcare.HealthRecordAPI;
-import io.onemfive.data.DID;
-import io.onemfive.data.Email;
-import io.onemfive.data.health.mental.memory.MemoryTest;
 
 public class TestHistoryActivity extends AppCompatActivity {
 
-    private List<MemoryTest> tests;
+    private List<ImpairmentTest> tests;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +26,6 @@ public class TestHistoryActivity extends AppCompatActivity {
         TextView titleTextView = (TextView) toolbar.getChildAt(0);
         titleTextView.setTextColor(getResources().getColor(R.color.dragonsbaneBlack));
         titleTextView.setTypeface(((DBApplication)getApplication()).getNexaBold());
-
-        HealthRecordAPI.loadMemoryTestHistory(getApplicationContext(), ((DBApplication)getApplication()).getDid());
     }
 
 //    public void sendHistory(View view) {
