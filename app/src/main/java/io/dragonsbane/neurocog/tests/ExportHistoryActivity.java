@@ -27,7 +27,7 @@ public class ExportHistoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        registerReceiver(loadTestsReceiver, new IntentFilter(ServiceAPI.MEMORY_TESTS_LOADED));
+        registerReceiver(loadTestsReceiver, new IntentFilter(ServiceAPI.IMPAIRMENT_TESTS_LOADED));
         ServiceAPI.loadTests(this);
         setContentView(R.layout.activity_export_history);
     }

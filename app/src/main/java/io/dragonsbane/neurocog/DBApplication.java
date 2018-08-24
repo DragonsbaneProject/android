@@ -16,7 +16,6 @@ import io.dragonsbane.neurocog.tests.ImpairmentTest;
 import io.onemfive.android.api.util.AndroidHelper;
 import io.onemfive.core.util.Numbers;
 import io.onemfive.data.DID;
-import io.onemfive.data.health.HealthRecord;
 
 /**
  * Dragonsbane
@@ -25,7 +24,6 @@ import io.onemfive.data.health.HealthRecord;
 public class DBApplication extends Application {
 
     private DID did;
-    private HealthRecord healthRecord;
     private Double bac = 0.0D;
     private Boolean baseline = false;
     private List<ImpairmentTest> tests = new ArrayList<>();
@@ -60,14 +58,6 @@ public class DBApplication extends Application {
 
     public void setDid(DID did) {
         this.did = did;
-    }
-
-    public HealthRecord getHealthRecord() {
-        return healthRecord;
-    }
-
-    public void setHealthRecord(HealthRecord healthRecord) {
-        this.healthRecord = healthRecord;
     }
 
     public Double getBac() {

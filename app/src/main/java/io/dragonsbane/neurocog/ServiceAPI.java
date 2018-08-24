@@ -18,7 +18,7 @@ import io.onemfive.data.util.DLC;
 
 public class ServiceAPI extends OneMFiveAndroidRouterService {
 
-    public static final String MEMORY_TESTS_LOADED = "io.dragonsbane.android.service.MemoryTests.Loaded";
+    public static final String IMPAIRMENT_TESTS_LOADED = "io.dragonsbane.neurocog.tests.ImpairmentTests.Loaded";
 
     private static DID userDID = null;
 
@@ -51,7 +51,7 @@ public class ServiceAPI extends OneMFiveAndroidRouterService {
 
     public static void loadTests(Context ctx) {
         Envelope e = Envelope.documentFactory();
-        e.setClientReplyAction(MEMORY_TESTS_LOADED);
+        e.setClientReplyAction(IMPAIRMENT_TESTS_LOADED);
         e.setDID(userDID);
         List<ImpairmentTest> tests = new ArrayList<>();
         ImpairmentTest test = new ImpairmentTest();

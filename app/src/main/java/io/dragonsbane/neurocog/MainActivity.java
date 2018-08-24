@@ -15,6 +15,7 @@ import android.widget.TextView;
 import io.dragonsbane.neurocog.tests.PreTestActivity;
 import io.onemfive.android.api.SecurityAPI;
 import io.onemfive.android.api.healthcare.HealthRecordAPI;
+import io.onemfive.android.api.util.AndroidHelper;
 import io.onemfive.core.did.AuthenticateDIDRequest;
 import io.onemfive.data.DID;
 import io.onemfive.data.util.DLC;
@@ -34,7 +35,6 @@ public class MainActivity extends DBActivity {
         registerReceiver(verifyDIDReceiver, new IntentFilter(SecurityAPI.DIDVerified));
         registerReceiver(createDIDReceiver, new IntentFilter(SecurityAPI.DIDCreated));
         registerReceiver(authenticateDIDReceiver, new IntentFilter(SecurityAPI.DIDAuthenticated));
-        registerReceiver(loadHealthRecordReceiver, new IntentFilter(HealthRecordAPI.HealthRecordLoaded));
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = findViewById(R.id.action_bar);
@@ -49,7 +49,6 @@ public class MainActivity extends DBActivity {
         unregisterReceiver(verifyDIDReceiver);
         unregisterReceiver(createDIDReceiver);
         unregisterReceiver(authenticateDIDReceiver);
-        unregisterReceiver(loadHealthRecordReceiver);
         ((DBApplication)getApplication()).removeActivity(MainActivity.class);
     }
 
@@ -90,11 +89,6 @@ public class MainActivity extends DBActivity {
     private void authenticateDID(DID did) {
         Log.i(MainActivity.class.getName(),"Authenticating DID...");
         SecurityAPI.authenticateDID(this, did);
-    }
-
-    private void loadHealthRecord(DID did) {
-        Log.i(MainActivity.class.getName(),"Loading Health Record...");
-        HealthRecordAPI.loadHealthRecord(this, did);
     }
 
     private void showError(String error) {
@@ -138,7 +132,7 @@ public class MainActivity extends DBActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.i(MainActivity.class.getSimpleName(),"Received broadcast from DID verification.");
-            Envelope e = (Envelope)intent.getExtras().get(Envelope.class.getName());
+            Envelope e = AndroidHelper.getEnvelope(intent);
             DID did = e.getDID();
             if(!did.getVerified()) {
                 System.out.println("DID not registered.");
@@ -154,14 +148,14 @@ public class MainActivity extends DBActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.i(MainActivity.class.getSimpleName(),"Received broadcast from DID creation.");
-            Envelope e = (Envelope)intent.getExtras().get(Envelope.class.getName());
+            Envelope e = AndroidHelper.getEnvelope(intent);
             DID did = e.getDID();
             Log.i(MainActivity.class.getSimpleName(), "DID: alias="+did.getAlias()+", status="+did.getStatus().name());
             if(did.getStatus() == DID.Status.ACTIVE) {
                 ((DBApplication)getApplication()).setDid(did);
                 ServiceAPI.setUserDID(did);
-                System.out.println("DID created. Load Health Record...");
-                loadHealthRecord(did);
+                System.out.println("DID created. Starting tests...");
+                startTest();
             } else {
                 showError("Error creating DID.");
             }
@@ -172,35 +166,18 @@ public class MainActivity extends DBActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.i(MainActivity.class.getSimpleName(),"Received broadcast from DID authN.");
-            Envelope e = (Envelope)intent.getExtras().get(Envelope.class.getName());
+            Envelope e = AndroidHelper.getEnvelope(intent);
             AuthenticateDIDRequest r = (AuthenticateDIDRequest)DLC.getData(AuthenticateDIDRequest.class, e);
             DID did = e.getDID();
             did.setAuthenticated(r.did.getAuthenticated());
             if(did.getAuthenticated()) {
                 ((DBApplication)getApplication()).setDid(did);
                 ServiceAPI.setUserDID(did);
-                System.out.println("DID authenticated. Load Health Record...");
-                loadHealthRecord(did);
+                System.out.println("DID authenticated. Starting tests...");
+                startTest();
             } else {
                 System.out.println("DID not authenticated.");
                 showError(getResources().getText(R.string.passwordFailed).toString());
-            }
-        }
-    };
-
-    private BroadcastReceiver loadHealthRecordReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.i(MainActivity.class.getSimpleName(),"Received broadcast from Health Record loading.");
-            Envelope e = (Envelope)intent.getExtras().get(Envelope.class.getName());
-            HealthRecord healthRecord = (HealthRecord)DLC.getEntity(e);
-            if(healthRecord != null) {
-                System.out.println("Health Record loaded; healthStatus="+healthRecord.getHealthStatus().name());
-                ((DBApplication)getApplication()).setHealthRecord(healthRecord);
-                startTest();
-            } else {
-                System.out.println("Health Record not found.");
-                showError("Error loading Health Record.");
             }
         }
     };
