@@ -25,15 +25,15 @@
         </activity>
         <activity android:name=".SettingsActivity" />
         <!-- Neurocog -->
-        <activity android:name=".neurocog.TestDisclaimerActivity" />
-        <activity android:name=".neurocog.PreTestActivity" />
-        <activity android:name=".neurocog.SimpleMemoryTestActivity" />
-        <activity android:name=".neurocog.ComplexMemoryTestActivity" />
-        <activity android:name=".neurocog.WorkingMemoryTestActivity" />
-        <activity android:name=".neurocog.TestReportActivity" />
-        <activity android:name=".neurocog.TestHistoryActivity" />
-        <activity android:name=".neurocog.ViewUserProfileActivity" />
-        <activity android:name=".neurocog.ExportHistoryActivity"></activity>
+        <activity android:name=".tests.TestDisclaimerActivity" />
+        <activity android:name=".tests.PreTestActivity" />
+        <activity android:name=".tests.SimpleMemoryTestActivity" />
+        <activity android:name=".tests.ComplexMemoryTestActivity" />
+        <activity android:name=".tests.WorkingMemoryTestActivity" />
+        <activity android:name=".tests.TestReportActivity" />
+        <activity android:name=".tests.TestHistoryActivity" />
+        <activity android:name=".tests.ViewUserProfileActivity" />
+        <activity android:name=".tests.ExportHistoryActivity"></activity>
     </application>
 
 </manifest>

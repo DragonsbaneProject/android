@@ -5,7 +5,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import io.dragonsbane.android.neurocog.ImpairmentTest;
+import io.dragonsbane.android.tests.ImpairmentTest;
 
 public class Storage {
 

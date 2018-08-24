@@ -1,4 +1,4 @@
-package io.dragonsbane.android.neurocog;
+package io.dragonsbane.android.tests;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

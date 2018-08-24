@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:gravity="center"
     android:scrollbarTrackVertical="@color/colorPrimary"
-    tools:context=".neurocog.SimpleMemoryTestActivity">
+    tools:context=".tests.SimpleMemoryTestActivity">
 
     <TextView
         android:layout_width="match_parent"

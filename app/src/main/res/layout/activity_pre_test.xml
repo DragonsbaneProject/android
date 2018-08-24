@@ -9,7 +9,7 @@
     android:orientation="vertical"
     android:gravity="center"
     android:scrollbarTrackVertical="@color/colorPrimary"
-    tools:context=".neurocog.PreTestActivity">
+    tools:context=".tests.PreTestActivity">
 
     <TextView
         android:id="@+id/mainTextWelcome"

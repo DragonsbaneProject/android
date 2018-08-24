@@ -6,7 +6,7 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:orientation="vertical"
-    tools:context=".neurocog.ViewUserProfileActivity">
+    tools:context=".tests.ViewUserProfileActivity">
 
 
 

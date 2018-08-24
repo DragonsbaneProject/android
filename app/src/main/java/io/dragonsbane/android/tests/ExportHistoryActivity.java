@@ -1,4 +1,4 @@
-package io.dragonsbane.android.neurocog;
+package io.dragonsbane.android.tests;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -13,7 +13,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
-import io.dragonsbane.android.DBApplication;
 import io.dragonsbane.android.R;
 import io.dragonsbane.android.service.ServiceAPI;
 import io.onemfive.android.api.util.AndroidHelper;

@@ -12,8 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.dragonsbane.android.database.Storage;
-import io.dragonsbane.android.database.StorageHelper;
-import io.dragonsbane.android.neurocog.ImpairmentTest;
+import io.dragonsbane.android.tests.ImpairmentTest;
 import io.dragonsbane.android.service.DragonsbaneAndroidService;
 import io.onemfive.android.api.util.AndroidHelper;
 import io.onemfive.core.util.Numbers;
@@ -21,7 +20,7 @@ import io.onemfive.data.DID;
 import io.onemfive.data.health.HealthRecord;
 
 /**
- * TODO: Add Definition
+ * Dragonsbane
  * @author objectorange
  */
 public class DBApplication extends Application {

@@ -6,6 +6,6 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:orientation="vertical"
-    tools:context=".neurocog.TestDisclaimerActivity">
+    tools:context=".tests.TestDisclaimerActivity">
 
 </LinearLayout>

@@ -1,4 +1,4 @@
-package io.dragonsbane.android.neurocog;
+package io.dragonsbane.android.tests;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,17 +10,17 @@ import android.widget.TextView;
 import java.util.List;
 
 import io.dragonsbane.android.DBApplication;
+import io.dragonsbane.android.MainActivity;
 import io.dragonsbane.android.R;
 
-public class TestReportActivity extends AppCompatActivity {
+public class TestHistoryActivity extends AppCompatActivity {
 
     private List<ImpairmentTest> tests;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        tests = ((DBApplication) getApplicationContext()).getTests();
-        setContentView(R.layout.activity_test_report);
+        setContentView(R.layout.activity_test_history);
 
         Toolbar toolbar = findViewById(R.id.action_bar);
         TextView titleTextView = (TextView) toolbar.getChildAt(0);
@@ -28,8 +28,8 @@ public class TestReportActivity extends AppCompatActivity {
         titleTextView.setTypeface(((DBApplication)getApplication()).getNexaBold());
     }
 
-//    public void sendResults(View view) {
-//        Log.i(MainActivity.class.getName(),"Sending results...");
+//    public void sendHistory(View view) {
+//        Log.i(MainActivity.class.getName(),"Sending history...");
 //        DID to;
 //        DID from = ((DBApplication)getApplication()).getDid();
 //        String subject = "Neurocog Test Results.";
@@ -38,8 +38,8 @@ public class TestReportActivity extends AppCompatActivity {
 //        EmailAPI.sendEmail(this, email);
 //    }
 
-    public void endTest(View view) {
-        Intent intent = new Intent(this, TestHistoryActivity.class);
+    public void returnHome(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 }

@@ -7,7 +7,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.dragonsbane.android.neurocog.ImpairmentTest;
+import io.dragonsbane.android.tests.ImpairmentTest;
 import io.onemfive.android.api.util.AndroidHelper;
 import io.onemfive.core.infovault.InfoVaultService;
 import io.onemfive.data.DID;
