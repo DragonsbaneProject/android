@@ -130,7 +130,7 @@ public class DBApplication extends Application {
         // Ensure user DID available
         did = new DID();
 
-        storage = new Storage(this, 2);
+        storage = new Storage(this, 3);
 
         // Start Router Service
         Intent i = new Intent(this, ServiceAPI.class);

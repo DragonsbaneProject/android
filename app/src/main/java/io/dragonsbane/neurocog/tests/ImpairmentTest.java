@@ -12,9 +12,9 @@ public class ImpairmentTest implements JSONSerializable {
 
     private DID did;
     private String name;
-    private Boolean baseline;
-    private Date timeStarted;
-    private Date timeEnded;
+    private Boolean baseline = false;
+    private Long timeStarted;
+    private Long timeEnded;
     private Double bloodAlcoholContent;
 
     private List<Long> successes = new ArrayList<>();
@@ -23,6 +23,15 @@ public class ImpairmentTest implements JSONSerializable {
     private List<Long> negatives = new ArrayList<>();
 
     List<Integer> cardsUsed = new ArrayList<>();
+
+    public ImpairmentTest(DID did, String name) {
+        this.did = did;
+        this.name = name;
+    }
+
+    public String getId() {
+        return did.getAlias()+":"+timeStarted;
+    }
 
     public DID getDid() {
         return did;
@@ -48,19 +57,19 @@ public class ImpairmentTest implements JSONSerializable {
         this.baseline = baseline;
     }
 
-    public Date getTimeStarted() {
+    public Long getTimeStarted() {
         return timeStarted;
     }
 
-    public void setTimeStarted(Date timeStarted) {
+    public void setTimeStarted(Long timeStarted) {
         this.timeStarted = timeStarted;
     }
 
-    public Date getTimeEnded() {
+    public Long getTimeEnded() {
         return timeEnded;
     }
 
-    public void setTimeEnded(Date timeEnded) {
+    public void setTimeEnded(Long timeEnded) {
         this.timeEnded = timeEnded;
     }
 
@@ -85,6 +94,8 @@ public class ImpairmentTest implements JSONSerializable {
         for(long s : successes) {
             if(s < min) min = s;
         }
+        if(min ==24 * 60 * 60 * 1000L)
+            return 0;
         return min;
     }
 
@@ -101,7 +112,10 @@ public class ImpairmentTest implements JSONSerializable {
         for(long s : successes){
             sum += s;
         }
-        return sum / successes.size();
+        if(sum > 0)
+            return sum / successes.size();
+        else
+            return 0;
     }
 
     public void addMiss(long responseTime) {
@@ -117,6 +131,8 @@ public class ImpairmentTest implements JSONSerializable {
         for(long s : misses) {
             if(s < min) min = s;
         }
+        if(min ==24 * 60 * 60 * 1000L)
+            return 0;
         return min;
     }
 
@@ -133,7 +149,10 @@ public class ImpairmentTest implements JSONSerializable {
         for(long s : misses){
             sum += s;
         }
-        return sum / misses.size();
+        if(sum > 0)
+            return sum / misses.size();
+        else
+            return 0;
     }
 
     public void addInappropriate(long responseTime) {
@@ -149,6 +168,8 @@ public class ImpairmentTest implements JSONSerializable {
         for(long s : inappropriates) {
             if(s < min) min = s;
         }
+        if(min ==24 * 60 * 60 * 1000L)
+            return 0;
         return min;
     }
 
@@ -165,7 +186,10 @@ public class ImpairmentTest implements JSONSerializable {
         for(long s : inappropriates){
             sum += s;
         }
-        return sum / inappropriates.size();
+        if(sum > 0)
+            return sum / inappropriates.size();
+        else
+            return 0;
     }
 
     public void addNegative(long responseTime) {
@@ -181,6 +205,8 @@ public class ImpairmentTest implements JSONSerializable {
         for(long s : negatives) {
             if(s < min) min = s;
         }
+        if(min ==24 * 60 * 60 * 1000L)
+            return 0;
         return min;
     }
 
@@ -197,7 +223,10 @@ public class ImpairmentTest implements JSONSerializable {
         for(long s : negatives){
             sum += s;
         }
-        return sum / negatives.size();
+        if(sum > 0)
+            return sum / negatives.size();
+        else
+            return 0;
     }
 
     public List<Integer> getCardsUsed() {

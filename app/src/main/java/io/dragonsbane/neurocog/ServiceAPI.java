@@ -54,8 +54,6 @@ public class ServiceAPI extends OneMFiveAndroidRouterService {
         e.setClientReplyAction(IMPAIRMENT_TESTS_LOADED);
         e.setDID(userDID);
         List<ImpairmentTest> tests = new ArrayList<>();
-        ImpairmentTest test = new ImpairmentTest();
-        tests.add(test);
         DLC.addEntity(tests,e);
         DLC.addRoute(InfoVaultService.class, InfoVaultService.OPERATION_EXECUTE,e);
         send(ctx, e);

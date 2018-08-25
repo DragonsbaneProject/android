@@ -48,9 +48,7 @@ public class ComplexMemoryTestActivity extends ImpairmentTestActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         randomStartCardIndex = Numbers.randomNumber(0, (DBApplication.cards.length-1)-maxNumberDifferentCards);
-        test = new ImpairmentTest();
-        test.setName(BORDERLINE_IMPAIRMENT);
-        test.setDid(did);
+        test = new ImpairmentTest(did, BORDERLINE_IMPAIRMENT);
         test.setBloodAlcoholContent(bac);
         setContentView(R.layout.activity_complex_memory_test);
 
@@ -70,6 +68,7 @@ public class ComplexMemoryTestActivity extends ImpairmentTestActivity {
 
     public void clickCard(View v) {
         end = new Date().getTime();
+        test.setTimeEnded(end);
         long diff = end - begin;
         if(isBackOfCardShowing) {
             test.addInappropriate(diff);return;}
@@ -93,6 +92,7 @@ public class ComplexMemoryTestActivity extends ImpairmentTestActivity {
         if (animation == animation2) {
             if(isBackOfCardShowing) {
                 begin = new Date().getTime();
+                test.setTimeStarted(begin);
             }
         }
     }

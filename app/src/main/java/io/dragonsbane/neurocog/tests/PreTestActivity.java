@@ -46,9 +46,7 @@ public class PreTestActivity extends ImpairmentTestActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        test = new ImpairmentTest();
-        test.setName(GROSS_IMPAIRMENT);
-        test.setDid(did);
+        test = new ImpairmentTest(did, GROSS_IMPAIRMENT);
         test.setBloodAlcoholContent(bac);
         // Ensure empty test list
         app.getTests().clear();
@@ -69,6 +67,7 @@ public class PreTestActivity extends ImpairmentTestActivity {
 
     public void clickCard(View v) {
         end = new Date().getTime();
+        test.setTimeEnded(end);
         long diff = end - begin;
         if(isBackOfCardShowing) {
             test.addInappropriate(diff);
@@ -93,6 +92,7 @@ public class PreTestActivity extends ImpairmentTestActivity {
             if(isBackOfCardShowing) {
                 findViewById(R.id.preTestCard).setEnabled(true);
                 begin = new Date().getTime();
+                test.setTimeStarted(begin);
             }
         }
     }

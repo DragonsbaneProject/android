@@ -49,9 +49,7 @@ public class SimpleMemoryTestActivity extends ImpairmentTestActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         randomStartCardIndex = Numbers.randomNumber(0, (DBApplication.cards.length-1)-maxNumberDifferentCards);
-        test = new ImpairmentTest();
-        test.setName(IMPAIRMENT);
-        test.setDid(did);
+        test = new ImpairmentTest(did, IMPAIRMENT);
         test.setBloodAlcoholContent(bac);
         setContentView(R.layout.activity_simple_memory_test);
 
@@ -66,6 +64,7 @@ public class SimpleMemoryTestActivity extends ImpairmentTestActivity {
 
     public void clickCard(View v) {
         end = new Date().getTime();
+        test.setTimeEnded(end);
         long diff = end - begin;
         if(isBackOfCardShowing) {
             test.addInappropriate(diff);
@@ -93,6 +92,7 @@ public class SimpleMemoryTestActivity extends ImpairmentTestActivity {
         if (animation == animation2) {
             if(isBackOfCardShowing) {
                 begin = new Date().getTime();
+                test.setTimeStarted(begin);
             }
         }
     }

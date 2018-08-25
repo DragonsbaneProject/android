@@ -13,6 +13,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
+import io.dragonsbane.neurocog.DBApplication;
 import io.dragonsbane.neurocog.R;
 import io.dragonsbane.neurocog.ServiceAPI;
 import io.onemfive.android.api.util.AndroidHelper;
@@ -22,7 +23,6 @@ import io.onemfive.data.util.DLC;
 public class ExportHistoryActivity extends AppCompatActivity {
 
     private List<ImpairmentTest> tests;
-    private byte[] testHistory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +52,7 @@ public class ExportHistoryActivity extends AppCompatActivity {
             Collections.sort(tests, new Comparator<ImpairmentTest>() {
                 @Override
                 public int compare(ImpairmentTest t1, ImpairmentTest t2) {
-                    if(t1.getTimeEnded().getTime() > t2.getTimeEnded().getTime()) return 1;
+                    if(t1.getTimeEnded() > t2.getTimeEnded()) return 1;
                     else return -1;
                 }
             });

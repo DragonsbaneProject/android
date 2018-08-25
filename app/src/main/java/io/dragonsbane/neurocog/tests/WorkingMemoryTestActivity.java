@@ -44,9 +44,7 @@ public class WorkingMemoryTestActivity extends ImpairmentTestActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        test = new ImpairmentTest();
-        test.setName(NO_IMPAIRMENT);
-        test.setDid(did);
+        test = new ImpairmentTest(did, NO_IMPAIRMENT);
         test.setBloodAlcoholContent(bac);
         setContentView(R.layout.activity_working_memory_test);
 
@@ -80,6 +78,7 @@ public class WorkingMemoryTestActivity extends ImpairmentTestActivity {
 
     public void clickCard(View v) {
         end = new Date().getTime();
+        test.setTimeEnded(end);
         long diff = end - begin;
         if(isBackOfCardShowing) {
             test.addInappropriate(diff);return;}
@@ -102,6 +101,7 @@ public class WorkingMemoryTestActivity extends ImpairmentTestActivity {
         if (animation == animation2) {
             if(isBackOfCardShowing) {
                 begin = new Date().getTime();
+                test.setTimeStarted(begin);
             }
         }
     }

@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import io.dragonsbane.neurocog.tests.ImpairmentTest;
+import io.onemfive.data.util.JSONParser;
 
 public class Storage {
 
@@ -22,9 +23,11 @@ public class Storage {
         ContentValues v = new ContentValues();
         v.put("name",t.getName());
         v.put("baseline",t.getBaseline());
-        v.put("bac",t.getBloodAlcoholContent());
-        v.put("cardsUsed",t.getCardsUsed().toString());
-        v.put("author.identityHash",t.getDid().getIdentityHash());
+        v.put("bloodAlcoholContent",t.getBloodAlcoholContent());
+        v.put("cardsUsed", JSONParser.toString(t.getCardsUsed()));
+        v.put("tester",t.getDid().getIdentityHash());
+        v.put("timeStarted",t.getTimeStarted());
+        v.put("timeEnded",t.getTimeEnded());
         v.put("successes",t.getSuccesses());
         v.put("minResponseTimeSuccessMs",t.getMinResponseTimeSuccessMs());
         v.put("maxResponseTimeSuccessMs",t.getMaxResponseTimeSuccessMs());
@@ -34,9 +37,9 @@ public class Storage {
         v.put("maxResponseTimeInappropriateMs",t.getMaxResponseTimeInappropriateMs());
         v.put("avgResponseTimeInappropriateMs",t.getAvgResponseTimeInappropriateMs());
         v.put("negatives",t.getNegatives());
-        v.put("minResponseTimeNegativesMs",t.getMinResponseTimeNegativeMs());
-        v.put("maxResponseTimeNegativesMs",t.getMaxResponseTimeNegativeMs());
-        v.put("avgResponseTimeNegativesMs",t.getAvgResponseTimeNegativeMs());
+        v.put("minResponseTimeNegativeMs",t.getMinResponseTimeNegativeMs());
+        v.put("maxResponseTimeNegativeMs",t.getMaxResponseTimeNegativeMs());
+        v.put("avgResponseTimeNegativeMs",t.getAvgResponseTimeNegativeMs());
         v.put("misses",t.getMisses());
         v.put("minResponseTimeMissMs",t.getMinResponseTimeMissMs());
         v.put("maxResponseTimeMissMs",t.getMaxResponseTimeMissMs());
