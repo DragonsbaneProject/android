@@ -135,10 +135,10 @@ public class MainActivity extends DBActivity {
             Envelope e = AndroidHelper.getEnvelope(intent);
             DID did = e.getDID();
             if(!did.getVerified()) {
-                System.out.println("DID not registered.");
+                Log.i(MainActivity.class.getSimpleName(),"DID not registered.");
                 createDID(did);
             } else {
-                System.out.println("DID registered.");
+                Log.i(MainActivity.class.getSimpleName(),"DID registered.");
                 authenticateDID(did);
             }
         }
@@ -154,7 +154,7 @@ public class MainActivity extends DBActivity {
             if(did.getStatus() == DID.Status.ACTIVE) {
                 ((DBApplication)getApplication()).setDid(did);
                 ServiceAPI.setUserDID(did);
-                System.out.println("DID created. Starting tests...");
+                Log.i(MainActivity.class.getSimpleName(),"DID created. Starting tests...");
                 startTest();
             } else {
                 showError("Error creating DID.");
@@ -173,10 +173,10 @@ public class MainActivity extends DBActivity {
             if(did.getAuthenticated()) {
                 ((DBApplication)getApplication()).setDid(did);
                 ServiceAPI.setUserDID(did);
-                System.out.println("DID authenticated. Starting tests...");
+                Log.i(MainActivity.class.getSimpleName(),"DID authenticated. Starting tests...");
                 startTest();
             } else {
-                System.out.println("DID not authenticated.");
+                Log.i(MainActivity.class.getSimpleName(),"DID not authenticated.");
                 showError(getResources().getText(R.string.passwordFailed).toString());
             }
         }
