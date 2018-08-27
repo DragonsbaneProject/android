@@ -5,10 +5,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class StorageHelper extends SQLiteOpenHelper {
+public class StorageDDL extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "dgb2";
-    private static final String DATABASE_CREATE =
+    private static final String DB_IMPAIRMENT_TEST_CREATE =
             "create table ImpairmentTest ( " +
             "id TEXT primary key, " +
             "tester TEXT not null, " +
@@ -36,29 +36,39 @@ public class StorageHelper extends SQLiteOpenHelper {
             "avgResponseTimeNegativeMs INTEGER not null " +
             ");";
 
-    public StorageHelper(Context context, int version) {
+    public StorageDDL(Context context, int version) {
         super(context, DB_NAME, null, version);
     }
 
     @Override
     public void onCreate(SQLiteDatabase database) {
         database.execSQL("DROP TABLE IF EXISTS ImpairmentTest");
-        database.execSQL(DATABASE_CREATE);
+        database.execSQL(DB_IMPAIRMENT_TEST_CREATE);
     }
 
     /**
      * TODO: create an upgrade path without losing data
-     * @param database
+     * @param db SQLiteDatabase
      * @param oldVersion
      * @param newVersion
      */
     @Override
-    public void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
-        Log.w(StorageHelper.class.getName(),
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        Log.w(StorageDDL.class.getName(),
                 "Upgrading database from version " + oldVersion + " to "
                         + newVersion + ", which will destroy all old data");
-        database.execSQL("DROP TABLE IF EXISTS ImpairmentTest");
-        onCreate(database);
+        // Begin
+        db.execSQL("PRAGMA foreign_keys=off;");
+        db.execSQL("BEGIN TRANSACTION;");
+        // Messages
+        db.execSQL("ALTER TABLE ImpairmentTest RENAME TO ImpairmentTest_temp;");
+        db.execSQL(DB_IMPAIRMENT_TEST_CREATE);
+        db.execSQL("INSERT INTO ImpairmentTest SELECT * FROM ImpairmentTest_temp;");
+        db.execSQL("DROP TABLE ImpairmentTest_temp");
+        // Commit
+        db.execSQL("COMMIT;");
+        db.execSQL("PRAGMA foreign_keys=on;");
+        onCreate(db);
     }
 
 }

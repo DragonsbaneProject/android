@@ -4,14 +4,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import io.dragonsbane.neurocog.database.Storage;
+import io.dragonsbane.neurocog.database.StorageDML;
 
 public abstract class DBActivity extends AppCompatActivity {
 
-    protected Storage storage;
+    protected StorageDML storageDML;
 
-    public void setStorage(Storage storage) {
-        this.storage = storage;
+    public void setStorageDML(StorageDML storageDML) {
+        this.storageDML = storageDML;
     }
 
     @Override

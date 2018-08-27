@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.dragonsbane.neurocog.database.Storage;
+import io.dragonsbane.neurocog.database.StorageDML;
 import io.dragonsbane.neurocog.tests.ImpairmentTest;
 import io.onemfive.android.api.util.AndroidHelper;
 import io.onemfive.core.util.Numbers;
@@ -31,7 +31,7 @@ public class DBApplication extends Application {
     private Typeface nexa_bold;
     private Typeface nexa_light;
 
-    private Storage storage;
+    private StorageDML storageDML;
 
     public static int[] cards = {
             R.drawable.card_c2, R.drawable.card_c3, R.drawable.card_c4, R.drawable.card_c5,
@@ -101,7 +101,7 @@ public class DBApplication extends Application {
     }
 
     public void addActivity(Class clazz, DBActivity activity) {
-        activity.setStorage(storage);
+        activity.setStorageDML(storageDML);
         activities.put(clazz.getName(), activity);
     }
 
@@ -130,7 +130,7 @@ public class DBApplication extends Application {
         // Ensure user DID available
         did = new DID();
 
-        storage = new Storage(this, 3);
+        storageDML = new StorageDML(this, 3);
 
         // Start Router Service
         Intent i = new Intent(this, ServiceAPI.class);

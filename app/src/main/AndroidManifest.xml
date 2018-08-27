@@ -33,7 +33,7 @@
         <activity android:name=".tests.TestReportActivity" />
         <activity android:name=".tests.TestHistoryActivity" />
         <activity android:name=".tests.ViewUserProfileActivity" />
-        <activity android:name=".tests.ExportHistoryActivity"></activity>
+        <activity android:name=".tests.ExportHistoryActivity"/>
     </application>
 
 </manifest>

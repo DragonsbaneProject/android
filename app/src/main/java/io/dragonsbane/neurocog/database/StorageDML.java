@@ -8,18 +8,18 @@ import android.util.Log;
 import io.dragonsbane.neurocog.tests.ImpairmentTest;
 import io.onemfive.data.util.JSONParser;
 
-public class Storage {
+public class StorageDML {
 
-    private StorageHelper helper;
+    private StorageDDL helper;
     private SQLiteDatabase db;
 
-    public Storage(Context context, int version) {
-        helper = new StorageHelper(context, version);
+    public StorageDML(Context context, int version) {
+        helper = new StorageDDL(context, version);
         db = helper.getWritableDatabase();
     }
 
     public void saveImpairmentTest(ImpairmentTest t) {
-        Log.i(StorageHelper.class.getName(),"Saving ImpairmentTest...");
+        Log.i(StorageDDL.class.getName(),"Saving ImpairmentTest...");
         ContentValues v = new ContentValues();
         v.put("name",t.getName());
         v.put("baseline",t.getBaseline());

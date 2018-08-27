@@ -69,7 +69,7 @@ public abstract class ImpairmentTestActivity extends DBActivity implements Anima
 
     protected void testFinished() {
         test.setDid(app.getDid());
-        storage.saveImpairmentTest(test);
+        storageDML.saveImpairmentTest(test);
         app.addTest(test);
     }
 
