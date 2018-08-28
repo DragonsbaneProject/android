@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import io.dragonsbane.data.ImpairmentTest;
 import io.dragonsbane.neurocog.DBApplication;
 import io.dragonsbane.neurocog.R;
 import io.onemfive.core.util.Numbers;

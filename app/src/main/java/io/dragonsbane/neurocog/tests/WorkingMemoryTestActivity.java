@@ -16,6 +16,7 @@ import java.util.Random;
 
 import io.dragonsbane.data.ImpairmentTest;
 import io.dragonsbane.neurocog.DBApplication;
+import io.dragonsbane.neurocog.MainActivity;
 import io.dragonsbane.neurocog.R;
 import io.onemfive.core.util.Numbers;
 
@@ -217,7 +218,7 @@ public class WorkingMemoryTestActivity extends ImpairmentTestActivity {
     }
 
     public void nextTest(View view) {
-        Intent intent = new Intent(this, TestHistoryActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 

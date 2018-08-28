@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import java.util.Date;
 
+import io.dragonsbane.data.ImpairmentTest;
 import io.dragonsbane.neurocog.DBApplication;
 import io.dragonsbane.neurocog.R;
 import io.onemfive.core.util.Numbers;
@@ -106,7 +107,7 @@ public class SimpleMemoryTestActivity extends ImpairmentTestActivity {
                 lastCardFlipped = currentCard;
                 currentCard = ((DBApplication)getApplicationContext()).getRandomCard(randomStartCardIndex, randomStartCardIndex + maxNumberDifferentCards);
                 shouldNotClick = currentCard != lastCardFlipped;
-                if(!test.cardsUsed.contains(currentCard)) test.cardsUsed.add(currentCard);
+                if(!test.getCardsUsed().contains(currentCard)) test.getCardsUsed().add(currentCard);
                 (findViewById(R.id.simpleMemoryTestCard)).setBackground(getResources().getDrawable(currentCard));
             } else {
                 (findViewById(R.id.simpleMemoryTestCard)).setBackground(getResources().getDrawable(R.drawable.card_back));

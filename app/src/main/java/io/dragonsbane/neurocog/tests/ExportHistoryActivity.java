@@ -13,7 +13,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
-import io.dragonsbane.neurocog.DBApplication;
+import io.dragonsbane.data.ImpairmentTest;
 import io.dragonsbane.neurocog.R;
 import io.dragonsbane.neurocog.ServiceAPI;
 import io.onemfive.android.api.util.AndroidHelper;
@@ -27,8 +27,7 @@ public class ExportHistoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        registerReceiver(loadTestsReceiver, new IntentFilter(ServiceAPI.IMPAIRMENT_TESTS_LOADED));
-        ServiceAPI.loadTests(this);
+        tests = ServiceAPI.loadTests(this);
         setContentView(R.layout.activity_export_history);
     }
 

@@ -45,7 +45,7 @@
     <string name="reportComplexMemoryTestText">Complex</string>
     <string name="reportWorkingMemoryTestText">Working</string>
     <!-- Test History Activity -->
-
+    <string name="home">Home</string>
     <!-- Test Population Activity -->
 
     <!-- Export History Activity -->

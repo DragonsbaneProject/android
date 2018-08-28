@@ -153,7 +153,6 @@ public class MainActivity extends DBActivity {
             Log.i(MainActivity.class.getSimpleName(), "DID: alias="+did.getAlias()+", status="+did.getStatus().name());
             if(did.getStatus() == DID.Status.ACTIVE) {
                 ((DBApplication)getApplication()).setDid(did);
-                ServiceAPI.setUserDID(did);
                 Log.i(MainActivity.class.getSimpleName(),"DID created. Starting tests...");
                 startTest();
             } else {
@@ -172,7 +171,6 @@ public class MainActivity extends DBActivity {
             did.setAuthenticated(r.did.getAuthenticated());
             if(did.getAuthenticated()) {
                 ((DBApplication)getApplication()).setDid(did);
-                ServiceAPI.setUserDID(did);
                 Log.i(MainActivity.class.getSimpleName(),"DID authenticated. Starting tests...");
                 startTest();
             } else {

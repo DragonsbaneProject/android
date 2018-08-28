@@ -27,12 +27,12 @@
         <!--android:text="@string/sendHistory" />-->
 
     <Button
-        android:id="@+id/reportButtonEndTest"
+        android:id="@+id/reportButtonEndTest1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:onClick="returnHome"
-        android:text="@string/endTest" />
+        android:text="@string/home" />
 
     <TableLayout
         android:layout_width="match_parent"
@@ -63,5 +63,13 @@
             android:background="#181641" />
 
     </TableLayout>
+
+    <Button
+        android:id="@+id/reportButtonEndTest2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:onClick="returnHome"
+        android:text="@string/home" />
 
 </LinearLayout>

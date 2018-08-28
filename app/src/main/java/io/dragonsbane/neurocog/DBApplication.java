@@ -139,6 +139,8 @@ public class DBApplication extends Application {
 
         db = new SQLiteInfoVaultDB(this, 3);
 
+        ServiceAPI.setApp(this);
+
         // Start Router Service
         Intent i = new Intent(this, ServiceAPI.class);
         Log.i(DBApplication.class.getName(),"Starting ServiceAPI to bootstrap 1M5 Core...");
