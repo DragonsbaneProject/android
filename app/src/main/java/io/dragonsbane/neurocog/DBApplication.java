@@ -10,9 +10,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
-import io.dragonsbane.neurocog.database.StorageDML;
-import io.dragonsbane.neurocog.tests.ImpairmentTest;
+import io.dragonsbane.core.HealthRecordService;
+import io.dragonsbane.data.ImpairmentTest;
+import io.dragonsbane.neurocog.database.SQLiteInfoVaultDB;
+import io.onemfive.android.api.admin.AdminAPI;
 import io.onemfive.android.api.util.AndroidHelper;
 import io.onemfive.core.util.Numbers;
 import io.onemfive.data.DID;
@@ -31,7 +34,7 @@ public class DBApplication extends Application {
     private Typeface nexa_bold;
     private Typeface nexa_light;
 
-    private StorageDML storageDML;
+    private SQLiteInfoVaultDB db;
 
     public static int[] cards = {
             R.drawable.card_c2, R.drawable.card_c3, R.drawable.card_c4, R.drawable.card_c5,
@@ -101,7 +104,7 @@ public class DBApplication extends Application {
     }
 
     public void addActivity(Class clazz, DBActivity activity) {
-        activity.setStorageDML(storageDML);
+        activity.setDB(db);
         activities.put(clazz.getName(), activity);
     }
 
@@ -117,6 +120,10 @@ public class DBApplication extends Application {
         return cards[Numbers.randomNumber(min, max)];
     }
 
+    public SQLiteInfoVaultDB getDb() {
+        return db;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -130,7 +137,7 @@ public class DBApplication extends Application {
         // Ensure user DID available
         did = new DID();
 
-        storageDML = new StorageDML(this, 3);
+        db = new SQLiteInfoVaultDB(this, 3);
 
         // Start Router Service
         Intent i = new Intent(this, ServiceAPI.class);
@@ -138,9 +145,9 @@ public class DBApplication extends Application {
         startService(i);
 
         // Register Dragonsbane services with 1M5
-//        List<Class> servicesToRegister = new ArrayList<>();
-//        servicesToRegister.add(MLService.class);
-//        Properties p = new Properties();
-//        AdminAPI.registerServices(this, servicesToRegister, p);
+        List<Class> servicesToRegister = new ArrayList<>();
+        servicesToRegister.add(HealthRecordService.class);
+        Properties p = new Properties();
+        AdminAPI.registerServices(this, servicesToRegister, p);
     }
 }

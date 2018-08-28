@@ -4,14 +4,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import io.dragonsbane.neurocog.database.StorageDML;
+import io.dragonsbane.neurocog.database.SQLiteInfoVaultDB;
 
 public abstract class DBActivity extends AppCompatActivity {
 
-    protected StorageDML storageDML;
+    protected SQLiteInfoVaultDB db;
 
-    public void setStorageDML(StorageDML storageDML) {
-        this.storageDML = storageDML;
+    public void setDB(SQLiteInfoVaultDB db) {
+        this.db = db;
     }
 
     @Override

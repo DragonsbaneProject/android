@@ -14,8 +14,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import io.dragonsbane.data.ImpairmentTest;
 import io.dragonsbane.neurocog.DBApplication;
-import io.dragonsbane.neurocog.MainActivity;
 import io.dragonsbane.neurocog.R;
 import io.onemfive.core.util.Numbers;
 
@@ -55,7 +55,7 @@ public class WorkingMemoryTestActivity extends ImpairmentTestActivity {
 
         List<ImpairmentTest> tests = ((DBApplication)getApplication()).getTests();
         for(ImpairmentTest test : tests) {
-            cardsUsedPrior.addAll(test.cardsUsed);
+            cardsUsedPrior.addAll(test.getCardsUsed());
         }
         int numberCardsUsedPrior = cardsUsedPrior.size();
         for(int i = 0; i<numberCardsUsedPrior;i++) {
@@ -121,7 +121,7 @@ public class WorkingMemoryTestActivity extends ImpairmentTestActivity {
                     int random = Numbers.randomNumber(0,cardsUsedPrior.size()-1);
                     currentCard = cardsUsedPrior.get(random);
                 }
-                if(!test.cardsUsed.contains(currentCard)) test.cardsUsed.add(currentCard);
+                if(!test.getCardsUsed().contains(currentCard)) test.getCardsUsed().add(currentCard);
                 (findViewById(R.id.workingMemoryTestCard)).setBackground(getResources().getDrawable(currentCard));
             } else {
                 (findViewById(R.id.workingMemoryTestCard)).setBackground(getResources().getDrawable(R.drawable.card_back));
@@ -217,7 +217,7 @@ public class WorkingMemoryTestActivity extends ImpairmentTestActivity {
     }
 
     public void nextTest(View view) {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, TestHistoryActivity.class);
         startActivity(intent);
     }
 

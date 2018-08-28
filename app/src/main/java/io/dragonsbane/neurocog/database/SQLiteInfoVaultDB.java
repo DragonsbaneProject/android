@@ -5,7 +5,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class StorageDDL extends SQLiteOpenHelper {
+import java.util.Properties;
+
+import io.onemfive.core.infovault.DAO;
+import io.onemfive.core.infovault.InfoVaultDB;
+
+public class SQLiteInfoVaultDB extends SQLiteOpenHelper implements InfoVaultDB {
 
     private static final String DB_NAME = "dgb2";
     private static final String DB_IMPAIRMENT_TEST_CREATE =
@@ -36,8 +41,32 @@ public class StorageDDL extends SQLiteOpenHelper {
             "avgResponseTimeNegativeMs INTEGER not null " +
             ");";
 
-    public StorageDDL(Context context, int version) {
+    public SQLiteInfoVaultDB(Context context, int version) {
         super(context, DB_NAME, null, version);
+    }
+
+    public SQLiteDatabase getDatabase() {
+        return getWritableDatabase();
+    }
+
+    @Override
+    public void execute(DAO dao) throws Exception {
+
+    }
+
+    @Override
+    public Status getStatus() {
+        return null;
+    }
+
+    @Override
+    public boolean init(Properties properties) {
+        return false;
+    }
+
+    @Override
+    public boolean teardown() {
+        return false;
     }
 
     @Override
@@ -54,7 +83,7 @@ public class StorageDDL extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.w(StorageDDL.class.getName(),
+        Log.w(SQLiteInfoVaultDB.class.getName(),
                 "Upgrading database from version " + oldVersion + " to "
                         + newVersion + ", which will destroy all old data");
         // Begin
