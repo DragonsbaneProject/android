@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import io.dragonsbane.data.ImpairmentTest;
+import io.onemfive.android.api.db.AndroidFSInfoVaultDB;
 import io.onemfive.android.api.service.OneMFiveAndroidRouterService;
 import io.onemfive.android.api.util.AndroidHelper;
 import io.onemfive.data.Envelope;
