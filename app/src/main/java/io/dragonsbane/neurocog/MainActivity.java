@@ -14,13 +14,11 @@ import android.widget.TextView;
 
 import io.dragonsbane.neurocog.tests.PreTestActivity;
 import io.onemfive.android.api.SecurityAPI;
-import io.onemfive.android.api.healthcare.HealthRecordAPI;
 import io.onemfive.android.api.util.AndroidHelper;
 import io.onemfive.core.did.AuthenticateDIDRequest;
 import io.onemfive.data.DID;
 import io.onemfive.data.util.DLC;
 import io.onemfive.data.Envelope;
-import io.onemfive.data.health.HealthRecord;
 
 /**
  * Ensure auto screen dim / lock is turned off
@@ -167,10 +165,8 @@ public class MainActivity extends DBActivity {
             Log.i(MainActivity.class.getSimpleName(),"Received broadcast from DID authN.");
             Envelope e = AndroidHelper.getEnvelope(intent);
             AuthenticateDIDRequest r = (AuthenticateDIDRequest)DLC.getData(AuthenticateDIDRequest.class, e);
-            DID did = e.getDID();
-            did.setAuthenticated(r.did.getAuthenticated());
-            if(did.getAuthenticated()) {
-                ((DBApplication)getApplication()).setDid(did);
+            if(r.did.getAuthenticated()) {
+                ((DBApplication)getApplication()).setDid(r.did);
                 Log.i(MainActivity.class.getSimpleName(),"DID authenticated. Starting tests...");
                 startTest();
             } else {

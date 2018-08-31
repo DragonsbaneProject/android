@@ -28,7 +28,7 @@ public class TestHistoryActivity extends AppCompatActivity {
         TextView titleTextView = (TextView) toolbar.getChildAt(0);
         titleTextView.setTextColor(getResources().getColor(R.color.dragonsbaneBlack));
         titleTextView.setTypeface(((DBApplication)getApplication()).getNexaBold());
-        tests = ServiceAPI.loadTests(this);
+        tests = ServiceAPI.loadTests();
     }
 
     @Override

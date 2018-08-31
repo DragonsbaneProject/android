@@ -2,8 +2,11 @@ package io.dragonsbane.neurocog.tests;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+
+import java.util.List;
 
 import io.dragonsbane.data.ImpairmentTest;
 import io.dragonsbane.neurocog.DBActivity;
@@ -11,6 +14,7 @@ import io.dragonsbane.neurocog.DBApplication;
 import io.dragonsbane.neurocog.R;
 import io.dragonsbane.neurocog.ServiceAPI;
 import io.onemfive.data.DID;
+import io.onemfive.data.util.JSONParser;
 
 /**
  * TODO: Add Definition
@@ -71,8 +75,13 @@ public abstract class ImpairmentTestActivity extends DBActivity implements Anima
 
     protected void testFinished() {
         test.setDid(app.getDid());
-        ServiceAPI.saveTest(this, test);
+        ServiceAPI.saveTest(test);
         app.addTest(test);
+        List<ImpairmentTest> tests = ServiceAPI.loadTests();
+        Log.i(ImpairmentTestActivity.class.getName(), "Number of tests: "+tests.size());
+        for(ImpairmentTest t : tests) {
+            Log.i(ImpairmentTestActivity.class.getName(), JSONParser.toString(t.toMap()));
+        }
     }
 
 }

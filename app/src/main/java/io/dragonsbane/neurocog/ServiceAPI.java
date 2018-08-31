@@ -2,17 +2,20 @@ package io.dragonsbane.neurocog;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import io.dragonsbane.data.ImpairmentTest;
-import io.dragonsbane.neurocog.database.LoadImpairmentTestsDAO;
-import io.dragonsbane.neurocog.database.SaveImpairmentTestDAO;
 import io.onemfive.android.api.service.OneMFiveAndroidRouterService;
 import io.onemfive.android.api.util.AndroidHelper;
 import io.onemfive.data.Envelope;
+import io.onemfive.data.util.JSONParser;
 
 public class ServiceAPI extends OneMFiveAndroidRouterService {
 
@@ -29,27 +32,30 @@ public class ServiceAPI extends OneMFiveAndroidRouterService {
         app = application;
     }
 
-    public static Boolean saveTest(Context ctx, ImpairmentTest test) {
+    public static Boolean saveTest(ImpairmentTest test) {
         Log.i(ServiceAPI.class.getSimpleName(),"Saving test...");
-        SaveImpairmentTestDAO dao = new SaveImpairmentTestDAO(app.getDb(), test);
-        try {
-            dao.execute();
-        } catch (Exception e1) {
-            Log.w(ServiceAPI.class.getName(),e1.getLocalizedMessage());
-            return false;
-        }
+        SharedPreferences pref = app.getApplicationContext().getSharedPreferences(ImpairmentTest.class.getName(), MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(test.getId(), JSONParser.toString(test.toMap()));
+        editor.apply();
         Log.i(ServiceAPI.class.getName(),"Test saved.");
         return true;
     }
 
-    public static List<ImpairmentTest> loadTests(Context ctx) {
-        LoadImpairmentTestsDAO dao = new LoadImpairmentTestsDAO(app.getDb(), app.getDid());
-        try {
-            dao.execute();
-        } catch (Exception e) {
-            Log.w(ServiceAPI.class.getName(),e.getLocalizedMessage());
+    public static List<ImpairmentTest> loadTests() {
+        Log.i(ServiceAPI.class.getSimpleName(),"Saving test...");
+        List<ImpairmentTest> tests = new ArrayList<>();
+        SharedPreferences pref = app.getApplicationContext().getSharedPreferences(ImpairmentTest.class.getName(), MODE_PRIVATE);
+        Map testMaps = pref.getAll();
+        Collection<String> testJSONs = testMaps.values();
+        ImpairmentTest t;
+        for(String ts : testJSONs) {
+            t = new ImpairmentTest();
+            t.fromMap((Map<String,Object>)JSONParser.parse(ts));
+            tests.add(t);
         }
-        return dao.getTests();
+        Log.i(ServiceAPI.class.getName(),"Tests loaded.");
+        return tests;
     }
 
     private static void send(Context ctx, Envelope e) {
