@@ -75,7 +75,7 @@ public abstract class ImpairmentTestActivity extends DBActivity implements Anima
     }
 
     protected void testFinished() {
-        test.setDid(app.getDid());
+        test.setDid(did);
         test.setBloodAlcoholContent(bac);
         test.setBaseline(baseline);
         test.setTimeEnded(new Date().getTime());
