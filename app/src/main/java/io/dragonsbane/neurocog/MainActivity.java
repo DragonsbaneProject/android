@@ -72,6 +72,13 @@ public class MainActivity extends DBActivity {
             showError(getResources().getText(R.string.passwordRequired).toString());
             return;
         }
+        boolean baseline = ((CheckBox)findViewById(R.id.mainCheckBoxBaseline)).isChecked();
+        ((DBApplication)getApplication()).setBaseline(baseline);
+
+        if(!baseline) {
+            String bacStr = ((EditText) findViewById(R.id.mainEditBAC)).getText().toString();
+            ((DBApplication)getApplication()).setBac(Double.parseDouble(bacStr));
+        }
 
         DID did = new DID();
         did.setAlias(username);
@@ -101,12 +108,6 @@ public class MainActivity extends DBActivity {
     }
 
     private void startTest() {
-        boolean baseline = ((CheckBox)findViewById(R.id.mainCheckBoxBaseline)).isChecked();
-        ((DBApplication)getApplication()).setBaseline(baseline);
-        if(!baseline) {
-            String bacStr = ((EditText) findViewById(R.id.mainEditBAC)).getText().toString();
-            ((DBApplication)getApplication()).setBac(Double.parseDouble(bacStr));
-        }
 
         TextView messageView = findViewById(R.id.mainTextMessage);
         messageView.setVisibility(View.INVISIBLE);

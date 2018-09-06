@@ -51,7 +51,6 @@ public class SimpleMemoryTestActivity extends ImpairmentTestActivity {
         super.onCreate(savedInstanceState);
         randomStartCardIndex = Numbers.randomNumber(0, (DBApplication.cards.length-1)-maxNumberDifferentCards);
         test = new ImpairmentTest(did, IMPAIRMENT);
-        test.setBloodAlcoholContent(bac);
         setContentView(R.layout.activity_simple_memory_test);
 
         Toolbar toolbar = findViewById(R.id.action_bar);

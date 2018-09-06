@@ -75,6 +75,8 @@ public abstract class ImpairmentTestActivity extends DBActivity implements Anima
 
     protected void testFinished() {
         test.setDid(app.getDid());
+        test.setBloodAlcoholContent(bac);
+        test.setBaseline(baseline);
         ServiceAPI.saveTest(test);
         app.addTest(test);
         List<ImpairmentTest> tests = ServiceAPI.loadTests();

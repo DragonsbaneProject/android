@@ -48,7 +48,6 @@ public class PreTestActivity extends ImpairmentTestActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         test = new ImpairmentTest(did, GROSS_IMPAIRMENT);
-        test.setBloodAlcoholContent(bac);
         // Ensure empty test list
         app.getTests().clear();
         setContentView(R.layout.activity_pre_test);

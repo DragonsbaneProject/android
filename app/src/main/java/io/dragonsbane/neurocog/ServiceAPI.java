@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -35,24 +36,23 @@ public class ServiceAPI extends OneMFiveAndroidRouterService {
 
     public static Boolean saveTest(ImpairmentTest test) {
         Log.i(ServiceAPI.class.getSimpleName(),"Saving test...");
-        SharedPreferences pref = app.getApplicationContext().getSharedPreferences(ImpairmentTest.class.getName(), MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString(test.getId(), JSONParser.toString(test.toMap()));
-        editor.apply();
+        try {
+            app.getDb().save(ImpairmentTest.class.getName(), test.getId(), JSONParser.toString(test.toMap()).getBytes(), true);
+        } catch (FileNotFoundException e) {
+            Log.w(ServiceAPI.class.getName(), "FileNotFoundException caught attempting to save an ImpairmentTest. ");
+        }
         Log.i(ServiceAPI.class.getName(),"Test saved.");
         return true;
     }
 
     public static List<ImpairmentTest> loadTests() {
-        Log.i(ServiceAPI.class.getSimpleName(),"Saving test...");
+        Log.i(ServiceAPI.class.getSimpleName(),"Loading all tests...");
         List<ImpairmentTest> tests = new ArrayList<>();
-        SharedPreferences pref = app.getApplicationContext().getSharedPreferences(ImpairmentTest.class.getName(), MODE_PRIVATE);
-        Map testMaps = pref.getAll();
-        Collection<String> testJSONs = testMaps.values();
+        List<byte[]> testByteList = app.getDb().loadAll(ImpairmentTest.class.getName());
         ImpairmentTest t;
-        for(String ts : testJSONs) {
+        for(byte[] ts : testByteList) {
             t = new ImpairmentTest();
-            t.fromMap((Map<String,Object>)JSONParser.parse(ts));
+            t.fromMap((Map<String,Object>)JSONParser.parse(new String(ts)));
             tests.add(t);
         }
         Log.i(ServiceAPI.class.getName(),"Tests loaded.");

@@ -15,6 +15,7 @@ import java.util.Properties;
 import io.dragonsbane.core.HealthRecordService;
 import io.dragonsbane.data.ImpairmentTest;
 import io.onemfive.android.api.admin.AdminAPI;
+import io.onemfive.android.api.db.AndroidFSInfoVaultDB;
 import io.onemfive.android.api.util.AndroidHelper;
 import io.onemfive.core.util.Numbers;
 import io.onemfive.data.DID;
@@ -32,6 +33,7 @@ public class DBApplication extends Application {
     private Map<String,Activity> activities = new HashMap<>();
     private Typeface nexa_bold;
     private Typeface nexa_light;
+    private AndroidFSInfoVaultDB db;
 
     public static int[] cards = {
             R.drawable.card_c2, R.drawable.card_c3, R.drawable.card_c4, R.drawable.card_c5,
@@ -116,6 +118,10 @@ public class DBApplication extends Application {
         return cards[Numbers.randomNumber(min, max)];
     }
 
+    public AndroidFSInfoVaultDB getDb() {
+        return db;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -129,6 +135,9 @@ public class DBApplication extends Application {
         // Ensure user DID available
         did = new DID();
 
+        db = new AndroidFSInfoVaultDB();
+        db.setApp(this);
+
         ServiceAPI.setApp(this);
 
         // Start Router Service
@@ -137,9 +146,9 @@ public class DBApplication extends Application {
         startService(i);
 
         // Register Dragonsbane services with 1M5
-        List<Class> servicesToRegister = new ArrayList<>();
-        servicesToRegister.add(HealthRecordService.class);
-        Properties p = new Properties();
-        AdminAPI.registerServices(this, servicesToRegister, p);
+//        List<Class> servicesToRegister = new ArrayList<>();
+//        servicesToRegister.add(HealthRecordService.class);
+//        Properties p = new Properties();
+//        AdminAPI.registerServices(this, servicesToRegister, p);
     }
 }
