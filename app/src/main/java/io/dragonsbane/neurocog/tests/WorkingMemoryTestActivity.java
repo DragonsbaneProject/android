@@ -46,6 +46,7 @@ public class WorkingMemoryTestActivity extends ImpairmentTestActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         test = new ImpairmentTest(did, NO_IMPAIRMENT);
+        test.setTimeStarted(new Date().getTime());
         setContentView(R.layout.activity_working_memory_test);
 
         Toolbar toolbar = findViewById(R.id.action_bar);

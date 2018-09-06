@@ -50,6 +50,7 @@ public class ComplexMemoryTestActivity extends ImpairmentTestActivity {
         super.onCreate(savedInstanceState);
         randomStartCardIndex = Numbers.randomNumber(0, (DBApplication.cards.length-1)-maxNumberDifferentCards);
         test = new ImpairmentTest(did, BORDERLINE_IMPAIRMENT);
+        test.setTimeStarted(new Date().getTime());
         setContentView(R.layout.activity_complex_memory_test);
 
         Toolbar toolbar = findViewById(R.id.action_bar);

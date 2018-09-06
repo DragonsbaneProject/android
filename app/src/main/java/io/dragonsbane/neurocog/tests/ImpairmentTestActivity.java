@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import java.util.Date;
 import java.util.List;
 
 import io.dragonsbane.data.ImpairmentTest;
@@ -77,6 +78,7 @@ public abstract class ImpairmentTestActivity extends DBActivity implements Anima
         test.setDid(app.getDid());
         test.setBloodAlcoholContent(bac);
         test.setBaseline(baseline);
+        test.setTimeEnded(new Date().getTime());
         ServiceAPI.saveTest(test);
         app.addTest(test);
         List<ImpairmentTest> tests = ServiceAPI.loadTests();
