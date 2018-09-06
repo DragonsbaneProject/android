@@ -40,7 +40,8 @@ public class ComplexMemoryTestActivity extends ImpairmentTestActivity {
     private int randomStartCardIndex;
 
     private boolean isBackOfCardShowing = true;
-    private boolean shouldNotClick = false;
+    private boolean shouldClick = false;
+    private boolean clickedWhenShould = false;
 
     private FlipCard flipCard;
     private EndTest endTest;
@@ -69,31 +70,51 @@ public class ComplexMemoryTestActivity extends ImpairmentTestActivity {
 
     public void clickCard(View v) {
         end = new Date().getTime();
-        test.setTimeEnded(end);
         long diff = end - begin;
         if(isBackOfCardShowing) {
-            test.addInappropriate(diff);return;}
-        if(shouldNotClick) {
-            test.addMiss(diff);return;}
-        test.addSuccess(diff);
-
-        flipCard.deactivate(); // Deactivate prior FlipCard
-        v.setEnabled(false);
-        v.clearAnimation();
-        v.setAnimation(animation1);
-        v.startAnimation(animation1);
+            test.addInappropriate(diff);
+        } else if(!shouldClick) {
+            test.addMiss(diff);
+        } else {
+            clickedWhenShould = true;
+            test.addSuccess(diff);
+            flipCard.deactivate(); // Deactivate prior FlipCard
+            v.setEnabled(false);
+            v.clearAnimation();
+            v.setAnimation(animation1);
+            v.startAnimation(animation1);
+        }
     }
 
     @Override
     public void onAnimationStart(Animation animation) {
-        if(animation == animation1 && !isBackOfCardShowing && !shouldNotClick) {
-            // Should have clicked and did not
-            test.addMiss(normalFlipDurationMs);
-        }
-        if (animation == animation2) {
+        if(animation == animation1) {
+            if(!isBackOfCardShowing && shouldClick && !clickedWhenShould) {
+                // Should have clicked and did not
+                test.addMiss(normalFlipDurationMs);
+            }
+        } else {
+            // Flip back status
+            isBackOfCardShowing = !isBackOfCardShowing;
             if(isBackOfCardShowing) {
+                (findViewById(R.id.complexMemoryTestCard)).setBackground(getResources().getDrawable(R.drawable.card_back));
+            } else {
+                // Face is showing
+                // Set second to last card flipped as last card flipped
+                secondToLastCardFlipped = lastCardFlipped;
+                // Set last card flipped as current card
+                lastCardFlipped = currentCard;
+                // Assign current card a new random card
+                currentCard = ((DBApplication)getApplicationContext()).getRandomCard(randomStartCardIndex, randomStartCardIndex + maxNumberDifferentCards);
+                (findViewById(R.id.complexMemoryTestCard)).setBackground(getResources().getDrawable(currentCard));
+                // Save card to test cards used if it doesn't already contain it
+                if(!test.getCardsUsed().contains(currentCard)) test.getCardsUsed().add(currentCard);
+                // Determine if this current card should be clicked
+                shouldClick = currentCard == secondToLastCardFlipped;
+                clickedWhenShould = false;
+                numberFlips--;
+                findViewById(R.id.complexMemoryTestCard).setEnabled(true);
                 begin = new Date().getTime();
-                test.setTimeStarted(begin);
             }
         }
     }
@@ -102,25 +123,22 @@ public class ComplexMemoryTestActivity extends ImpairmentTestActivity {
     public void onAnimationEnd(Animation animation) {
         if (animation == animation1) {
             // End of 1st half of flip
-            if (isBackOfCardShowing) {
-                numberFlips--;
-                secondToLastCardFlipped = lastCardFlipped;
-                lastCardFlipped = currentCard;
-                currentCard = ((DBApplication)getApplicationContext()).getRandomCard(randomStartCardIndex, randomStartCardIndex + maxNumberDifferentCards);
-                shouldNotClick = currentCard != secondToLastCardFlipped;
-                if(!test.getCardsUsed().contains(currentCard)) test.getCardsUsed().add(currentCard);
-                (findViewById(R.id.complexMemoryTestCard)).setBackground(getResources().getDrawable(currentCard));
-            } else {
-                (findViewById(R.id.complexMemoryTestCard)).setBackground(getResources().getDrawable(R.drawable.card_back));
-            }
             (findViewById(R.id.complexMemoryTestCard)).clearAnimation();
             (findViewById(R.id.complexMemoryTestCard)).setAnimation(animation2);
             (findViewById(R.id.complexMemoryTestCard)).startAnimation(animation2);
         } else {
             // animation2 - End of 2nd half of flip
-            isBackOfCardShowing=!isBackOfCardShowing;
-            findViewById(R.id.complexMemoryTestCard).setEnabled(true);
-            if(!isBackOfCardShowing) {
+            if(isBackOfCardShowing) {
+                // back showing
+                if (numberFlips > 0) {
+                    flipCard = new FlipCard();
+                    new Handler().postDelayed(flipCard, shortFlipDuractionMs); // flip card after 1 second
+                } else {
+                    endTest.deactivate(); // Clicked; deactive previous endTest
+                    endTest = new EndTest();
+                    new Handler().postDelayed(endTest, shortFlipDuractionMs); // end test after 1 second
+                }
+            } else {
                 // face card showing
                 if( numberFlips > 0) {
                     flipCard = new FlipCard();
@@ -128,16 +146,6 @@ public class ComplexMemoryTestActivity extends ImpairmentTestActivity {
                 } else {
                     endTest = new EndTest();
                     new Handler().postDelayed(endTest, normalFlipDurationMs); // end test after 3 seconds if not clicked
-                }
-            } else {
-                // back showing
-                if( numberFlips > 0) {
-                    flipCard = new FlipCard();
-                    new Handler().postDelayed(flipCard, shortFlipDuractionMs); // flip card after 1 second
-                } else {
-                    endTest.deactivate(); // Clicked; deactive previous endTest
-                    endTest = new EndTest();
-                    new Handler().postDelayed(endTest, shortFlipDuractionMs); // end test after 1 second
                 }
             }
         }
@@ -177,6 +185,7 @@ public class ComplexMemoryTestActivity extends ImpairmentTestActivity {
         public void run() {
             if(active) {
                 findViewById(R.id.complexMemoryTestCard).setVisibility(View.INVISIBLE);
+                testFinished();
                 findViewById(R.id.complexMemoryButtonNextTest).setVisibility(View.VISIBLE);
                 findViewById(R.id.resultsLayout).setVisibility(View.VISIBLE);
 
